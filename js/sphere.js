@@ -1,15 +1,11 @@
 var container;
 
 var camera, scene, renderer;
-var cameraCube, sceneCube;
 
-var mesh, lightMesh, geometry;
+
+var mesh, geometry;
 var spheres;
 
-var directionalLight, pointLight;
-
-var mouseX = 0;
-var mouseY = 0;
 
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
@@ -24,15 +20,16 @@ function init() {
     
     container = document.createElement( 'div' );
     document.body.appendChild( container );
-    
+    //create a container as a space for the animation
     
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    //renderer.autoClear = false;
+    //renderer.autoClear = false
+    //create a renderer
     
     container.appendChild( renderer.domElement );
-    
+    //append the renderer to the website
     
     
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 100000 );
@@ -41,17 +38,13 @@ function init() {
     
     
     scene = new THREE.Scene();
-    sceneCube = new THREE.Scene();
+    
     
     geometry = new THREE.SphereGeometry( 150, 70, 70 );
     
     
-    var materials = [
-                     new THREE.MeshBasicMaterial( { color: 0xbbbbbb }) ,new THREE.MeshBasicMaterial( { color: 0xffff00 })]
-    ;
-    sphere = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial(  ));
-    sphere.transparent = true;
-    sphere.opacity = 0.5;
+     sphere = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial(  ));
+ 
     sphere.rotation.x = Math.PI * 0.1;
     sphere.overdraw = true;
     scene.add( sphere );
@@ -76,6 +69,7 @@ function animate(){
     requestAnimationFrame(function(){
                           animate();
                           });
+    
     
 }
 
