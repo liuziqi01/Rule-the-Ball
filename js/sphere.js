@@ -2,6 +2,8 @@ var container;
 
 var camera, scene, renderer;
 
+var controls;
+
 
 var mesh, geometry;
 var spheres;
@@ -25,26 +27,37 @@ function init() {
     container = document.createElement( 'div' );
     document.body.appendChild( container );
     //create a container as a space for the animation
-    
+   //container.style.backgroundColor = "lightblue";
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     //renderer.autoClear = false
     //create a renderer
     
+ scene = new THREE.Scene();
+
+
     container.appendChild( renderer.domElement );
     //append the renderer to the website
     
-    
 
-     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.y = -450;
-      camera.position.z = 400;
-      camera.rotation.x = 45 * (Math.PI / 180);
- 
+//Perspective Camera w/ Controls
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera.position.set( 0, 0, 500 );
+
+  controls = new THREE.TrackballControls( camera, renderer.domElement );
+  controls.minDistance = 200;
+  controls.maxDistance = 500;
+
+    scene.add( new THREE.AmbientLight( 0x222222 ) );
+
+   var light = new THREE.PointLight( 0xffffff );
+   light.position.copy( camera.position );
+    scene.add( light );
+
     
     
-    scene = new THREE.Scene();
+   
     
     
     geometry = new THREE.SphereGeometry( 50, 10, 10 );
@@ -148,7 +161,7 @@ function animate(){
     sphere.rotation.y += angleChange;
     lastTime = time;
     */
- 
+ controls.update();
    
 
 		if ( moveForward ) sphere.position.y ++;
