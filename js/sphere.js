@@ -8,6 +8,7 @@ var controls;
 var mesh, geometry;
 var spheres;
 
+var backgroundScene,backgroundCamera;
 
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
@@ -25,10 +26,12 @@ animate();
 function init() {
     
     container = document.createElement( 'div' );
+    container.setAttribute("id", "odie");
     document.body.appendChild( container );
     //create a container as a space for the animation
    //container.style.backgroundColor = "lightblue";
     renderer = new THREE.WebGLRenderer();
+     //renderer.setClearColor( 0xffffff, 1);
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     //renderer.autoClear = false
@@ -75,10 +78,26 @@ var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshNorm
 scene.add(plane);
 
 
-  
-   
-    renderer.render(scene, camera);
+  // Load the background texture
+//THREE.ImageUtils.crossOrigin = '';
+        var texture = THREE.ImageUtils.loadTexture( 'image/starry-sky.jpg' );
+        var backgroundMesh = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 2, 0),
+            new THREE.MeshBasicMaterial({
+                map: texture
+            }));
 
+        backgroundMesh .material.depthTest = false;
+        backgroundMesh .material.depthWrite = false;
+
+        // Create your background scene
+        backgroundScene = new THREE.Scene();
+        backgroundCamera = new THREE.Camera();
+        backgroundScene .add(backgroundCamera );
+        backgroundScene .add(backgroundMesh );
+   
+//render.render(backgroundScene,backgroundCamera);
+  //  renderer.render(scene, camera);
 
 
 		var onKeyDown = function ( event ) {
@@ -172,7 +191,9 @@ function animate(){
     console.log("I'm moving");
     // request new frame
 
-
+renderer.autoClear = false;
+            renderer.clear();
+            renderer.render(backgroundScene , backgroundCamera );
  renderer.render(scene, camera);
 
     requestAnimationFrame(function(){
