@@ -40,14 +40,32 @@
                 </head>
     
     <body>
-        <div id="info"><a>"你好，这是一个3D的球"</a></div>
-       
-    <script src="js/three.min.js"></script>
-        <script src="js/TrackballControls.js"> </script>
+        <!-- <div id="info"><a>"你好，这是一个3D的球"</a></div> -->
         
+        <form action = "process.php" name = "myForm">
+            <style>
+                body{
 
-        
-        <script src = "js/sphere.js"> </script>
+                    /*how to make the background transparent ???*/
+                    /*or limit the dimension of the form*/
+                    background-color: transparent;
+
+                }
+
+            </style>
+            
+            <input type = "radio" name = "keyboard_layout" value = "US" checked = "checked" /> US
+            <br />
+            <input type = "radio" name = "keyboard_layout" value="Dvorak" /> Dvorak
+
+
+        </form>
+
+       
+        <script src="js/three.min.js"></script>
+        <script src="js/TrackballControls.js"></script>
+        <script src="js/LineColorTable.js"></script>
+        <script src = "js/sphere.js"></script>
             
             
     </body>
