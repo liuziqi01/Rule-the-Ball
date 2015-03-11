@@ -21,6 +21,9 @@ var moveLeft = false;
 var moveRight = false;
 var canJump = true;
 
+
+var keyboardState;
+
 init();
 animate();
 
@@ -102,6 +105,9 @@ function init() {
 
 
     /* choose the keyboard layout ..... =_= */
+    var keyboardLayout = document.getElementById("keyboard_layout_us");
+	keyboardState = keyboardLayout.checked;
+	alert(keyboardState);
 
     
     
@@ -131,6 +137,8 @@ function init() {
 
 	var onKeyDown = function ( event ) {
 
+		if(keyboardState == true){
+
 				switch ( event.keyCode ) {
 
 					case 38: // up
@@ -140,7 +148,8 @@ function init() {
 
 					case 37: // left
 					case 65: // a
-						moveLeft = true; break;
+						moveLeft = true; 
+						break;
 
 					case 40: // down
 					case 83: // s
@@ -156,14 +165,47 @@ function init() {
 						if ( canJump == true ) 
 							{sphere.position.z += 20;}
 						canJump = false;
-						break;
-						
-
+						break;	
 				}
+		}
+		else{
+				switch ( event.keyCode ) {
+
+					case 38: // up
+					case 188: // ,
+						moveForward = true;
+						break;
+
+					case 37: // left
+					case 65: // a
+						moveLeft = true; 
+						break;
+
+					case 40: // down
+					case 79: // o
+						moveBackward = true;
+						break;
+
+					case 39: // right
+					case 69: // e
+						moveRight = true;
+						break;
+				    
+					case 32: // space
+						if ( canJump == true ) 
+							{sphere.position.z += 20;}
+						canJump = false;
+						break;	
+				}
+
+		}
     
 };
 
 	var onKeyUp = function ( event ) {
+
+		// us
+		if (keyboardState == true){
 
 					switch( event.keyCode ) {
 
@@ -194,14 +236,47 @@ function init() {
 							break;
 					       
 					}
+		}
 
-				};
+		//dvorak
+		else{
+					switch( event.keyCode ) {
+
+						case 38: // up
+						case 188: // ,
+							moveForward = false;
+							break;
+
+						case 37: // left
+						case 65: // a
+							moveLeft = false;
+							break;
+
+						case 40: // down
+						case 79: // o
+							moveBackward = false;
+							break;
+
+						case 39: // right
+						case 69: // e
+							moveRight = false;
+							break;
+
+					case 32: // space
+						
+					    sphere.position.z -= 19;
+						canJump = true;
+							break;
+					       
+					}
+
+		}
+
+	};
 
 				document.addEventListener( 'keydown', onKeyDown, false );
 				document.addEventListener( 'keyup', onKeyUp, false );
 
-				var val = getRadioVal( document.getElementById('myForm'), 'keyboard_layout' );
-				alert(val);
 }
 
 function animate(){
@@ -229,30 +304,15 @@ function animate(){
  	
  	renderer.render(scene, camera);
 
+ 	keyboardLayout = document.getElementById("keyboard_layout_us");
+	if (keyboardLayout.checked != keyboardState) {
+		alert("keyboard layout has been changed"); 
+		keyboardState = keyboardLayout.checked;
+	}
+
     requestAnimationFrame(function(){
                           animate();
                           });
       
 }
 
-
-
-
-   	/*******************************************/
-	/************** under tuning  **************/
-	/*******************************************/ 
-
-function getRadioVal(form, name) {
-    var val;
-    // get list of radio buttons with specified name
-    var radios = form.elements[name];
-    
-    // loop through list of radio buttons
-    for (var i=0, len=radios.length; i<len; i++) {
-        if ( radios[i].checked ) { 
-            val = radios[i].value; 
-            break; 
-        }
-    }
-    return val; 
-}

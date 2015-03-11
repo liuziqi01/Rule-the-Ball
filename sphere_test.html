@@ -41,8 +41,8 @@
     
     <body>
         <!-- <div id="info"><a>"你好，这是一个3D的球"</a></div> -->
-        
-        <form action = "process.php" name = "myForm">
+
+        <form action = "process.php">
             <style>
                 body{
 
@@ -54,12 +54,14 @@
 
             </style>
             
-            <input type = "radio" name = "keyboard_layout" value = "US" checked = "checked" /> US
+            <input type = "radio" name = "keyboard_layout" id = "keyboard_layout_us" value = "US" checked = "checked" /> US
             <br />
-            <input type = "radio" name = "keyboard_layout" value="Dvorak" /> Dvorak
+            <input type = "radio" name = "keyboard_layout"  value="Dvorak" /> Dvorak
 
 
         </form>
+
+
 
        
         <script src="js/three.min.js"></script>
