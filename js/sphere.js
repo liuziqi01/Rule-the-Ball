@@ -190,6 +190,7 @@ function init() {
 
 	/* on screen text */
     var info = document.createElement('div');
+    info.setAttribute("id", "info");
     info.style.position = 'absolute';
     info.style.top  = '10px';
     info.style.width = '100%';
@@ -222,8 +223,6 @@ function init() {
 
     backgroundMesh .material.depthTest = false;
     backgroundMesh .material.depthWrite = false;
-
-    // Create your background scene
     backgroundScene = new THREE.Scene();
     backgroundCamera = new THREE.Camera();
     backgroundScene .add(backgroundCamera );
@@ -260,20 +259,31 @@ function init() {
 
     /* sphere */
     geometry = new THREE.SphereGeometry( 50, 10, 10 );		// radius, widthSegments, heightSegments
-    sphere = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( {color:Yellow} ) ); // Basic | Depth | Face | Lambert | Normal | Phong 
+    sphere = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('http://www.html5canvastutorials.com/demos/assets/crate.jpg')} ) ); // Basic | Depth | Face | Lambert | Normal | Phong 
   	sphere.rotation.x = Math.PI * 0.1;
   	// what's this???
     //sphere.overdraw = true;
-	sphere.position.x = 5;
-	sphere.position.y = 5;
-	sphere.position.z = 30;
+	sphere.position.x = 0;
+	sphere.position.y = 0;
+	sphere.position.z = 55;
  	scene.add( sphere );
 
  	/* plane */
-	var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshNormalMaterial());
+	//var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshLambertMaterial({color:Yellow}));
 	//plane.overdraw = true;
-	scene.add(plane);
+	//scene.add(plane);
 
+
+    /* cube */
+    var material = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('http://www.html5canvastutorials.com/demos/assets/crate.jpg')});
+    var cube = new THREE.Mesh(new THREE.CubeGeometry(300, 300, 20), material);
+    //cube.overdraw = true;
+    //cube.rotation.x = Math.PI * 0.1;
+    cube.position.x = 0;
+    cube.position.y = 0;
+    cube.position.z = 0;
+    scene.add(cube);
+ 
 
 	/* keyboard control listener setup */
 	document.addEventListener( 'keydown', onKeyDown, false );
