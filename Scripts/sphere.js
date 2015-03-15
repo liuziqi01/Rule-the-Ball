@@ -1,21 +1,14 @@
 var fps = 30; // max = 60 as limited by the requestAnimationFrame()
 
-
+/* environment */
 var container;
-
 var camera, scene, renderer;
-
 var trackBallControl;
-
-
 var mesh, geometry;
 var spheres;
-
 var backgroundScene,backgroundCamera;
-
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
-
 var angularSpeed = 0.2;
 var lastTime = 0;
 var moveForward = false;
@@ -214,7 +207,7 @@ function init() {
 
     /* background setup */
 	//THREE.ImageUtils.crossOrigin = '';
-    var texture = THREE.ImageUtils.loadTexture( 'image/starry-sky.jpg' );
+    var texture = THREE.ImageUtils.loadTexture( 'Images/starry-sky.jpg' );
     var backgroundMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(2, 2, 0),
         new THREE.MeshBasicMaterial({
@@ -241,10 +234,12 @@ function init() {
 
 
  	/* Lights setup */
-    scene.add( new THREE.AmbientLight( FireBrick ) );
-    var light = new THREE.PointLight( White );
-    light.position.copy( camera.position );
-    scene.add( light );
+    scene.add( new THREE.AmbientLight( White ) );
+
+    // the point light following the camera
+    // var light = new THREE.PointLight( White );
+    // light.position.copy( camera.position );
+    // scene.add( light );
 
 
     /* keyboard layout setup */
@@ -258,10 +253,8 @@ function init() {
     
 
     /* sphere */
-    geometry = new THREE.SphereGeometry( 50, 10, 10 );		// radius, widthSegments, heightSegments
-    sphere = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('http://www.html5canvastutorials.com/demos/assets/crate.jpg')} ) ); // Basic | Depth | Face | Lambert | Normal | Phong 
-  	sphere.rotation.x = Math.PI * 0.1;
-  	// what's this???
+    geometry = new THREE.SphereGeometry( 50, 100, 100 );		// radius, widthSegments, heightSegments
+    sphere = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg')} ) ); // Basic | Depth | Face | Lambert | Normal | Phong 
     //sphere.overdraw = true;
 	sphere.position.x = 0;
 	sphere.position.y = 0;
@@ -275,8 +268,8 @@ function init() {
 
 
     /* cube */
-    var material = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('http://www.html5canvastutorials.com/demos/assets/crate.jpg')});
-    var cube = new THREE.Mesh(new THREE.CubeGeometry(300, 300, 20), material);
+    var material = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('Images/Floor.jpg')});
+    var cube = new THREE.Mesh(new THREE.CubeGeometry(600, 600, 5), material);
     //cube.overdraw = true;
     //cube.rotation.x = Math.PI * 0.1;
     cube.position.x = 0;
@@ -317,6 +310,12 @@ function animate(){
 		if (keyboardLayout.checked != keyboardState) {
 			keyboardState = keyboardLayout.checked;
 		}
+
+
+
+        /* drawings */
+        //sphere.rotation.x = sphere.rotation.x + 1/3;
+        //sphere.rotation.y = sphere.rotation.y + 1/3;
 
     	
 
