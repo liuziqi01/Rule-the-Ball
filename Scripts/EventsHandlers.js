@@ -34,21 +34,31 @@ function onKeyDown() {
                 switch ( event.keyCode ) {
 
                         case 38: // up
+                            camera.position.z += 20;
+                            break;
                         case 188: // ,
                                 moveForward = true;
                                 break;
 
                         case 37: // left
+                            camera.position.x -= 20;
+                            camera.position.y += 10;
+                            break;
                         case 65: // a
                                 moveLeft = true; 
                                 break;
 
                         case 40: // down
+                            camera.position.z -= 20;
+                            break;
                         case 79: // o
                                 moveBackward = true;
                                 break;
 
                         case 39: // right
+                            camera.position.x += 20;
+                            camera.position.y -= 10;
+                            break;
                         case 69: // e
                                 moveRight = true;
                                 break;
@@ -103,21 +113,25 @@ function onKeyUp () {
                 switch( event.keyCode ) {
 
                         case 38: // up
+                            break;
                         case 188: // ,
                                 moveForward = false;
                                 break;
 
                         case 37: // left
+                            break;
                         case 65: // a
                                 moveLeft = false;
                                 break;
 
                         case 40: // down
+                            break;
                         case 79: // o
                                 moveBackward = false;
                                 break;
 
                         case 39: // right
+                            break;
                         case 69: // e
                                 moveRight = false;
                                 break;

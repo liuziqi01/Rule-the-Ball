@@ -43,36 +43,46 @@
     
     <body>
        
-  <div>
-        <form action = "process.php" >
+    <div>
+        <form>
             <style>
                 body{
-
+            
                     /*how to make the background transparent ???*/
                     /*or limit the dimension of the form*/
                     width : 90px;
                     background-color: transparent;
-
+            
                 }
-
+            
             </style>
             
-            <input type = "radio" name = "keyboard_layout" id = "keyboard_layout_us" value = "US" onchange = "keyboard_selection()" /> US
+            <input type = "radio" name = "keyboard_layout" id = "keyboard_layout_us" value = "US" checked = "checked" onchange = "keyboard_selection()" /> US
             <br />
-            <input type = "radio" name = "keyboard_layout"  value="Dvorak" checked = "checked" onchange = "keyboard_selection()"/> Dvorak
-
-
+            <input type = "radio" name = "keyboard_layout"  value="Dvorak"  onchange = "keyboard_selection()"/> Dvorak
+        
+        
         </form>
 
-</div>
+    </div>
 
-       
+    <div id="viewport"></div>
+
         <script src="Scripts/three.min.js"></script>
+        <script src="Scripts/physi.js"></script>
+        <script src="Scripts/ammo.js"></script>
+        <script src="Scripts/physijs_worker.js"></script>
+        <script src="Scripts/stats.js"></script>
         <script src="Scripts/TrackballControls.js"></script>
         <script src="Scripts/LineColorTable.js"></script>
         <script src = "Scripts/EventsHandlers.js"></script>
+
         <script src = "Scripts/sphere.js"></script>
-            
-            
+        
+        <script type="text/javascript">
+            window.onload = init;
+        </script>
+
+
     </body>
 </html>
