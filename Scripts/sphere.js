@@ -40,7 +40,8 @@ var moveRight = false;
 var canJump = true;
 
 
-var keyboardState;
+var keyboardState;// this is for the keyboard layout
+var keyboard = new KeyboardState(); // the keyboard polling
 
 
 function init() {
@@ -279,8 +280,8 @@ function init() {
  
 
 	/* keyboard control listener setup */
-	document.addEventListener('keydown', onKeyDown);          //(event, function, useCapture)
-	document.addEventListener('keyup', onKeyUp);
+	// document.addEventListener('keydown', onKeyDown);          //(event, function, useCapture)
+	// document.addEventListener('keyup', onKeyUp);
 
     /* timer */
     last_time = timer.getTime();
@@ -355,6 +356,7 @@ function animate(){
         renderer.render(backgroundScene , backgroundCamera );
         renderer.render(scene, camera);
         render_stats.update();
+        keyboard.update();
     
     //}, 1000 / fps);    
 }
