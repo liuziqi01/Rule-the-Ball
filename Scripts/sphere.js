@@ -2,8 +2,8 @@ var fps = 60; // max = 60 as limited by the requestAnimationFrame()
 
 'use strict';
 
-Physijs.scripts.worker = './physijs_worker.js';
-Physijs.scripts.ammo = './ammo.js';
+Physijs.scripts.worker = '/Script/physijs_worker.js';
+Physijs.scripts.ammo = '/Script/ammo.js';
 
 
 /* timing */
