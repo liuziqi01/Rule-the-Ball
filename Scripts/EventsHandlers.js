@@ -4,11 +4,18 @@ function onKeyDown() {
                 switch ( event.keyCode ) {
 
                         case 38: // up
+console.log("HELLO");
                         case 87: // w
                                 moveForward = true;
                                 break;
 
                         case 37: // left
+var timer = Date.now() * 0.01;
+
+    camera.position.x = Math.cos( timer ) * 200;
+    camera.position.z = Math.sin( timer ) * 200;
+    camera.lookAt( scene.position );
+break;
                         case 65: // a
                                 moveLeft = true; 
                                 break;

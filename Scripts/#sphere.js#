@@ -241,6 +241,7 @@ new THREE.MeshLambertMaterial({
    ground.position.x=0;
 ground.position.y=0;
 ground.position.z=0;
+
     ground.receiveShadow = true;
     scene.add( ground );
 
