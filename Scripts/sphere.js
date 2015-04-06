@@ -198,7 +198,7 @@ keyboardState = "keyboard_layout_us" ;
        new THREE.MeshLambertMaterial({
            map: THREE.ImageUtils.loadTexture('Images/basketball_court_floor.jpg') // -x
        }),
-new THREE.MeshLambertMaterial({
+	   new THREE.MeshLambertMaterial({
            map: THREE.ImageUtils.loadTexture('Images/basketballcourt.png') // +y
        }),
        new THREE.MeshLambertMaterial({
