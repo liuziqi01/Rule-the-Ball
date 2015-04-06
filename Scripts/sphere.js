@@ -26,6 +26,9 @@ var sphere;
 var backgroundScene,backgroundCamera;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
+var raycaster;
+var mouse;
+var objects = [];
 
 
 /* objects state value */
@@ -183,10 +186,6 @@ keyboardState = "keyboard_layout_us" ;
     sphere.__dirtyPosition = true;
     sphere.__dirtyRotation = true;
 
- 	/* plane */
-	//var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshLambertMaterial({color:Yellow}));
-	//plane.overdraw = true;
-	//scene.add(plane);
 
 
     /* cube */
@@ -216,9 +215,7 @@ new THREE.MeshLambertMaterial({
 
     ];
 
-    // var material = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('Images/basketball_court.png')});
-  
-    // scene.add(cube);
+    
 
     // physics ground
     var ground_material = Physijs.createMaterial(
@@ -227,9 +224,6 @@ new THREE.MeshLambertMaterial({
         .8, // high friction
         .4 // low restitution
     );
-   // ground_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
-    // what did the following do...
-    //ground_material.map.repeat.set( 3, 3 );
     
     
     // Ground
@@ -251,14 +245,14 @@ ground.position.z=0;
         .4, // low friction
         .6 // high restitution
     );
-
+for(var i = 0; i<3 ; i++){
     var box = new Physijs.BoxMesh(
         new THREE.BoxGeometry( 20, 20, 20 ),
         box_material,
         10 // mass
     );
     box.position.set(
-        30,
+        30*i,
         30,
         90
     );
@@ -269,8 +263,17 @@ ground.position.z=0;
     );
     box.castShadow = true;
     scene.add( box );
-    //box.push( box );
+objects.push(box);
+}
+objects.push(sphere);
+
+
  
+
+
+    raycaster = new THREE.Raycaster();
+   //raycaster.params.PointCloud.threshold = threshold;
+   mouse = new THREE.Vector2();
 
 
     /* timer */
@@ -339,6 +342,17 @@ function animate(){
         sphere.__dirtyRotation = true;
         scene.simulate();
         draw_sphere();
+
+
+
+
+    //select the mouse clicked object
+    raycaster.setFromCamera( mouse, camera );
+    var intersections = raycaster.intersectObjects( objects);
+   var intersection = ( intersections.length ) > 0 ? intersections[ 0 ].object : null;
+if(intersection) intersection.position.set(intersection.position.x, intersection.position.y + 20,intersection.position.z);
+
+
 
 		/* refresh frame */
         renderer.autoClear = false;
