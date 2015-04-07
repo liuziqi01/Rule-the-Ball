@@ -85,10 +85,6 @@ function init() {
     container.appendChild( renderer.domElement );
 
 
-    /* scene setup */
-    // scene = new THREE.Scene();
-
-
     /* rendering information */
     render_stats = new Stats();
     render_stats.domElement.style.position = 'absolute';
@@ -131,7 +127,7 @@ function init() {
 
     /* camera setup */
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000 );
-    camera.position.set( 0, 300, 300 );
+    camera.position.set( 0, 300,300 );
     camera.lookAt(new THREE.Vector3(0,0,0));
 
 /*
@@ -163,7 +159,7 @@ keyboardState = "keyboard_layout_us" ;
     var sphere_material = Physijs.createMaterial(
         new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/basketball.jpg' ) }),
         .4, // low friction
-        .6 // high restitution
+        .3 // high restitution
     );
 
     sphere = new Physijs.SphereMesh(
@@ -190,6 +186,8 @@ keyboardState = "keyboard_layout_us" ;
 
     /* cube */
 
+
+/*
     var cube_materials = [
        new THREE.MeshLambertMaterial({
            map: THREE.ImageUtils.loadTexture('Images/basketball_court_floor.jpg') // +x
@@ -217,19 +215,35 @@ keyboardState = "keyboard_layout_us" ;
 
     
 
-    // physics ground
-    var ground_material = Physijs.createMaterial(
-        //new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/basketball_court_floor.jpg' ) }),
-        new THREE.MeshFaceMaterial(cube_materials),
-        .8, // high friction
-        .4 // low restitution
-    );
-    
-    
+    */
+  
+// grid
+
+    var size = 150, step = 30;
+
+    var grid = new THREE.Geometry();
+
+    for ( var i = - size; i <= size; i += step ) {
+
+	grid.vertices.push( new THREE.Vector3( - size, 0, i ) );
+	grid.vertices.push( new THREE.Vector3(   size, 0, i ) );
+	grid.vertices.push( new THREE.Vector3( i, 0, - size ) );
+	grid.vertices.push( new THREE.Vector3( i, 0,   size ) );
+		
+}
+
+	var material = new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.5, transparent: true} );
+   //  grid.position.x = 0;
+   // grid.position.y=0;
+	var line = new THREE.Line( grid, material, THREE.LinePieces );
+	scene.add( line );
+
+
+  
     // Ground
     ground = new Physijs.BoxMesh(
-        new THREE.BoxGeometry(94 * 7, 5 , 50*7),
-        ground_material,
+        new THREE.BoxGeometry(300, 3 , 300),
+        Physijs.createMaterial(new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 0.7,transparent: true}), 0, 1),
         0 // mass
     );
    ground.position.x=0;
@@ -237,6 +251,15 @@ ground.position.y=0;
 ground.position.z=0;
     ground.receiveShadow = true;
     scene.add( ground );
+
+/*
+     ground = new Physijs.PlaneMesh(
+        new THREE.PlaneGeometry(500, 500),
+        Physijs.createMaterial(new THREE.MeshBasicMaterial({color: 0x00ffff, side: THREE.DoubleSide}), 0, 1)
+    );
+*/
+scene.add(ground);
+
 
 
     // boxes 
@@ -247,14 +270,14 @@ ground.position.z=0;
     );
 for(var i = 0; i<3 ; i++){
     var box = new Physijs.BoxMesh(
-        new THREE.BoxGeometry( 20, 20, 20 ),
+        new THREE.BoxGeometry( 30, 30, 30 ),
         box_material,
         10 // mass
     );
     box.position.set(
-        30*i,
-        30,
-        90
+        60*i+15,
+        40,
+        75
     );
     box.rotation.set(
         0,
@@ -285,7 +308,7 @@ objects.push(sphere);
     requestAnimationFrame(animate);
     
 }
-
+/*
 function draw_sphere(){
 
     if(moveForward){
@@ -322,6 +345,7 @@ function draw_sphere(){
 
 }
 
+*/
 function animate(){
 	/* looping */
     //setTimeout(function() {
@@ -336,16 +360,16 @@ function animate(){
     	/* User Control */
  //		trackBallControl.update();
 
-
-        /* drawings */
+/*
+      
         sphere.__dirtyPosition = true;
         sphere.__dirtyRotation = true;
-        scene.simulate();
+       
         draw_sphere();
 
+*/
 
-
-
+ scene.simulate();
     //select the mouse clicked object
     raycaster.setFromCamera( mouse, camera );
     var intersections = raycaster.intersectObjects( objects);
