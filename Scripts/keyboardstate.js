@@ -61,7 +61,6 @@ KeyboardState.onKeyUp = function(event)
 		KeyboardState.status[key].pressed = false;
 }
 
-
 KeyboardState.onKeyDown = function(event)
 {
 	var key = KeyboardState.keyName(event.keyCode);
@@ -85,14 +84,13 @@ KeyboardState.onKeyDown = function(event)
 	}
 	
 	if(key == "up") {
- 		CAMERA.position.z = z + 10;
- 		CAMERA_FOCUS.z = CAMERA_FOCUS.z + 10;
+ 		//CAMERA.position.x = x * 0.9;
+	        CAMERA.position.set(x*0.9,y*0.9,z*0.9)
  		CAMERA.lookAt( CAMERA_FOCUS );
 	}
 	
 	if(key == "down") {
-        CAMERA.position.z = z - 10;
-        CAMERA_FOCUS.z = CAMERA_FOCUS.z - 10;
+        CAMERA.position.set(x*1.1,y*1.1,z*1.1)
  		CAMERA.lookAt( CAMERA_FOCUS );
 	}
 }

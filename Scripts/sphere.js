@@ -25,7 +25,7 @@ var physics_stats;
 /* environment */
 var CONTAINER;
 var CAMERA, SCENE, RENDERER;
-var TRACKBALL_CONTROL;
+//var TRACKBALL_CONTROL;
 var mesh, geometry;
 var sphere;
 var BACKGROUND_SCENE,BACKGROUND_CAMERA;
@@ -48,6 +48,7 @@ var moveBackward = false;
 var moveLeft = false;
 var moveRight = false;
 var canJump = true;
+var mouse_click = false;
 
 
 var keyboardState;// this is for the keyboard layout
@@ -72,21 +73,6 @@ function init() {
     CONTAINER = document.createElement( 'div' );
     CONTAINER.setAttribute("id", "odie");
     document.body.appendChild( CONTAINER );
-	
-
-	/* on screen text */
-    // var info = document.createElement('div');
-    // info.setAttribute("id", "info");
-    // info.style.position = 'absolute';
-    // info.style.top  = '10px';
-    // info.style.width = '100%';
-    // info.style.textAlign = 'center';
-    // info.style.fontStyle = "normal";		// normal|italic|oblique|initial|inherit
-    // info.style.fontSize = "medium"			//Sets the size of the font to different fixed sizes, from xx-small to medium to xx-large
-    // info.innerHTML = '你好，这是一个3D的球';
-    // CONTAINER.appendChild(info);
-    
-
   
    	/* RENDERER setup */
     RENDERER = new THREE.WebGLRenderer();
@@ -94,20 +80,6 @@ function init() {
     RENDERER.setSize( window.innerWidth, window.innerHeight );
     CONTAINER.appendChild( RENDERER.domElement );
 
-
-    /* rendering information */
-    // render_stats = new Stats();
-    // render_stats.domElement.style.position = 'absolute';
-    // render_stats.domElement.style.top = '1px';
-    // render_stats.domElement.style.zIndex = 100;
-    // document.getElementById( 'viewport' ).appendChild( render_stats.domElement );
-
-    // physics_stats = new Stats();
-    // physics_stats.domElement.style.position = 'absolute';
-    // physics_stats.domElement.style.top = '50px';
-    // physics_stats.domElement.style.zIndex = 100;
-    // document.getElementById( 'viewport' ).appendChild( physics_stats.domElement );
-    
     /* SCENE with gravity */
     SCENE = new Physijs.Scene;
     SCENE.setGravity(new THREE.Vector3( 0, - SPACE_SIZE / 2 * UNIT_STEP - 1, 0 ));
@@ -124,7 +96,7 @@ function init() {
     var backgroundMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(2, 2, 0),
         new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture( 'Images/Seaside.jpg')
+            map: THREE.ImageUtils.loadTexture( 'Images/blue.png'),opacity:0.8,transparent: false
         }));
 
     backgroundMesh.material.depthTest = false;
@@ -137,8 +109,9 @@ function init() {
 
     /* CAMERA setup */
     CAMERA = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000 );
-    CAMERA.position.set( 0, 200,600 );
-    CAMERA.lookAt(new THREE.Vector3(0,( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP,0));
+    CAMERA.position.set( 0, UNIT_STEP * SPACE_SIZE * 0.75,  UNIT_STEP * SPACE_SIZE * 1.2 );
+    //CAMERA.lookAt(new THREE.Vector3(0,( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP,0));
+ CAMERA.lookAt(new THREE.Vector3(0,0,0));
 
 /*
     /* Trackball Control setup 
@@ -150,10 +123,6 @@ function init() {
  	/* Lights setup */
     SCENE.add( new THREE.AmbientLight( White ) );
 
-    // the point light following the CAMERA
-    // var light = new THREE.PointLight( White );
-    // light.position.copy( CAMERA.position );
-    // SCENE.add( light );
 
 
     /* keyboard layout setup */
@@ -165,29 +134,11 @@ function init() {
 	/************** Objcets **************/
 
     /* sphere */
-    var sphere = GameSphere.createNew(100, 100, 100);
+    var sphere = GameSphere.createNew(0, 100, 0);
     SCENE.add(sphere);
     OBJECTS.push(sphere);
     sphere.__dirtyPosition = true;
     sphere.__dirtyRotation = true;
-
-
-    /* grid */
-    var grid = new THREE.Geometry();
-
-    for ( var i = 0; i <= SPACE_SIZE; ++i) {
-
-       grid.vertices.push( new THREE.Vector3(      - SPACE_SIZE / 2 * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP + 1,      (i - SPACE_SIZE / 2 ) * UNIT_STEP ) );
-       grid.vertices.push( new THREE.Vector3(        SPACE_SIZE / 2 * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP + 1,      (i - SPACE_SIZE / 2 ) * UNIT_STEP ) );
-       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE / 2 ) * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP + 1,      - SPACE_SIZE / 2 * UNIT_STEP      ) );
-       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE / 2 ) * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP + 1,        SPACE_SIZE / 2 * UNIT_STEP      ) );
-        
-    }
-
-	var material = new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.5, transparent: true} );
-	var line = new THREE.Line( grid, material, THREE.LinePieces );
-	SCENE.add( line );
-
 
   
     // Ground
@@ -201,6 +152,24 @@ function init() {
     ground.position.z=0;
     ground.receiveShadow = true;
     SCENE.add(ground);
+
+
+   /* grid */
+    var grid = new THREE.Geometry();
+
+    for ( var i = 0; i <= SPACE_SIZE; ++i) {
+
+       grid.vertices.push( new THREE.Vector3(      - SPACE_SIZE / 2 * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,      (i - SPACE_SIZE/2) * UNIT_STEP));
+       grid.vertices.push( new THREE.Vector3(        SPACE_SIZE / 2 * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,      (i - SPACE_SIZE/2 ) * UNIT_STEP ) );
+       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE /2  ) * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,      - SPACE_SIZE / 2 * UNIT_STEP      ) );
+       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE / 2 ) * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,        SPACE_SIZE / 2 * UNIT_STEP      ) );
+        
+    }
+
+	var material = new THREE.LineBasicMaterial( { color: 0x000000,transparent: false} );
+	var line = new THREE.Line( grid, material, THREE.LinePieces );
+	SCENE.add( line );
+
 
 
     var box = GameBox.createNew(20, 40, 90);
@@ -217,9 +186,17 @@ function init() {
     /* timer */
     last_time = timer.getTime();
 
+document.addEventListener( 'click', onDocumentMouseClick, false );
+      requestAnimationFrame(animate);
     
-    requestAnimationFrame(animate);
-    
+}
+
+function onDocumentMouseClick(event)
+{
+	event.preventDefault();
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+mouse_click = true;
 }
 
 // function draw_sphere(){
@@ -273,19 +250,51 @@ function animate(){
     	/* User Control */
  //		TRACKBALL_CONTROL.update();
 
-
+  SCENE.simulate();
       
-/*        sphere.__dirtyPosition = true;
-        sphere.__dirtyRotation = true;
-       
-        draw_sphere();*/
-
-        SCENE.simulate();
         //select the mouse clicked object
         raycaster.setFromCamera( mouse, CAMERA );
-        var intersections = raycaster.intersectObjects( OBJECTS);
-        var intersection = ( intersections.length ) > 0 ? intersections[ 0 ].object : null;
-        if(intersection) intersection.position.set(intersection.position.x, intersection.position.y + 20,intersection.position.z);
+
+
+    if(mouse_click)
+{
+ var intersections = raycaster.intersectObjects(OBJECTS.concat([ground]));
+   var intersection = ( intersections.length ) > 0 ? intersections[ 0 ].point : null;
+if(intersection) 
+{
+ var box_material = Physijs.createMaterial(
+            new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/crate.jpg') }),
+            1, // friction coefficient
+            .0 // e
+            // note the construction material should be solid and not bounce at all
+        );
+ var box = new Physijs.BoxMesh(
+        new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP, UNIT_STEP),
+        box_material,
+        10 // mass
+    );
+    box.position.set(
+        (parseInt(intersection.x/SPACE_SIZE/2)+0.5)*UNIT_STEP,
+        (parseInt(intersection.y/SPACE_SIZE/2)+1.3)*UNIT_STEP,
+        (parseInt(intersection.z/SPACE_SIZE/2)+0.5)*UNIT_STEP
+    );
+    box.castShadow = true;
+    SCENE.add( box );
+
+OBJECTS.push(box);
+
+mouse_click=false;
+}
+}
+/*
+else{
+    var intersections = raycaster.intersectObjects(OBJECTS);
+   var intersection = ( intersections.length ) > 0 ? intersections[ 0 ].object : null;
+if(intersection) intersection.position.set(intersection.position.x, intersection.position.y + 20,intersection.position.z);
+
+}
+*/
+
 
 
 		/* refresh frame */
