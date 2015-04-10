@@ -1,35 +1,48 @@
+var CAMERA_FOCUS = new THREE.Vector3(0,0,0);
+
 KeyboardState = function()
 {	
 	// bind keyEvents
 	document.addEventListener("keydown", KeyboardState.onKeyDown, false);
 	document.addEventListener("keyup",   KeyboardState.onKeyUp,   false);
-document.addEventListener("keyleft",   KeyboardState.onKeyLeft,   false);
-document.addEventListener("keyright",   KeyboardState.onKeyRight,   false);
-document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-console.log("adding event listeners");
+	document.addEventListener("keyleft",   KeyboardState.onKeyLeft,   false);
+	document.addEventListener("keyright",   KeyboardState.onKeyRight,   false);
+	document.addEventListener('mousemove', onDocumentMouseMove, false );
+	console.log("adding event listeners");
 
 }
 
 function onDocumentMouseMove( event ) {
 
-				event.preventDefault();
+	event.preventDefault();
 
-				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-			}
+}
 
 
 
 KeyboardState.k = 
 {  
-    8: "backspace",  9: "tab",       13: "enter",    16: "shift", 
-    17: "ctrl",     18: "alt",       27: "esc",      32: "space",
-    33: "pageup",   34: "pagedown",  35: "end",      36: "home",
-    37: "left",     38: "up",        39: "right",    40: "down",
-    45: "insert",   46: "delete",   186: ";",       187: "=",
-    188: ",",      189: "-",        190: ".",       191: "/",
-    219: "[",      220: "\\",       221: "]",       222: "'"
+     8: "backspace",  9: "tab",       13: "enter",    16: "shift", 
+    17: "ctrl",      18: "alt",       27: "esc",      32: "space",
+    33: "pageup",    34: "pagedown",  35: "end",      36: "home",
+    37: "left",      38: "up",        39: "right",    40: "down",
+    45: "insert",    46: "delete",   186: ";",       187: "=",
+   188: ",",        189: "-",        190: ".",       191: "/",
+   219: "[",        220: "\\",       221: "]",       222: "'",
+
+    48: "0",		 49: "1",		  50: "2",		  51: "3",	
+    52: "4",		 53: "5",		  54: "6",		  55: "7",	
+    56: "8",		 57: "9",		  65: "a",		  66: "b",	
+    67: "c",		 68: "d",		  69: "e",		  70: "f",	
+    71: "g",		 72: "h",		  73: "i",		  74: "j",	
+    75: "k",		 76: "l",		  77: "m",		  78: "n",	
+    79: "o",		 80: "p",		  81: "q",		  82: "r",	
+    83: "s",		 84: "t",		  85: "u",		  86: "v",	
+    87: "w",		 88: "x",		  89: "y",		  90: "z"    				
+    			
 }
 
 KeyboardState.status = {};
@@ -54,24 +67,34 @@ KeyboardState.onKeyDown = function(event)
 	var key = KeyboardState.keyName(event.keyCode);
 	if ( !KeyboardState.status[key] )
 		KeyboardState.status[key] = { down: false, pressed: false, up: false, updatedPreviously: false };
-rotSpeed = 0.05;
-var x = camera.position.x,
-        y = camera.position.y,
-        z = camera.position.z;
-if(event.keyCode == 37){
-
-
-   
-        camera.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
-        camera.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
-   
-   camera.lookAt( new THREE.Vector3(0,0,0) );
-}
-if(event.keyCode ==39) {
- camera.position.x = x * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
-        camera.position.z = z * Math.cos(rotSpeed) + x * Math.sin(rotSpeed);
- camera.lookAt( new THREE.Vector3(0,0,0) );
-}
+		rotSpeed = 0.05;
+	
+	var x = CAMERA.position.x,
+    	y = CAMERA.position.y,
+    	z = CAMERA.position.z;
+	
+	if(key == "left"){
+        CAMERA.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
+        CAMERA.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
+   		CAMERA.lookAt( CAMERA_FOCUS );
+	}
+	if(key == "right") {
+ 		CAMERA.position.x = x * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
+        CAMERA.position.z = z * Math.cos(rotSpeed) + x * Math.sin(rotSpeed);
+ 		CAMERA.lookAt( CAMERA_FOCUS );
+	}
+	
+	if(key == "up") {
+ 		CAMERA.position.z = z + 10;
+ 		CAMERA_FOCUS.z = CAMERA_FOCUS.z + 10;
+ 		CAMERA.lookAt( CAMERA_FOCUS );
+	}
+	
+	if(key == "down") {
+        CAMERA.position.z = z - 10;
+        CAMERA_FOCUS.z = CAMERA_FOCUS.z - 10;
+ 		CAMERA.lookAt( CAMERA_FOCUS );
+	}
 }
 
 KeyboardState.prototype.update = function()
