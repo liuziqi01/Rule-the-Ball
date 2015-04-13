@@ -1,7 +1,7 @@
 var FPS = 60; // max = 60 as limited by the requestAnimationFrame()
 
 /* coordinate conversion */
-var SPACE_SIZE = 12; // the game field is a $SPACE_SIZE by $SPACE_SIZE by $SPACE_SIZE cube. and make sure this is always an even number
+var SPACE_SIZE = 10; // the game field is a $SPACE_SIZE by $SPACE_SIZE by $SPACE_SIZE cube. and make sure this is always an even number
 // and note the range of the coordinate is [0, SPACE_SIZE - 1]
 
 var UNIT_STEP = 30; // the edge length of each unit box
@@ -17,6 +17,7 @@ var timer = new Date();
 var current_time = 0;
 var last_time = 0;
 var timeDiff = 0;
+var sphere_simulation;
 
 /* information */
 var render_stats;
@@ -34,7 +35,7 @@ var windowHalfY = window.innerHeight / 2;
 var raycaster;
 var mouse;
 var OBJECTS = [];
-
+var grids=[];
 
 /* OBJECTS state value */
 var BOX_DEFAULT_TEXTURE = 'Images/crate.jpg';
@@ -49,6 +50,7 @@ var moveLeft = false;
 var moveRight = false;
 var canJump = true;
 var mouse_click = false;
+var simulation = false;
 
 
 var keyboardState;// this is for the keyboard layout
@@ -134,13 +136,18 @@ function init() {
 	/************** Objcets **************/
 
     /* sphere */
+/*
     var sphere = GameSphere.createNew(0, 100, 0);
     SCENE.add(sphere);
     OBJECTS.push(sphere);
     sphere.__dirtyPosition = true;
     sphere.__dirtyRotation = true;
-
-  
+ */
+    sphere = new THREE.Mesh(new THREE.SphereGeometry(13,10,10), new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/basketball.jpg') }));
+    sphere.position.set(-1.5 * UNIT_STEP, 1.5 * UNIT_STEP, 2.5*UNIT_STEP);
+    SCENE.add(sphere);
+    
+     
     // Ground
     ground = new Physijs.BoxMesh(
         new THREE.BoxGeometry(SPACE_SIZE * UNIT_STEP, 3 , SPACE_SIZE * UNIT_STEP),
@@ -148,28 +155,40 @@ function init() {
         0 // mass
     );
     ground.position.x=0;
-    ground.position.y= ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
+    ground.position.y= ( 0 - SPACE_SIZE / 2 ) * UNIT_STEP;
     ground.position.z=0;
     ground.receiveShadow = true;
     SCENE.add(ground);
 
 
    /* grid */
-    var grid = new THREE.Geometry();
-
+   var grid = new THREE.Geometry();
+for(var height = ( 0 - SPACE_SIZE / 2 ) * UNIT_STEP ; height < ( 0 + SPACE_SIZE/2 ) * UNIT_STEP; height = height + UNIT_STEP){
     for ( var i = 0; i <= SPACE_SIZE; ++i) {
 
-       grid.vertices.push( new THREE.Vector3(      - SPACE_SIZE / 2 * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,      (i - SPACE_SIZE/2) * UNIT_STEP));
-       grid.vertices.push( new THREE.Vector3(        SPACE_SIZE / 2 * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,      (i - SPACE_SIZE/2 ) * UNIT_STEP ) );
-       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE /2  ) * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,      - SPACE_SIZE / 2 * UNIT_STEP      ) );
-       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE / 2 ) * UNIT_STEP,      ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP ,        SPACE_SIZE / 2 * UNIT_STEP      ) );
+       grid.vertices.push( new THREE.Vector3(      - SPACE_SIZE / 2 * UNIT_STEP,     height,      (i - SPACE_SIZE/2) * UNIT_STEP));
+       grid.vertices.push( new THREE.Vector3(        SPACE_SIZE / 2 * UNIT_STEP,     height ,      (i - SPACE_SIZE/2 ) * UNIT_STEP ) );
+       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE /2  ) * UNIT_STEP,     height ,      - SPACE_SIZE / 2 * UNIT_STEP      ) );
+       grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE / 2 ) * UNIT_STEP,     height,        SPACE_SIZE / 2 * UNIT_STEP      ) );
         
     }
-
+    if(height == ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP)
 	var material = new THREE.LineBasicMaterial( { color: 0x000000,transparent: false} );
+    else 
+	var material = new THREE.LineBasicMaterial( { color: 0xf8f8f8 ,transparent: true} );
 	var line = new THREE.Line( grid, material, THREE.LinePieces );
 	SCENE.add( line );
 
+
+    var frame = new THREE.Mesh( new THREE.BoxGeometry(UNIT_STEP*SPACE_SIZE ,1, UNIT_STEP * SPACE_SIZE),new THREE.MeshBasicMaterial() );
+    frame.visible = false;
+    frame.position.x = 0;
+    frame.position.z = 0;
+    frame.position.y = (height / UNIT_STEP) * UNIT_STEP;
+    SCENE.add(frame);
+    grids.push(frame);
+}
+    
 
 
     var box = GameBox.createNew(20, 40, 90);
@@ -258,7 +277,7 @@ function animate(){
 
     if(mouse_click)
 {
- var intersections = raycaster.intersectObjects(OBJECTS.concat([ground]));
+ var intersections = raycaster.intersectObjects(grids);
    var intersection = ( intersections.length ) > 0 ? intersections[ 0 ].point : null;
 if(intersection) 
 {
@@ -271,12 +290,12 @@ if(intersection)
  var box = new Physijs.BoxMesh(
         new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP, UNIT_STEP),
         box_material,
-        10 // mass
+        0 // mass
     );
     box.position.set(
-        (parseInt(intersection.x/SPACE_SIZE/2)+0.5)*UNIT_STEP,
-        (parseInt(intersection.y/SPACE_SIZE/2)+1.3)*UNIT_STEP,
-        (parseInt(intersection.z/SPACE_SIZE/2)+0.5)*UNIT_STEP
+        (Math.round(intersection.x/UNIT_STEP) -0.5) *UNIT_STEP,
+        (Math.round(intersection.y/UNIT_STEP)+0.5)*UNIT_STEP,
+        (Math.round(intersection.z/UNIT_STEP)-0.5)*UNIT_STEP
     );
     box.castShadow = true;
     SCENE.add( box );
@@ -286,17 +305,13 @@ OBJECTS.push(box);
 mouse_click=false;
 }
 }
-/*
-else{
-    var intersections = raycaster.intersectObjects(OBJECTS);
-   var intersection = ( intersections.length ) > 0 ? intersections[ 0 ].object : null;
-if(intersection) intersection.position.set(intersection.position.x, intersection.position.y + 20,intersection.position.z);
 
+if(simulation){
+console.log("simulation");
+sphere._dirtyPosition = true;
+CAMERA.position.set(sphere_simulation.position.x -50, sphere_simulation.position.y + 50,sphere_simulation.position.z);
+CAMERA.lookAt(sphere_simulation.position);
 }
-*/
-
-
-
 		/* refresh frame */
         RENDERER.autoClear = false;
         RENDERER.clear();

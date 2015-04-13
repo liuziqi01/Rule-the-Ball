@@ -1,5 +1,5 @@
 var CAMERA_FOCUS = new THREE.Vector3(0,0,0);
-
+var ole_camera;
 KeyboardState = function()
 {	
 	// bind keyEvents
@@ -83,16 +83,69 @@ KeyboardState.onKeyDown = function(event)
  		CAMERA.lookAt( CAMERA_FOCUS );
 	}
 	
-	if(key == "up") {
+	if(key == "9") {
  		//CAMERA.position.x = x * 0.9;
-	        CAMERA.position.set(x*0.9,y*0.9,z*0.9)
+	        CAMERA.position.set(x*0.9,y*0.9,z*0.9);
  		CAMERA.lookAt( CAMERA_FOCUS );
 	}
 	
-	if(key == "down") {
-        CAMERA.position.set(x*1.1,y*1.1,z*1.1)
+	if(key == "0") {
+        CAMERA.position.set(x*1.1,y*1.1,z*1.1);
  		CAMERA.lookAt( CAMERA_FOCUS );
 	}
+        if(key == "up") {
+        CAMERA.position.set (x, y+ 10,z);
+ 		CAMERA.lookAt( CAMERA_FOCUS );
+	}
+    	if(key == "down") {
+        CAMERA.position.set(x ,y - 10,z);
+ 		CAMERA.lookAt( CAMERA_FOCUS );
+	}
+
+    
+        if(key == "r" && !simulation)
+        {
+	   
+	    simulation = true;
+	    ole_camera = CAMERA.position;
+	   var temp = sphere.position;
+    console.log(temp);
+	     SCENE.remove(sphere);
+
+       sphere_simulation = new Physijs.SphereMesh(
+            new THREE.SphereGeometry( 13, 100, 100 ),
+            new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/basketball.jpg') }),
+            10 // mass
+        );
+	
+        sphere_simulation.position.set(sphere.position.x,sphere.position.y+5,sphere.position.z);
+	SCENE.add(sphere_simulation);
+    CAMERA.position.set(sphere_simulation.position.x-50, sphere_simulation.position.y + 50,sphere_simulation.position.z);
+    
+    CAMERA.lookAt(sphere_simulation.position);
+
+//SCENE.simulate();
+
+	}
+	      if(key == "d" && simulation)
+    {
+	sphere_simulation.setLinearVelocity(new THREE.Vector3(100,0,0));
+    }
+        if(key == "q" && simulation)
+    {
+	simulation = false;
+	sphere_simulation.setLinearVelocity(new THREE.Vector3(0,0,0));
+	SCENE.remove(sphere_simulation);
+	SCENE.add(sphere);
+/*
+	CAMERA.position.set(ole_camera.posi.x,ole_camera.y,ole_camera.z);
+	CAMERA.lookAt(CAMERA_FOCUS);
+*/
+	CAMERA.position.set (ole_camera.x,ole_camera.y,ole_camera.z);
+	CAMERA.lookAt(CAMERA_FOCUS);
+    }
+
+       
 }
 
 KeyboardState.prototype.update = function()
