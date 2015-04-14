@@ -123,14 +123,11 @@ KeyboardState.onKeyDown = function(event)
     CAMERA.position.set(sphere_simulation.position.x-50, sphere_simulation.position.y + 50,sphere_simulation.position.z);
     
     CAMERA.lookAt(sphere_simulation.position);
-
+sphere_simulation.setLinearVelocity(new THREE.Vector3(100,0,0));
 //SCENE.simulate();
 
 	}
-	      if(key == "d" && simulation)
-    {
-	sphere_simulation.setLinearVelocity(new THREE.Vector3(100,0,0));
-    }
+	    
         if(key == "q" && simulation)
     {
 	simulation = false;
