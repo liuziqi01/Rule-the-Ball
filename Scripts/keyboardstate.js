@@ -7,7 +7,9 @@ KeyboardState = function()
 	document.addEventListener("keyup",   KeyboardState.onKeyUp,   false);
 	document.addEventListener("keyleft",   KeyboardState.onKeyLeft,   false);
 	document.addEventListener("keyright",   KeyboardState.onKeyRight,   false);
-	document.addEventListener('mousemove', onDocumentMouseMove, false );
+
+	document.getElementById("game").addEventListener('mousemove', onDocumentMouseMove, false );
+        document.getElementById("game").addEventListener( 'click', onDocumentMouseClick, false );
 	console.log("adding event listeners");
 
 }
@@ -16,13 +18,21 @@ function onDocumentMouseMove( event ) {
 
 	event.preventDefault();
 
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.x = ( event.clientX / window.innerWidth*0.9 ) * 2 - 1;
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+
 
 }
 
 
-
+function onDocumentMouseClick(event)
+{
+	event.preventDefault();
+	mouse.x = ( event.clientX / window.innerWidth*0.9 ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+mouse_click = true;
+}
 KeyboardState.k = 
 {  
      8: "backspace",  9: "tab",       13: "enter",    16: "shift", 
@@ -123,7 +133,7 @@ KeyboardState.onKeyDown = function(event)
     CAMERA.position.set(sphere_simulation.position.x-50, sphere_simulation.position.y + 50,sphere_simulation.position.z);
     
     CAMERA.lookAt(sphere_simulation.position);
-sphere_simulation.setLinearVelocity(new THREE.Vector3(100,0,0));
+sphere_simulation.setLinearVelocity(new THREE.Vector3(10,0,0));
 //SCENE.simulate();
 
 	}

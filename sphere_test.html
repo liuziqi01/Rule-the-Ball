@@ -32,44 +32,73 @@
             z-index:1000;
         }
         
-        a {
-            color: #ffffff;
+        #selectionTab
+        {
+            float: left;
+            background-color: yellow;
+            height: 100%;
+            width: 10%;
             
         }
+    #game
+    {
+        float:right;
+        width: 90%;
+        height: 100%;
         
+    }
+    #selectButtonDiamond
+    {
+        float: down;
+        position:center;
+        margin: 10px;
+        padding : 20px;
+        height: 90px;
+        width:90px;
+        background-image : url(Images/blockDiamond.jpg);
+    }
+    #selectButtonBox
+    {
+        
+        position:center;
+        margin: 10px;
+        padding : 20px;
+        height: 90px;
+        width:90px;
+        background-image : url(Images/box.jpg);
+    }
+    #selectButtonGold
+    {
+        float: down;
+        position:center;
+        margin: 10px;
+        padding : 20px;
+        height: 90px;
+        width:90px;
+        background-image : url(Images/blockGold.png);
+    }
+    
         
     </style>
 </head>
 
 <body>
-   <!--
-    <div>
-        
-        <form>
-            <style>
-                body{
-            
-                    /*how to make the background transparent ???*/
-                    /*or limit the dimension of the form*/
-                    width : 90px;
-                    background-color: transparent;
-            
-                }
-            
-            </style>
-       
-            <input type = "radio" name = "keyboard_layout" id = "keyboard_layout_us" value = "US" onchange = "keyboard_selection()" /> US
-            <br />
-            <input type = "radio" name = "keyboard_layout"  value="Dvorak" checked = "checked" onchange = "keyboard_selection()"/> Dvorak
+   
+    <div id= "selectionTab">
+        <p align="center">  Block Store</p>
+        <button type="input" id="selectButtonBox" >
+        </button>
+    <button type="input" id="selectButtonDiamond" >
+    </button>
+    <button type="input" id="selectButtonGold" >
+    </button>
+   
         
         
-        </form>
-          
+        
+        </div>
 
-    </div>
--->
-
-<div id="viewport"></div>
+<div id="game"></div>
 
 
 <script src="Scripts/three.min.js"></script>
