@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <title>three.js webgl - materials - cube reflection [balls]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+         
+            padding:0;
+            margin:0;
+            font-weight: bold;
+            overflow:hidden;
+        }
+        #odie {
+            
+            color: #f0f0f0;
+            
+            
+        }
+        #info {
+            position: absolute;
+            top: 0px;
+            left : 100px; 
+            width: 70%;
+            color: #ffffff;
+            padding: 5px;
+            font-family:Monospace;
+            font-size:13px;
+            text-align:center;
+            z-index:1000;
+        }
+        
+        #selectionTab
+        {
+            float: left;
+            background-color: yellow;
+            height: 100%;
+            width: 10%;
+            
+        }
+    #game
+    {
+        float:right;
+        width: 90%;
+        height: 100%;
+        
+    }
+    #selectButtonDiamond
+    {
+        float: down;
+        position:center;
+        margin: 10px;
+        padding : 20px;
+        height: 90px;
+        width:90px;
+        background-image : url(Images/blockDiamond.jpg);
+    }
+    #selectButtonBox
+    {
+        
+        position:center;
+        margin: 10px;
+        padding : 20px;
+        height: 90px;
+        width:90px;
+        background-image : url(Images/box.jpg);
+    }
+    #selectButtonGold
+    {
+        float: down;
+        position:center;
+        margin: 10px;
+        padding : 20px;
+        height: 90px;
+        width:90px;
+        background-image : url(Images/blockGold.png);
+    }
+    
+        
+    </style>
+</head>
+
+<body>
+   
+    <div id= "selectionTab">
+        <p align="center">  Block Store</p>
+        <button type="input" id="selectButtonBox" >
+        </button>
+    <button type="input" id="selectButtonDiamond" >
+    </button>
+    <button type="input" id="selectButtonGold" >
+    </button>
+   
+        
+        
+        
+        </div>
+
+<div id="game"></div>
+
+
+<script src="Scripts/three.min.js"></script>
+<script src="Scripts/physi.js"></script>
+<script src="Scripts/ammo.js"></script>
+<script src="Scripts/physijs_worker.js"></script>
+<script src="Scripts/stats.js"></script>
+<script src="Scripts/TrackballControls.js"></script>
+<script src="Scripts/LineColorTable.js"></script>
+<script src = "Scripts/EventsHandlers.js"></script>
+<script src = "Scripts/keyboardstate.js"></script>
+
+<script src = "Scripts/supportingClass.js"></script>
+<script src = "Scripts/sphere.js"></script>
+
+<script type="text/javascript">
+    window.onload = init;
+</script>
+
+
+</body>
+</html>
