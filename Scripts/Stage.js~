@@ -2,8 +2,7 @@ var FPS = 60; // max = 60 as limited by the requestAnimationFrame()
 
 /* coordinate conversion */
 var SPACE_SIZE = 10; // the game field is a $SPACE_SIZE by $SPACE_SIZE by $SPACE_SIZE cube. and make sure this is always an even number
-// and note the range of the coordinate is [0, SPACE_SIZE - 1]
-
+                     // and note the range of the coordinate is [0, SPACE_SIZE - 1]
 var UNIT_STEP = 40; // the edge length of each unit box
 
 
@@ -17,46 +16,29 @@ var timer = new Date();
 var current_time = 0;
 var last_time = 0;
 var timeDiff = 0;
-var sphere_simulation;
-
-/* information */
-var render_stats;
-var physics_stats;
 
 /* environment */
-var CONTAINER;
-var CAMERA, SCENE, RENDERER;
+var CONTAINER, CAMERA, SCENE, RENDERER;
 //var TRACKBALL_CONTROL;
-var mesh, geometry;
-var sphere;
 var BACKGROUND_SCENE,BACKGROUND_CAMERA;
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
-var raycaster;
-var mouse;
+
+
+
+var sphere;
 var OBJECTS = [];
 var grids=[];
 var materialArray=[];
 
-/* OBJECTS state value */
-var BOX_DEFAULT_TEXTURE = 'Images/crate.jpg';
-var SPHERE_DEFAULT_TEXTURE = 'Images/basketball.jpg'
-var radius = 10;
-
-var default_speed = 2 // pixels per ms
-
-var moveForward = false;
-var moveBackward = false;
-var moveLeft = false;
-var moveRight = false;
-var canJump = true;
+/*interaction*/
+var keyboard = new KeyboardState(); // the keyboard polling
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
 var mouse_click = false;
 var simulation = false;
 var blockType =0;
+var sphere_simulation;
 
 
-var keyboardState;// this is for the keyboard layout
-var keyboard = new KeyboardState(); // the keyboard polling
 
 
 
@@ -88,9 +70,7 @@ function init() {
     SCENE.addEventListener(
         'update',
         function() {
-            //applyForce();
             SCENE.simulate( undefined, 1 );
-            // physics_stats.update();
         }
     );
 
@@ -125,14 +105,6 @@ function init() {
  	/* Lights setup */
     SCENE.add( new THREE.AmbientLight( White ) );
 
-
-
-    /* keyboard layout setup */
-    var keyboardLayout = document.getElementById("keyboard_layout_us");
-    //	keyboardState = keyboardLayout.checked || "US";
-    keyboardState = "keyboard_layout_us" ;
-
-
 	/************** Objcets **************/
 
     sphere = new THREE.Mesh(new THREE.SphereGeometry(13,10,10), new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/basketball.jpg') }));
@@ -164,12 +136,12 @@ for(var height = ( 0 - SPACE_SIZE / 2 ) * UNIT_STEP ; height < ( 0 + SPACE_SIZE/
        grid.vertices.push( new THREE.Vector3( (i - SPACE_SIZE / 2 ) * UNIT_STEP,     height,        SPACE_SIZE / 2 * UNIT_STEP      ) );
         
     }
-    if(height == ( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP)
+    if(height == ( 0 - SPACE_SIZE / 2) * UNIT_STEP )
 	var material = new THREE.LineBasicMaterial( { color: 0x000000,transparent: false} );
     else 
 	var material = new THREE.LineBasicMaterial( { color: 0xf8f8f8 ,transparent: true} );
-	var line = new THREE.Line( grid, material, THREE.LinePieces );
-	SCENE.add( line );
+    var line = new THREE.Line( grid, material, THREE.LinePieces );
+    SCENE.add( line );
 
 
     var frame = new THREE.Mesh( new THREE.BoxGeometry(UNIT_STEP*SPACE_SIZE ,1, UNIT_STEP * SPACE_SIZE),new THREE.MeshBasicMaterial() );
@@ -190,7 +162,7 @@ for(var height = ( 0 - SPACE_SIZE / 2 ) * UNIT_STEP ; height < ( 0 + SPACE_SIZE/
         );
     materialArray.push(box_material);
 
-  var diamond_material = Physijs.createMaterial(
+    var diamond_material = Physijs.createMaterial(
             new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/diamondTexture.png') }),
             0, // friction coefficient
             .0 // e
@@ -198,7 +170,7 @@ for(var height = ( 0 - SPACE_SIZE / 2 ) * UNIT_STEP ; height < ( 0 + SPACE_SIZE/
         );
     materialArray.push(diamond_material);
 
-      var gold_material = Physijs.createMaterial(
+    var gold_material = Physijs.createMaterial(
             new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( 'Images/goldTexture.png') }),
             0, // friction coefficient
             .0 // e
@@ -206,10 +178,6 @@ for(var height = ( 0 - SPACE_SIZE / 2 ) * UNIT_STEP ; height < ( 0 + SPACE_SIZE/
         );
     materialArray.push(gold_material);
     
-
-    raycaster = new THREE.Raycaster();
-    //raycaster.params.PointCloud.threshold = threshold;
-    mouse = new THREE.Vector2();
 
 
     /* timer */
@@ -233,42 +201,6 @@ document.getElementById("selectButtonGold").addEventListener("click", function()
 }
 
 
-
-// function draw_sphere(){
-
-//     if(moveForward){
-//         // sphere.position.y += default_speed * timeDiff;
-//         // sphere.rotation.x += default_speed * timeDiff / radius;
-//         sphere.position.y += default_speed;
-//         var q = new THREE.Quaternion();
-//         q.setFromAxisAngle( new THREE.Vector3(1,0,0), -default_speed / radius ); 
-//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
-//     }
-    
-//     if(moveBackward){
-//         sphere.position.y -= default_speed;
-//         var q = new THREE.Quaternion();
-//         q.setFromAxisAngle( new THREE.Vector3(1,0,0), +default_speed / radius ); 
-//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
-//     }
-
-//     if(moveLeft){
-//         sphere.position.x -= default_speed;
-
-//         var q = new THREE.Quaternion();
-//         q.setFromAxisAngle( new THREE.Vector3(0,1,0), -default_speed / radius ); 
-//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
-//     }
-
-//     if(moveRight){
-//         sphere.position.x += default_speed;
-
-//         var q = new THREE.Quaternion();
-//         q.setFromAxisAngle( new THREE.Vector3(0,1,0), +default_speed / radius ); 
-//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
-//     }
-
-// }
  function putBoxbyMouse(mouse,blockType)
 {
    var intersections = raycaster.intersectObjects(grids);

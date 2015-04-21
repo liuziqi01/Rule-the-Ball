@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     
-    <title>three.js webgl - materials - cube reflection [balls]</title>
+    <title>Rule the Ball</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
@@ -40,6 +40,13 @@
             width: 10%;
             
         }
+    #splash{
+        
+        width:50%;
+        height: 90px;
+        z-index : 1000;
+        color: black;
+    }
     #game
     {
         float:right;
@@ -108,15 +115,12 @@
 <script src="Scripts/stats.js"></script>
 <script src="Scripts/TrackballControls.js"></script>
 <script src="Scripts/LineColorTable.js"></script>
-<script src = "Scripts/EventsHandlers.js"></script>
 <script src = "Scripts/keyboardstate.js"></script>
 
 <script src = "Scripts/supportingClass.js"></script>
-<script src = "Scripts/sphere.js"></script>
+<script src = "Scripts/Stage.js"></script>
+<script src = "Scripts/gameControl.js"></script>
 
-<script type="text/javascript">
-    window.onload = init;
-</script>
 
 
 </body>

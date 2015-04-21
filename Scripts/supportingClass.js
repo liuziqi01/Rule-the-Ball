@@ -82,3 +82,38 @@ var GameSphere = {
         return spheretemp;
     }
 }
+// function draw_sphere(){
+
+//     if(moveForward){
+//         // sphere.position.y += default_speed * timeDiff;
+//         // sphere.rotation.x += default_speed * timeDiff / radius;
+//         sphere.position.y += default_speed;
+//         var q = new THREE.Quaternion();
+//         q.setFromAxisAngle( new THREE.Vector3(1,0,0), -default_speed / radius ); 
+//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
+//     }
+    
+//     if(moveBackward){
+//         sphere.position.y -= default_speed;
+//         var q = new THREE.Quaternion();
+//         q.setFromAxisAngle( new THREE.Vector3(1,0,0), +default_speed / radius ); 
+//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
+//     }
+
+//     if(moveLeft){
+//         sphere.position.x -= default_speed;
+
+//         var q = new THREE.Quaternion();
+//         q.setFromAxisAngle( new THREE.Vector3(0,1,0), -default_speed / radius ); 
+//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
+//     }
+
+//     if(moveRight){
+//         sphere.position.x += default_speed;
+
+//         var q = new THREE.Quaternion();
+//         q.setFromAxisAngle( new THREE.Vector3(0,1,0), +default_speed / radius ); 
+//         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
+//     }
+
+// }
