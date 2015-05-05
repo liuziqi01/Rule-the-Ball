@@ -4,8 +4,8 @@
 /* this class assigns three input value directly to the three coordinates */
 var absCoordinate = function(x, y, z) {
     x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
+    y = typeof y !== 'undefined' ? y : 0;
+    z = typeof z !== 'undefined' ? z : 0;
 
     if (x < -SPACE_SIZE / 2 * UNIT_STEP) x = -SPACE_SIZE / 2 * UNIT_STEP;
     if (x > SPACE_SIZE / 2 * UNIT_STEP) x = SPACE_SIZE / 2 * UNIT_STEP;
@@ -21,8 +21,8 @@ var absCoordinate = function(x, y, z) {
 /* this method takes in the abs position */
 absCoordinate.prototype.setbyAbs = function(x, y, z) {
     x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
+    y = typeof y !== 'undefined' ? y : 0;
+    z = typeof z !== 'undefined' ? z : 0;
     if (x < -SPACE_SIZE / 2 * UNIT_STEP) x = -SPACE_SIZE / 2 * UNIT_STEP;
     if (x > SPACE_SIZE / 2 * UNIT_STEP) x = SPACE_SIZE / 2 * UNIT_STEP;
     if (y < -SPACE_SIZE / 2 * UNIT_STEP) y = -SPACE_SIZE / 2 * UNIT_STEP;
@@ -39,8 +39,8 @@ absCoordinate.prototype.setbyAbs = function(x, y, z) {
 /* this method takes in the in game position and convert it to the abs position  */
 absCoordinate.prototype.setbyInGame = function(x, y, z) {
     x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
+    y = typeof y !== 'undefined' ? y : 0;
+    z = typeof z !== 'undefined' ? z : 0;
 
     if (x < 0) x = 0;
     if (x > SPACE_SIZE - 1) x = SPACE_SIZE - 1;
@@ -59,8 +59,8 @@ absCoordinate.prototype.setbyInGame = function(x, y, z) {
 /* this class takes in three input values and convert them to the in game coordinate */
 var inGameCoordinate = function(x, y, z) {
     x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
+    y = typeof y !== 'undefined' ? y : 0;
+    z = typeof z !== 'undefined' ? z : 0;
 
     if (x < 0) x = 0;
     if (x > SPACE_SIZE - 1) x = SPACE_SIZE - 1;
@@ -76,8 +76,8 @@ var inGameCoordinate = function(x, y, z) {
 
 inGameCoordinate.prototype.setbyAbs = function(x, y, z) {
     x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
-    x = typeof x !== 'undefined' ? x : 0;
+    y = typeof y !== 'undefined' ? y : 0;
+    z = typeof z !== 'undefined' ? z : 0;
 
     if (x < -SPACE_SIZE / 2 * UNIT_STEP) x = -SPACE_SIZE / 2 * UNIT_STEP;
     if (x > SPACE_SIZE / 2 * UNIT_STEP) x = SPACE_SIZE / 2 * UNIT_STEP;
@@ -225,7 +225,9 @@ var gameElement = function(ingamepos, category, type) {
     }
 
     if( category === "stair"){
-        this = new gameElement(ingamepos, "box", 1);
+        
+    //bug here
+        new gameElement(ingamepos, "box", 1);
     }
 
 }

@@ -35,8 +35,8 @@ function onDocumentMouseMove(event) {
 
 function onDocumentMouseClick(event) {
     event.preventDefault();
-    MOUSE.x = 2 * ((event.clientX - LEFTSIDEBAR.clientWidth) / CONTAINER.clientWidth) - 1;
-    MOUSE.y = 1 - 2 * (event.clientY / CONTAINER.clientHeight);
+    MOUSE.x = ((event.clientX-LEFTSIDEBAR.clientWidth) / window.innerWidth ) * 2 - 1 ;
+    MOUSE.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
     mouse_click = true;
     // console.log("MOUSE.x : " + MOUSE.x + "; MOUSE.y : " + MOUSE.y + "; window inner " + window.innerWidth + " ; clientWidth : " + CONTAINER.clientWidth);
 
@@ -47,7 +47,7 @@ function onDocumentMouseClick(event) {
 
     if (intersection) {
         intersections[0].object.material.color.set(0xff0000);
-        var ingamepos = new inGameCoordinate;
+        var ingamepos = new inGameCoordinate(0,0,0);
 
         ingamepos.setbyAbs(intersection.x, intersection.y, intersection.z);
         console.log("intersection.x : " + intersection.x + "; ingamepos.x : " + ingamepos.x);

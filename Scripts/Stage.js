@@ -44,12 +44,6 @@ Stage.prototype.init = function(event) {
 
     /************** BASIC ELEMENTS **************/
 
-    /* validate the FPS */
-    if (FPS > 60)
-        FPS = 60;
-    else if (FPS < 0)
-        FPS = 0;
-
     /* check if SPACE_SIZE is a even number */
     if (SPACE_SIZE % 2) {
         SPACE_SIZE += 1;
@@ -60,6 +54,7 @@ Stage.prototype.init = function(event) {
     /* CONTAINER setup */
     CONTAINER = document.getElementById("game");
     LEFTSIDEBAR = document.getElementById("selectionTab");
+    console.log(LEFTSIDEBAR);
 
     /* RENDERER setup */
     RENDERER = new THREE.WebGLRenderer();
@@ -108,7 +103,7 @@ Stage.prototype.init = function(event) {
     // TRACKBALL_CONTROL.minDistance = 200;
     // TRACKBALL_CONTROL.maxDistance = 500;
 
-
+    
     /* Lights setup */
     SCENE.add(new THREE.AmbientLight(White));
 
@@ -195,7 +190,10 @@ Stage.prototype.init = function(event) {
     window.addEventListener('resize', onWindowResize, false);
 
 
-    document.getElementById("game").addEventListener('mousemove', function(){ console.log("move stage");    MOUSE_FLAG = 1; onDocumentMouseMove;}, false);
+    document.getElementById("game").addEventListener('mousemove', function(){
+            console.log("move stage");
+            MOUSE_FLAG = 1;
+           onDocumentMouseMove;}, false);
     // document.getElementById("game").addEventListener('click', onDocumentMouseClick, false);
 
     document.getElementById("game").addEventListener("mousedown", function() {
@@ -212,11 +210,8 @@ Stage.prototype.init = function(event) {
     // }, false);
 
 
-    // var try1 = new gameBox(0);
-    // SCENE.add(try1);
-    // var try2 = new atomicElement(new absCoordinate(10, 10, 10), "cylinder", 10, 100, 10);
-    // SCENE.add(try2);
-    var ingame = new inGameCoordinate;
+
+    var ingame = new inGameCoordinate(0,0,0);
     ingame.setbyAbs(0, 0, 0);
     var try3 = new gameElement(ingame, "cylinder", 1);
     SCENE.add(try3);
