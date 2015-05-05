@@ -1,9 +1,9 @@
-function onWindowResize( event ) {
-	containerWidth = CONTAINER.clientWidth;
-	containerHeight = CONTAINER.clientHeight;
-	RENDERER.setSize( containerWidth, containerHeight );
-	CAMERA.aspect = containerWidth / containerHeight;
-	CAMERA.updateProjectionMatrix();
+function onWindowResize(event) {
+    containerWidth = CONTAINER.clientWidth;
+    containerHeight = CONTAINER.clientHeight;
+    RENDERER.setSize(containerWidth, containerHeight);
+    CAMERA.aspect = containerWidth / containerHeight;
+    CAMERA.updateProjectionMatrix();
 }
 
 
@@ -11,23 +11,24 @@ function onDocumentMouseMove(event) {
     event.preventDefault();
     MOUSE.x = 2 * (event.clientX / CONTAINER.clientWidth) - 1;
     MOUSE.y = 1 - 2 * (event.clientY / CONTAINER.clientHeight);
-    // console.log("moving");
+    console.log("moving");
 
+    raycaster.setFromCamera(MOUSE, CAMERA);
     var projector = new THREE.Raycaster();
 
-		projector.setFromCamera( MOUSE, CAMERA ),
-    	intersects = projector.intersectObjects( OBJECTS.children );
+    projector.setFromCamera(MOUSE, CAMERA),
+        intersects = projector.intersectObjects(OBJECTS.children);
 
-    OBJECTS.children.forEach(function( cube ) {
-    	cube.material.color.setRGB( cube.grayness, cube.grayness, cube.grayness );
+    OBJECTS.children.forEach(function(cube) {
+        cube.material.color.setRGB(cube.grayness, cube.grayness, cube.grayness);
     });
 
-    	
-    for( var i = 0; i < intersects.length; i++ ) {
-    	var intersection = intersects[ i ],
-    		obj = intersection.object;
 
-    	obj.material.color.setRGB( 1.0 - i / intersects.length, 0, 0 );
+    for (var i = 0; i < intersects.length; i++) {
+        var intersection = intersects[i],
+            obj = intersection.object;
+
+        obj.material.color.setRGB(1.0 - i / intersects.length, 0, 0);
     }
 }
 
@@ -37,7 +38,25 @@ function onDocumentMouseClick(event) {
     MOUSE.x = 2 * ((event.clientX - LEFTSIDEBAR.clientWidth) / CONTAINER.clientWidth) - 1;
     MOUSE.y = 1 - 2 * (event.clientY / CONTAINER.clientHeight);
     mouse_click = true;
-    console.log("MOUSE.x : " + MOUSE.x + "; MOUSE.y : " + MOUSE.y + "; window inner " + window.innerWidth + " ; clientWidth : " + CONTAINER.clientWidth);
+    // console.log("MOUSE.x : " + MOUSE.x + "; MOUSE.y : " + MOUSE.y + "; window inner " + window.innerWidth + " ; clientWidth : " + CONTAINER.clientWidth);
+
+    raycaster.setFromCamera(MOUSE, CAMERA);
+    var intersections = raycaster.intersectObjects(grids.children);
+    var intersection = (intersections.length) > 0 ? intersections[0].point : null;
+
+
+    if (intersection) {
+        intersections[0].object.material.color.set(0xff0000);
+        var ingamepos = new inGameCoordinate;
+
+        ingamepos.setbyAbs(intersection.x, intersection.y, intersection.z);
+        console.log("intersection.x : " + intersection.x + "; ingamepos.x : " + ingamepos.x);
+        var box = new gameElement(ingamepos, "box", blockType);
+
+        box.castShadow = true;
+
+        OBJECTS.add(box);
+    }
 }
 
 

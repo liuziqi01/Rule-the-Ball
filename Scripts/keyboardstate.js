@@ -7,10 +7,6 @@ KeyboardState = function() {
     document.addEventListener("keyup", KeyboardState.onKeyUp, false);
     document.addEventListener("keyleft", KeyboardState.onKeyLeft, false);
     document.addEventListener("keyright", KeyboardState.onKeyRight, false);
-
-    document.getElementById("game").addEventListener('mousemove', onDocumentMouseMove, false);
-    document.getElementById("game").addEventListener('click', onDocumentMouseClick, false);
-
 }
 
 KeyboardState.k = 

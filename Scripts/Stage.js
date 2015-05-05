@@ -11,7 +11,7 @@ this.stop = false;
 /* environment */
 var LEFTSIDEBAR;
 var CONTAINER, CAMERA, SCENE, RENDERER;
-//var TRACKBALL_CONTROL;
+var CONTROLS;
 var BACKGROUND_SCENE, BACKGROUND_CAMERA;
 
 
@@ -25,9 +25,10 @@ var grids = new THREE.Object3D;
 var materialArray = [];
 
 /*interaction*/
-var keyboard = new KeyboardState(); 
+var keyboard = new KeyboardState();
 var raycaster = new THREE.Raycaster();
 var MOUSE = new THREE.Vector2();
+var MOUSE_FLAG = 0;
 var mouse_click = false;
 var simulation = false;
 var blockType = 0;
@@ -50,7 +51,7 @@ Stage.prototype.init = function(event) {
         FPS = 0;
 
     /* check if SPACE_SIZE is a even number */
-    if (SPACE_SIZE % 2){
+    if (SPACE_SIZE % 2) {
         SPACE_SIZE += 1;
     }
 
@@ -99,12 +100,14 @@ Stage.prototype.init = function(event) {
     //CAMERA.lookAt(new THREE.Vector3(0,( 0 - SPACE_SIZE / 2 + 0.5) * UNIT_STEP,0));
     CAMERA.lookAt(new THREE.Vector3(0, 0, 0));
 
-    /*
-        /* Trackball Control setup 
-        TRACKBALL_CONTROL = new THREE.TRACKBALL_CONTROLs( CAMERA, RENDERER.domElement );
-        TRACKBALL_CONTROL.minDistance = 200;
-        TRACKBALL_CONTROL.maxDistance = 500;
-    */
+
+    // Trackball Control setup 
+    CONTROLS = new THREE.TrackballControls(CAMERA, RENDERER.domElement);
+    CONTROLS.zoomSpeed = 0.1;
+    CONTROLS.rotateSpeed = 1;
+    // TRACKBALL_CONTROL.minDistance = 200;
+    // TRACKBALL_CONTROL.maxDistance = 500;
+
 
     /* Lights setup */
     SCENE.add(new THREE.AmbientLight(White));
@@ -112,8 +115,8 @@ Stage.prototype.init = function(event) {
     /************** Objects **************/
     SCENE.add(OBJECTS);
 
-    sphere = new THREE.Mesh(THREE.GeometryUtils.merge(new THREE.SphereGeometry(4, 10, 10),new THREE.BoxGeometry(3, 3, 10)), new THREE.MeshLambertMaterial({
-    // sphere = new THREE.Mesh(new THREE.SphereGeometry(4, 10, 10), new THREE.MeshLambertMaterial({
+    sphere = new THREE.Mesh(THREE.GeometryUtils.merge(new THREE.SphereGeometry(4, 10, 10), new THREE.BoxGeometry(3, 3, 10)), new THREE.MeshLambertMaterial({
+        // sphere = new THREE.Mesh(new THREE.SphereGeometry(4, 10, 10), new THREE.MeshLambertMaterial({
         map: THREE.ImageUtils.loadTexture('Images/basketball.jpg')
     }));
     // sphere.position.set(-1.5 * UNIT_STEP, 1.5 * UNIT_STEP, 2.5 * UNIT_STEP);
@@ -189,7 +192,25 @@ Stage.prototype.init = function(event) {
         blockType = 2;
     });
 
-    window.addEventListener( 'resize', onWindowResize, false );
+    window.addEventListener('resize', onWindowResize, false);
+
+
+    document.getElementById("game").addEventListener('mousemove', function(){ console.log("move stage");    MOUSE_FLAG = 1; onDocumentMouseMove;}, false);
+    // document.getElementById("game").addEventListener('click', onDocumentMouseClick, false);
+
+    document.getElementById("game").addEventListener("mousedown", function() {
+        MOUSE_FLAG = 0;
+        console.log("down stage");
+    }, false);
+ 
+    // document.getElementById("game").addEventListener("mouseup", function() {
+    //     console.log("up stage")
+    //     if (MOUSE_FLAG === 0) {
+    //         console.log("click");
+    //         onDocumentMouseClick;
+    //     } 
+    // }, false);
+
 
     // var try1 = new gameBox(0);
     // SCENE.add(try1);
@@ -200,39 +221,18 @@ Stage.prototype.init = function(event) {
     var try3 = new gameElement(ingame, "cylinder", 1);
     SCENE.add(try3);
 
-        axes = buildAxes();
-    SCENE.add( axes );
+    axes = buildAxes();
+    SCENE.add(axes);
 
     // this.animate;
     animate();
 
 }
 
-
-function putBoxbyMouse(MOUSE, blockType) {
-    raycaster.setFromCamera( MOUSE, CAMERA );
-    var intersections = raycaster.intersectObjects(grids.children);
-    var intersection = (intersections.length) > 0 ? intersections[0].point : null;
-
-    
-    if (intersection) {
-            intersections[0].object.material.color.set( 0xff0000 );
-        var ingamepos = new inGameCoordinate;
-        
-        ingamepos.setbyAbs(intersection.x, intersection.y, intersection.z);
-        console.log("intersection.x : " + intersection.x + "; ingamepos.x : " + ingamepos.x);
-        var box = new gameElement(ingamepos, "box", blockType);
-
-        box.castShadow = true;
-
-        OBJECTS.add(box);
-    }
-}
-
-            // var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
-            //     collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
-            // };
-            // box.addEventListener('collision', handleCollision);
+// var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
+//     collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
+// };
+// box.addEventListener('collision', handleCollision);
 function animate() {
 
     /* looping */
@@ -246,19 +246,9 @@ function animate() {
 
 
     /* User Control */
-    // TRACKBALL_CONTROL.update();
+    CONTROLS.update();
 
     SCENE.simulate();
-
-    //select the MOUSE clicked object
-    raycaster.setFromCamera(MOUSE, CAMERA);
-
-
-    if (mouse_click) {
-        putBoxbyMouse(MOUSE, blockType);
-        mouse_click = false;
-
-    }
 
     if (simulation) {
         console.log(sphere_simulation.getLinearVelocity().x);
