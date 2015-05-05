@@ -1,3 +1,4 @@
+'use strict'
 /* OBJECT Constructors */
 // (0, 0, 0) is the intersection point of three edges, so it isn't within any of the cubes
 
@@ -245,6 +246,15 @@ var gameElement = function(ingamepos, category, type) {
                 map: THREE.ImageUtils.loadTexture('Images/grass.png')
             }));
         this.position.set(abspos.x, abspos.y, abspos.z);
+    }
+    else if( category === "wall"){
+              Physijs.Mesh.call(this,
+            new THREE.BoxGeometry(UNIT_STEP * 4, UNIT_STEP * 4, UNIT_STEP),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/RocksArid.jpg')
+            }));
+        this.position.set(abspos.x + UNIT_STEP * 3 / 2, abspos.y + UNIT_STEP * 3 / 2, abspos.z);
+  
     }
 
 }

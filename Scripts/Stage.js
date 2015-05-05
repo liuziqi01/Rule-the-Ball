@@ -1,3 +1,4 @@
+
 var Stage = function() {}
 
 
@@ -206,7 +207,9 @@ Stage.prototype.init = function(event) {
     axes = buildAxes();
     SCENE.add(axes);
 
-    var gamemap = buildMaps(2);
+// var walltry = new gameElement(new inGameCoordinate( 5, 5, 5), "wall");
+// SCENE.add(walltry);
+    var gamemap = buildMaps(3);
     SCENE.add(gamemap);
 
     animate();
