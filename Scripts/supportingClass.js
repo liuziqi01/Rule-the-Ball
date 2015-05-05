@@ -1,87 +1,248 @@
 /* OBJECT Constructors */
-// object absolute position
-var objAbsPos = {
-        createNew: function(x, y, z){
-            x = typeof x !== 'undefined' ? x : 0;
-            x = typeof x !== 'undefined' ? x : 0;
-            x = typeof x !== 'undefined' ? x : 0;
-            var posTemp = {};
-            posTemp.x = x;
-            posTemp.y = y;
-            posTemp.z = z;
+// (0, 0, 0) is the intersection point of three edges, so it isn't within any of the cubes
 
-            return posTemp;
-        }
+/* this class assigns three input value directly to the three coordinates */
+var absCoordinate = function(x, y, z) {
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+
+    if (x < -SPACE_SIZE / 2 * UNIT_STEP) x = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (x > SPACE_SIZE / 2 * UNIT_STEP) x = SPACE_SIZE / 2 * UNIT_STEP;
+    if (y < -SPACE_SIZE / 2 * UNIT_STEP) y = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (y > SPACE_SIZE / 2 * UNIT_STEP) y = SPACE_SIZE / 2 * UNIT_STEP;
+    if (z < -SPACE_SIZE / 2 * UNIT_STEP) z = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (z > SPACE_SIZE / 2 * UNIT_STEP) z = SPACE_SIZE / 2 * UNIT_STEP;
+    this.x = x;
+    this.y = y;
+    this.z = z;
 }
 
-var GameBox = {
-    createNew: function(initX, initY, initZ, texture){
-        texture = typeof texture !== 'undefined' ? texture : BOX_DEFAULT_TEXTURE;
-        var box_material = Physijs.createMaterial(
-            new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( texture ) }),
-            1, // friction coefficient
+/* this method takes in the abs position */
+absCoordinate.prototype.setbyAbs = function(x, y, z) {
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+    if (x < -SPACE_SIZE / 2 * UNIT_STEP) x = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (x > SPACE_SIZE / 2 * UNIT_STEP) x = SPACE_SIZE / 2 * UNIT_STEP;
+    if (y < -SPACE_SIZE / 2 * UNIT_STEP) y = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (y > SPACE_SIZE / 2 * UNIT_STEP) y = SPACE_SIZE / 2 * UNIT_STEP;
+    if (z < -SPACE_SIZE / 2 * UNIT_STEP) z = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (z > SPACE_SIZE / 2 * UNIT_STEP) z = SPACE_SIZE / 2 * UNIT_STEP;
+
+    this.x = x;
+    this.y = y;
+    this.z = z;
+
+}
+
+/* this method takes in the in game position and convert it to the abs position  */
+absCoordinate.prototype.setbyInGame = function(x, y, z) {
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+
+    if (x < 0) x = 0;
+    if (x > SPACE_SIZE - 1) x = SPACE_SIZE - 1;
+    if (y < 0) y = 0;
+    if (y > SPACE_SIZE - 1) y = SPACE_SIZE - 1;
+    if (z < 0) z = 0;
+    if (z > SPACE_SIZE - 1) z = SPACE_SIZE - 1;
+
+    this.x = (x - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
+    this.y = (y - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
+    this.z = (z - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
+
+}
+
+
+/* this class takes in three input values and convert them to the in game coordinate */
+var inGameCoordinate = function(x, y, z) {
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+
+    if (x < 0) x = 0;
+    if (x > SPACE_SIZE - 1) x = SPACE_SIZE - 1;
+    if (y < 0) y = 0;
+    if (y > SPACE_SIZE - 1) y = SPACE_SIZE - 1;
+    if (z < 0) z = 0;
+    if (z > SPACE_SIZE - 1) z = SPACE_SIZE - 1;
+
+    this.x = parseInt(x);
+    this.y = parseInt(y);
+    this.z = parseInt(z);
+}
+
+inGameCoordinate.prototype.setbyAbs = function(x, y, z) {
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+    x = typeof x !== 'undefined' ? x : 0;
+
+    if (x < -SPACE_SIZE / 2 * UNIT_STEP) x = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (x > SPACE_SIZE / 2 * UNIT_STEP) x = SPACE_SIZE / 2 * UNIT_STEP;
+    if (y < -SPACE_SIZE / 2 * UNIT_STEP) y = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (y > SPACE_SIZE / 2 * UNIT_STEP) y = SPACE_SIZE / 2 * UNIT_STEP;
+    if (z < -SPACE_SIZE / 2 * UNIT_STEP) z = -SPACE_SIZE / 2 * UNIT_STEP;
+    if (z > SPACE_SIZE / 2 * UNIT_STEP) z = SPACE_SIZE / 2 * UNIT_STEP;
+
+
+    x += SPACE_SIZE / 2 * UNIT_STEP;
+    y += SPACE_SIZE / 2 * UNIT_STEP;
+    z += SPACE_SIZE / 2 * UNIT_STEP;
+
+    if (x % UNIT_STEP) this.x = parseInt(x / UNIT_STEP); // if the point is not on the edge
+    else if (!x) this.x = parseInt(x / UNIT_STEP) - 1; // if the point is on the edge
+    else this.x = 0; // if the point is at origin
+    if (y % UNIT_STEP) this.y = parseInt(y / UNIT_STEP);
+    else if (!y) this.y = parseInt(y / UNIT_STEP) - 1;
+    else this.y = 0;
+    if (z % UNIT_STEP) this.z = parseInt(z / UNIT_STEP);
+    else if (!z) this.z = parseInt(z / UNIT_STEP) - 1;
+    else this.z = 0;
+}
+
+inGameCoordinate.prototype.setbyInGame = function(x, y, z) {
+    this.x = parseInt(x);
+    this.y = parseInt(y);
+    this.z = parseInt(z);
+}
+
+
+var atomicElement = function(abspos, category, type, para1, para2, para3) {
+    /*para definitions*/
+    /*  box : para1 -> x, para2 -> y, para3 -> z
+        sphere : para1 -> r
+        cylinder : para1 -> r, para2 -> h
+    */
+
+    if (category === "box" && (typeof para1 === 'undefined' || typeof para2 === 'undefined' || typeof para3 === 'undefined')) {
+        console.error(" creating atomicbox somewhere but lack parameters");
+    }
+    if (category === "sphere" && (typeof para1 === 'undefined')) {
+        console.error(" creating atomicsphere somewhere but lack parameters");
+    }
+    if (category === "cylinder" && (typeof para1 === 'undefined' || typeof para2 === 'undefined')) {
+        console.error(" creating atomiccylinder somewhere but lack parameters");
+    }
+
+
+    if (category === "box") {
+        switch (type) {
+            case 0:
+                var material = Physijs.createMaterial(
+                    new THREE.MeshLambertMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/crate.jpg')
+                    }),
+                    80, // friction coefficient
+                    .0 // e
+                );
+                break;
+            case 1:
+                var material = Physijs.createMaterial(
+                    new THREE.MeshLambertMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/diamondTexture.png')
+                    }),
+                    0, // friction coefficient
+                    .0 // e
+                );
+                break;
+            case 2:
+                var material = Physijs.createMaterial(
+                    new THREE.MeshLambertMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/goldTexture.png')
+                    }),
+                    0, // friction coefficient
+                    .0 // e
+                );
+                break;
+        }
+        Physijs.BoxMesh.call(this,
+            new THREE.BoxGeometry(para1, para2, para3),
+            material,
+            0 // mass
+        );
+    }
+
+    if (category === "sphere") {
+
+        var material = Physijs.createMaterial(
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg')
+            }),
+            80, // friction coefficient
             .0 // e
-            // note the construction material should be solid and not bounce at all
         );
-        var boxtemp = new Physijs.BoxMesh(
-            new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP, UNIT_STEP ),
-            box_material,
-            10 // mass
+        Physijs.SphereMesh.call(this,
+            new THREE.SphereGeometry(para1, para1 * 8, para1 * 8),
+            material,
+            0 // mass
         );
-        boxtemp.position.x = initX ;
-        boxtemp.position.y = initY ;
-        boxtemp.position.z = initZ ;
 
-        boxtemp.inGamePos = function(x, y, z){
-            var absX, absY, absZ;
-            if (x < 0) x = 0;
-            if (x > SPACE_SIZE - 1) x = SPACE_SIZE - 1;
-            if (y < 0) y = 0;
-            if (y > SPACE_SIZE - 1) y = SPACE_SIZE - 1;
-            if (z < 0) z = 0;
-            if (z > SPACE_SIZE - 1) z = SPACE_SIZE - 1;
-            boxtemp.position.x = (x - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
-            boxtemp.position.y = (y - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
-            boxtemp.position.z = (z - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
-        }
-
-        return boxtemp;
     }
+
+    if (category === "cylinder") {
+        var material = Physijs.createMaterial(
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg')
+            }),
+            80, // friction coefficient
+            .0 // e
+        );
+
+        Physijs.CapsuleMesh.call(this,
+            new THREE.CylinderGeometry(para1, para1, para2, para1 * 8), // top radius, bottom radius, height, segments
+            material,
+            0 // mass
+        );
+
+
+    }
+
+    this.position.set(abspos.x, abspos.y, abspos.z);
 }
 
+atomicElement.prototype = new Physijs.Mesh;
+atomicElement.prototype.constructor = atomicElement;
 
-var GameSphere = {
-    createNew: function(initX, initY, initZ, texture){
-        texture = typeof texture !== 'undefined' ? texture : SPHERE_DEFAULT_TEXTURE;
-    var sphere_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture( texture ) }),
-        .4, // low friction
-        .3 // high restitution
-    );
-        var spheretemp = new Physijs.SphereMesh(
-            new THREE.SphereGeometry( radius, 100, 100 ),
-            sphere_material,
-            10 // mass
-        );
-        spheretemp.position.x = initX ;
-        spheretemp.position.y = initY ;
-        spheretemp.position.z = initZ ;
 
-        spheretemp.inGamePos = function(x, y, z){
-            if (x < 0) x = 0;
-            if (x > SPACE_SIZE - 1) x = SPACE_SIZE - 1;
-            if (y < 0) y = 0;
-            if (y > SPACE_SIZE - 1) y = SPACE_SIZE - 1;
-            if (z < 0) z = 0;
-            if (z > SPACE_SIZE - 1) z = SPACE_SIZE - 1;
-            spheretemp.position.x = (x - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
-            spheretemp.position.y = (y - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
-            spheretemp.position.z = (z - SPACE_SIZE / 2 + 0.5) * UNIT_STEP;
-        }
+// note all the elements are generated from cube, sphere, cylinder
+/* all the game elements shall be derived from the atomic elements */
+var gameElement = function(ingamepos, category, type) {
+    var abspos = new absCoordinate(0, 0, 0);
+    abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
-        return spheretemp;
+    if (category === "box") {
+        atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
     }
+
+    if (category === "sphere") {
+        atomicElement.call(this, abspos, category, type, 13);
+    }
+
+    if (category === "cylinder") {
+        atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
+    }
+
+    if( category === "stair"){
+        this = new gameElement(ingamepos, "box", 1);
+    }
+
 }
+
+gameElement.prototype = new Physijs.Mesh;
+gameElement.prototype.constructor = gameElement;
+
+
+/* the only item in the game that have all the freedom */
+var gameBall = function() {}
+
+var gameStartPoint = function() {}
+
+var gameEndPoint = function() {}
+
+
+
 // function draw_sphere(){
 
 //     if(moveForward){
@@ -92,7 +253,7 @@ var GameSphere = {
 //         q.setFromAxisAngle( new THREE.Vector3(1,0,0), -default_speed / radius ); 
 //         sphere.quaternion.multiplyQuaternions( q, sphere.quaternion );
 //     }
-    
+
 //     if(moveBackward){
 //         sphere.position.y -= default_speed;
 //         var q = new THREE.Quaternion();
@@ -117,3 +278,36 @@ var GameSphere = {
 //     }
 
 // }
+
+    function buildAxes() {
+        var axes = new THREE.Object3D();
+
+        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 100, 0, 0 ), 0xFF0000, false ) ); // +X
+        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -100, 0, 0 ), 0x800000, true) ); // -X
+        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 100, 0 ), 0x00FF00, false ) ); // +Y
+        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -100, 0 ), 0x008000, true ) ); // -Y
+        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, 100 ), 0x0000FF, false ) ); // +Z
+        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -100 ), 0x000080, true ) ); // -Z
+
+        return axes;
+
+    }
+
+    function buildAxis( src, dst, colorHex, dashed ) {
+        var geom = new THREE.Geometry(),
+            mat; 
+
+        if(dashed) {
+            mat = new THREE.LineDashedMaterial({ linewidth: 1, color: colorHex, dashSize: 5, gapSize: 5 });
+        } else {
+            mat = new THREE.LineBasicMaterial({ linewidth: 1, color: colorHex });
+        }
+
+        geom.vertices.push( src.clone() );
+        geom.vertices.push( dst.clone() );
+
+        var axis = new THREE.Line( geom, mat );
+
+        return axis;
+
+    }
