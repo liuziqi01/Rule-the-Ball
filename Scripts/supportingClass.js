@@ -206,28 +206,45 @@ atomicElement.prototype = new Physijs.Mesh;
 atomicElement.prototype.constructor = atomicElement;
 
 
-// note all the elements are generated from cube, sphere, cylinder
-/* all the game elements shall be derived from the atomic elements */
+
 var gameElement = function(ingamepos, category, type) {
     var abspos = new absCoordinate(0, 0, 0);
     abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
     if (category === "box") {
         atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
-    }
-
-    if (category === "sphere") {
+    } else if (category === "sphere") {
         atomicElement.call(this, abspos, category, type, 13);
-    }
-
-    if (category === "cylinder") {
+    } else if (category === "cylinder") {
         atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
-    }
+    } else if (category === "stair") {
 
-    if( category === "stair"){
-        
-    //bug here
-        new gameElement(ingamepos, "box", 1);
+    } else if (category === "startingPoint") {
+        Physijs.BoxMesh.call(this,
+            new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP),
+            new THREE.MeshBasicMaterial({
+                color: Yellow
+            }),
+            0 // mass
+        );
+        this.position.set(abspos.x, abspos.y, abspos.z);
+
+    } else if (category === "endingPoint") {
+        Physijs.BoxMesh.call(this,
+            new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP),
+            new THREE.MeshBasicMaterial({
+                color: Green
+            }),
+            0 // mass
+        );
+        this.position.set(abspos.x, abspos.y, abspos.z);
+    } else if (category === "gameBall") {
+        Physijs.Mesh.call(this,
+            new THREE.SphereGeometry(UNIT_STEP * 2 / 3, 10, 10),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/grass.png')
+            }));
+        this.position.set(abspos.x, abspos.y, abspos.z);
     }
 
 }
@@ -236,12 +253,9 @@ gameElement.prototype = new Physijs.Mesh;
 gameElement.prototype.constructor = gameElement;
 
 
-/* the only item in the game that have all the freedom */
-var gameBall = function() {}
 
-var gameStartPoint = function() {}
 
-var gameEndPoint = function() {}
+
 
 
 
@@ -281,35 +295,43 @@ var gameEndPoint = function() {}
 
 // }
 
-    function buildAxes() {
-        var axes = new THREE.Object3D();
+function buildAxes() {
+    var axes = new THREE.Object3D();
 
-        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 100, 0, 0 ), 0xFF0000, false ) ); // +X
-        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -100, 0, 0 ), 0x800000, true) ); // -X
-        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 100, 0 ), 0x00FF00, false ) ); // +Y
-        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -100, 0 ), 0x008000, true ) ); // -Y
-        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, 100 ), 0x0000FF, false ) ); // +Z
-        axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -100 ), 0x000080, true ) ); // -Z
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(100, 0, 0), 0xFF0000, false)); // +X
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(-100, 0, 0), 0x800000, true)); // -X
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, 0), 0x00FF00, false)); // +Y
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -100, 0), 0x008000, true)); // -Y
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 100), 0x0000FF, false)); // +Z
+    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -100), 0x000080, true)); // -Z
 
-        return axes;
+    return axes;
 
+}
+
+function buildAxis(src, dst, colorHex, dashed) {
+    var geom = new THREE.Geometry(),
+        mat;
+
+    if (dashed) {
+        mat = new THREE.LineDashedMaterial({
+            linewidth: 1,
+            color: colorHex,
+            dashSize: 5,
+            gapSize: 5
+        });
+    } else {
+        mat = new THREE.LineBasicMaterial({
+            linewidth: 1,
+            color: colorHex
+        });
     }
 
-    function buildAxis( src, dst, colorHex, dashed ) {
-        var geom = new THREE.Geometry(),
-            mat; 
+    geom.vertices.push(src.clone());
+    geom.vertices.push(dst.clone());
 
-        if(dashed) {
-            mat = new THREE.LineDashedMaterial({ linewidth: 1, color: colorHex, dashSize: 5, gapSize: 5 });
-        } else {
-            mat = new THREE.LineBasicMaterial({ linewidth: 1, color: colorHex });
-        }
+    var axis = new THREE.Line(geom, mat);
 
-        geom.vertices.push( src.clone() );
-        geom.vertices.push( dst.clone() );
+    return axis;
 
-        var axis = new THREE.Line( geom, mat );
-
-        return axis;
-
-    }
+}

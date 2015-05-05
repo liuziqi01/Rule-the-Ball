@@ -414,7 +414,6 @@ THREE.TrackballControls = function(object, domElement) {
     }
 
     function mousedown(event) {
-        console.log("down track");
         MOUSE_FLAG = 0;
 
         if (_this.enabled === false) return;
@@ -453,8 +452,6 @@ THREE.TrackballControls = function(object, domElement) {
     }
 
     function mousemove(event) {
-        console.log("move track");
-
         if (_this.enabled === false) return;
 
         event.preventDefault();
@@ -478,9 +475,7 @@ THREE.TrackballControls = function(object, domElement) {
 
     function mouseup(event) {
 
-        console.log("up track");
         if (MOUSE_FLAG === 0) {
-            console.log("click");
             onDocumentMouseClick(event);
         }
 

@@ -110,13 +110,7 @@ Stage.prototype.init = function(event) {
     /************** Objects **************/
     SCENE.add(OBJECTS);
 
-    sphere = new THREE.Mesh(THREE.GeometryUtils.merge(new THREE.SphereGeometry(4, 10, 10), new THREE.BoxGeometry(3, 3, 10)), new THREE.MeshLambertMaterial({
-        // sphere = new THREE.Mesh(new THREE.SphereGeometry(4, 10, 10), new THREE.MeshLambertMaterial({
-        map: THREE.ImageUtils.loadTexture('Images/basketball.jpg')
-    }));
-    // sphere.position.set(-1.5 * UNIT_STEP, 1.5 * UNIT_STEP, 2.5 * UNIT_STEP);
-    sphere.position.set(0, 0, 0);
-    SCENE.add(sphere);
+
 
 
     // Ground
@@ -191,15 +185,14 @@ Stage.prototype.init = function(event) {
 
 
     document.getElementById("game").addEventListener('mousemove', function(){
-            console.log("move stage");
             MOUSE_FLAG = 1;
            onDocumentMouseMove;}, false);
     // document.getElementById("game").addEventListener('click', onDocumentMouseClick, false);
 
-    document.getElementById("game").addEventListener("mousedown", function() {
-        MOUSE_FLAG = 0;
-        console.log("down stage");
-    }, false);
+    // document.getElementById("game").addEventListener("mousedown", function() {
+    //     MOUSE_FLAG = 0;
+    //     console.log("down stage");
+    // }, false);
  
     // document.getElementById("game").addEventListener("mouseup", function() {
     //     console.log("up stage")
@@ -210,18 +203,13 @@ Stage.prototype.init = function(event) {
     // }, false);
 
 
-
-    var ingame = new inGameCoordinate(0,0,0);
-    ingame.setbyAbs(0, 0, 0);
-    var try3 = new gameElement(ingame, "cylinder", 1);
-    SCENE.add(try3);
-
     axes = buildAxes();
     SCENE.add(axes);
 
-    // this.animate;
-    animate();
+    var gamemap = buildMaps(2);
+    SCENE.add(gamemap);
 
+    animate();
 }
 
 // var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
