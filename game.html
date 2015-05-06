@@ -38,16 +38,25 @@
     }
     
     #splash {
-        width: 50%;
-        height: 90px;
-        z-index: 1000;
+        position : fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         color: black;
+        text-align: center;
+        vertical-align: middle;
+        text: "hello";
+        opacity: 0.9;
+        filter: alpha(opacity=90);
+        z-index : 101;
     }
     
     #game {
         float: right;
         width: 90%;
         height: 100%;
+        z-index:100;
     }
     
     #selectButtonDiamond {
@@ -81,6 +90,7 @@
     </style>
 </head>
 
+
 <body>
     <div id="selectionTab">
         <p align="center"> Block Store</p>
@@ -91,8 +101,9 @@
         <button type="input" id="selectButtonGold">
         </button>
     </div>
+    
     <div id="game"></div>
-
+  
     <script type="text/javascript">
 // preloading
 
@@ -117,10 +128,10 @@
     <script src="Scripts/gameControl.js"></script>
     <script src="Scripts/STLLoader.js"></script>
     <script type="text/javascript">
-    var gameStage = new Stage();
-    gameStage.init();
+   makeSplash(0);
 
     </script>
+   
 </body>
 
 </html>

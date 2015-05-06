@@ -6,7 +6,7 @@ var LEFTSIDEBAR;
 var CONTAINER, CAMERA, SCENE, RENDERER;
 var CONTROLS;
 var BACKGROUND_SCENE, BACKGROUND_CAMERA;
-
+var stop = false;
 var gameball;
 
 
@@ -35,7 +35,7 @@ var blockType = 0;
 
 
 /* Game Initialization */
-Stage.prototype.init = function(event) {
+Stage.prototype.init = function(stage_num) {
 
     /************** BASIC ELEMENTS **************/
 
@@ -44,12 +44,12 @@ Stage.prototype.init = function(event) {
         SPACE_SIZE += 1;
     }
 
-
+    splash.remove();
 
     /* CONTAINER setup */
     CONTAINER = document.getElementById("game");
     LEFTSIDEBAR = document.getElementById("selectionTab");
-
+console.log("here");
     /* RENDERER setup */
     RENDERER = new THREE.WebGLRenderer();
     RENDERER.setPixelRatio(window.devicePixelRatio);
@@ -218,7 +218,7 @@ var hello = function()
     // SCENE.add(axes);
 
 
-    // SCENE.add(buildMaps(3));
+    SCENE.add(buildMaps(stage_num));
 
     placeholder = new gameElement(new inGameCoordinate(6,6,6), "posholder");
 
@@ -228,10 +228,13 @@ var hello = function()
     SCENE.add(gameball);
     gameball.applyCentralForce(new THREE.Vector3(100,1,1));
     gameball.freeze();
-
+    RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
+    RENDERER.render(SCENE, CAMERA);
     animate();
 }
-
+Stage.prototype.stop = function() {
+    this.stop = true;
+}
 // var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
 //     collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
 // };
@@ -253,6 +256,10 @@ function animate() {
         // sphere._dirtyPosition = true;
         CAMERA.position.set(gameball.position.x - 50, gameball.position.y + 50, gameball.position.z);
         CAMERA.lookAt(gameball.position);
+        if(checkEnd = true)
+        {
+            makeSplash(stage_num+1);
+        }
     }
 
     if (!this.stop) {
@@ -266,8 +273,9 @@ function animate() {
     } else delete keyboard;
     //}, 1000 / FPS);    
 }
-
-
-Stage.prototype.stop = function() {
-    this.stop = true;
+function checkEnd()
+{
+    return Math.abs(gameball.position.x - endingPo[0])<10 && Math.abs(gameball.position.y - endingPo[1])<10 && Math.abs(gameball.position.z - endingPo[2])<10
 }
+
+

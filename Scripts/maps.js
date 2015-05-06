@@ -1,8 +1,10 @@
+var endingPo ;
 function buildMaps(mapIdx) {
     var mapTemp = new THREE.Object3D();
     /***** 0 ******/
     if (mapIdx === 0) {
         var box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
+        endingPo = [6,6,10];
         mapTemp.add(box);
 
         box = new gameElement(new inGameCoordinate(6, 6, 10), "endingPoint");
@@ -24,6 +26,7 @@ function buildMaps(mapIdx) {
         mapTemp.add(box);
 
         box = new gameElement(new inGameCoordinate(6, 6, 10), "endingPoint");
+        endingPo = [6,6,10];
         mapTemp.add(box);
 
     }
@@ -53,6 +56,7 @@ function buildMaps(mapIdx) {
 
         box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
         mapTemp.add(box);
+       endingPo = [6,6,10];
 
     }
 
@@ -102,6 +106,7 @@ function buildMaps(mapIdx) {
         mapTemp.add(box);
 
         box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
+       endingPo = [6,6,10];
         mapTemp.add(box);
 
     }
