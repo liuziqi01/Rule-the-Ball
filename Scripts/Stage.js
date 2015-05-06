@@ -105,7 +105,59 @@ Stage.prototype.init = function(event) {
 
     // OBJECTS.add(new gameElement(new inGameCoordinate(), "ground"));
 
+
     SCENE.add(new gameElement(new inGameCoordinate(), "ground"));
+
+
+    
+    
+    var jsonLoader = new THREE.JSONLoader();
+    jsonLoader.load( "model/woodtrail.js", addModelToScene);
+    
+    function addModelToScene( geometry,materials ){
+    
+        var material = new THREE.MeshPhongMaterial({color:'#503722',specular: '#a9fcff'});
+        console.log(material);
+        console.log(geometry);
+        var android = new Physijs.ConcaveMesh(
+            geometry,
+            Physijs.createMaterial(new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture('Images/wood.jpg'),transparent:false}), 0,1),
+             0);
+        android.castShadow = true;
+        android.receiveShadow = true;
+        android.scale.set(20,20,20);
+        android.position.set(0,0,0);
+        console.log(android.material);
+        SCENE.add( android );
+    }
+    
+
+
+    
+    //loader.load('model/bottom.js',hello);
+
+var hello = function()
+    {console.log("Hello");}
+  
+
+    // Ground
+    ground = new Physijs.BoxMesh(
+        new THREE.BoxGeometry(SPACE_SIZE * UNIT_STEP, 3, SPACE_SIZE * UNIT_STEP),
+        Physijs.createMaterial(new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            opacity: 0.7,
+            transparent: true
+        }), 0, 1),
+        0 // mass
+                                 
+    );
+    ground.position.x = 0;
+    ground.position.y = (0 - SPACE_SIZE / 2) * UNIT_STEP;
+    ground.position.z = 0;
+    ground.receiveShadow = true;
+    SCENE.add(ground);
+
 
 
     /* grid */
