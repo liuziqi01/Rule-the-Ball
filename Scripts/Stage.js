@@ -1,38 +1,33 @@
 var Stage = function() {}
 
 
-/* timing */
-// the scale of the return value is ms
-var timer = new Date();
-var current_time = 0;
-var last_time = 0;
-var timeDiff = 0;
-this.stop = false;
 /* environment */
 var LEFTSIDEBAR;
 var CONTAINER, CAMERA, SCENE, RENDERER;
 var CONTROLS;
 var BACKGROUND_SCENE, BACKGROUND_CAMERA;
 
+var gameball;
+
 
 var axes;
 
+var placeholder;
 
 
-var sphere;
 var OBJECTS = new THREE.Object3D;
 var grids = new THREE.Object3D;
-var materialArray = [];
 
 /*interaction*/
 var keyboard = new KeyboardState();
 var raycaster = new THREE.Raycaster();
 var MOUSE = new THREE.Vector2();
-var MOUSE_FLAG = 0;
-var mouse_click = false;
-var simulation = false;
+
+var MOUSE_FLAG = 0;             // to tell the difference between drag and click
+
+
+var onSimulation = false;
 var blockType = 0;
-var sphere_simulation;
 
 
 
@@ -54,7 +49,6 @@ Stage.prototype.init = function(event) {
     /* CONTAINER setup */
     CONTAINER = document.getElementById("game");
     LEFTSIDEBAR = document.getElementById("selectionTab");
-    console.log(LEFTSIDEBAR);
 
     /* RENDERER setup */
     RENDERER = new THREE.WebGLRenderer();
@@ -100,8 +94,7 @@ Stage.prototype.init = function(event) {
     CONTROLS = new THREE.TrackballControls(CAMERA, RENDERER.domElement);
     CONTROLS.zoomSpeed = 0.1;
     CONTROLS.rotateSpeed = 1;
-    // TRACKBALL_CONTROL.minDistance = 200;
-    // TRACKBALL_CONTROL.maxDistance = 500;
+
 
 
     /* Lights setup */
@@ -110,63 +103,9 @@ Stage.prototype.init = function(event) {
     /************** Objects **************/
     SCENE.add(OBJECTS);
 
+    // OBJECTS.add(new gameElement(new inGameCoordinate(), "ground"));
 
-
-
-    // 'use strict'
-    var loader = new THREE.JSONLoader();
-    console.log(loader);
-    /*
-    // load a resource
-    loader.load(
-                // resource URL
-                'model/bottom.json',
-                // Function when resource is loaded
-                function ( geometry, materials ) {
-                var material = new THREE.MeshFaceMaterial( materials );
-                var object = new THREE.Mesh( geometry, material );
-                object.position.set(0,0,0);
-                SCENE.add( object );
-                }
-                );
-*/
-
-
-    var jsonLoader = new THREE.JSONLoader();
-    jsonLoader.load("model/trail.js", addModelToScene);
-
-
-    function addModelToScene(geometry, materials) {
-            var material = new THREE.MeshFaceMaterial(materials)；
-            android = new Physijs.ConcaveMesh(
-                geometry, Physijs.createMaterial(new THREE.MeshBasicMaterial(), 0, 1)， 0 //mass
-            );
-            android.scale.set(20, 20, 20);
-            android.position.set(0, 0, 0);
-            SCENE.add(android);
-        }
-        //loader.load('model/bottom.js',hello);
-        /*
-var hello = function()
-    {console.log("Hello");}
-  */
-
-    // Ground
-    ground = new Physijs.BoxMesh(
-        new THREE.BoxGeometry(SPACE_SIZE * UNIT_STEP, 3, SPACE_SIZE * UNIT_STEP),
-        Physijs.createMaterial(new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            opacity: 0.7,
-            transparent: true
-        }), 0, 1),
-        0 // mass
-
-    );
-    ground.position.x = 0;
-    ground.position.y = (0 - SPACE_SIZE / 2) * UNIT_STEP;
-    ground.position.z = 0;
-    ground.receiveShadow = true;
-    SCENE.add(ground);
+    SCENE.add(new gameElement(new inGameCoordinate(), "ground"));
 
 
     /* grid */
@@ -204,11 +143,6 @@ var hello = function()
     SCENE.add(grids);
 
 
-
-    /* timer */
-    last_time = timer.getTime();
-
-
     document.getElementById("selectButtonBox").addEventListener("click", function() {
         blockType = 0;
     });
@@ -222,17 +156,26 @@ var hello = function()
     window.addEventListener('resize', onWindowResize, false);
 
 
-    document.getElementById("game").addEventListener('mousemove', function() {
+    document.getElementById("game").addEventListener('mousemove', function(event) {
         MOUSE_FLAG = 1;
-        onDocumentMouseMove;
+        onDocumentMouseMove(event);
     }, false);
 
 
-    axes = buildAxes();
-    SCENE.add(axes);
+    // axes = buildAxes();
+    // SCENE.add(axes);
 
-    var gamemap = buildMaps(3);
-    SCENE.add(gamemap);
+
+    // SCENE.add(buildMaps(3));
+
+    placeholder = new gameElement(new inGameCoordinate(6,6,6), "posholder");
+
+    SCENE.add(placeholder);
+    gameball = new gameElement(new inGameCoordinate(6,6,6), "gameBall");
+
+    SCENE.add(gameball);
+    gameball.applyCentralForce(new THREE.Vector3(100,1,1));
+    gameball.freeze();
 
     animate();
 }
@@ -247,22 +190,17 @@ function animate() {
     //setTimeout(function() {
     requestAnimationFrame(animate);
 
-    // timer
-    current_time = timer.getTime();
-    timeDiff = current_time - last_time;
-    last_time = current_time;
 
 
     /* User Control */
     CONTROLS.update();
-
     SCENE.simulate();
 
-    if (simulation) {
-        console.log(sphere_simulation.getLinearVelocity().x);
-        sphere._dirtyPosition = true;
-        CAMERA.position.set(sphere_simulation.position.x - 50, sphere_simulation.position.y + 50, sphere_simulation.position.z);
-        CAMERA.lookAt(sphere_simulation.position);
+    if (onSimulation) {
+        console.log(gameball.getLinearVelocity().x);
+        // sphere._dirtyPosition = true;
+        CAMERA.position.set(gameball.position.x - 50, gameball.position.y + 50, gameball.position.z);
+        CAMERA.lookAt(gameball.position);
     }
 
     if (!this.stop) {

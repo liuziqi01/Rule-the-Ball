@@ -224,7 +224,9 @@ var gameElement = function(ingamepos, category, type) {
         Physijs.BoxMesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP),
             new THREE.MeshBasicMaterial({
-                color: Yellow
+                color: Yellow,
+                opacity: 0.5,
+                transparent: true
             }),
             0 // mass
         );
@@ -234,33 +236,67 @@ var gameElement = function(ingamepos, category, type) {
         Physijs.BoxMesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP),
             new THREE.MeshBasicMaterial({
-                color: Green
+                color: Green,
+                opacity: 0.5,
+                transparent: true
             }),
-            0 // mass
-        );
+            10);
         this.position.set(abspos.x, abspos.y, abspos.z);
     } else if (category === "gameBall") {
-        Physijs.Mesh.call(this,
-            new THREE.SphereGeometry(UNIT_STEP * 2 / 3, 10, 10),
-            new THREE.MeshLambertMaterial({
-                map: THREE.ImageUtils.loadTexture('Images/grass.png')
-            }));
+        Physijs.SphereMesh.call(this,
+            new THREE.SphereGeometry(UNIT_STEP * 1 / 3, 10, 10),
+            Physijs.createMaterial(
+                new THREE.MeshLambertMaterial({
+                    map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg')
+                }),
+                80, // friction coefficient
+                1 // e
+            ),
+            10);
         this.position.set(abspos.x, abspos.y, abspos.z);
-    }
-    else if( category === "wall"){
-              Physijs.Mesh.call(this,
+    } else if (category === "wall") {
+        Physijs.Mesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP * 4, UNIT_STEP * 4, UNIT_STEP),
             new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture('Images/RocksArid.jpg')
             }));
         this.position.set(abspos.x + UNIT_STEP * 3 / 2, abspos.y + UNIT_STEP * 3 / 2, abspos.z);
-  
+    } else if (category === "posholder") {
+        Physijs.Mesh.call(this,
+            new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP), new THREE.MeshBasicMaterial({
+                color: Red,
+                opacity: 0.5,
+                transparent: true
+            })
+        );
+        this.position.set(abspos.x, abspos.y, abspos.z);
+    } else if (category === "ground") {
+        Physijs.BoxMesh.call(this,
+            new THREE.BoxGeometry(SPACE_SIZE * UNIT_STEP, 3, SPACE_SIZE * UNIT_STEP),
+            Physijs.createMaterial(new THREE.MeshBasicMaterial({
+                color: White,
+                opacity: 0.7,
+                transparent: true
+            }), 0, 1),
+            0);
+        this.position.set(0, (0 - SPACE_SIZE / 2) * UNIT_STEP, 0);
+        this.receiveShadow = true;
     }
 
 }
 
 gameElement.prototype = new Physijs.Mesh;
 gameElement.prototype.constructor = gameElement;
+gameElement.prototype.activate = function(){
+    this.setLinearFactor(new THREE.Vector3(1, 1, 1));
+    this.setAngularFactor(new THREE.Vector3(1, 1, 1));
+    SCENE.simulate();
+}
+gameElement.prototype.freeze = function(){
+    this.setLinearFactor(new THREE.Vector3(0, 0, 0));
+    this.setAngularFactor(new THREE.Vector3(0, 0, 0));
+    SCENE.simulate();
+}
 
 
 
