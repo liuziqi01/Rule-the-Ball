@@ -254,9 +254,11 @@ console.log("here");
 
 
     var map = buildMaps(stage_num_this);
-    while ( map.children.length > 0 ){
+    while ( map.children.length > 2 ){
         SCENE.add(map.children[0]);
     }
+    // to add the starting point and the ending point
+    SCENE.add(map);
 
 
     placeholder = new gameElement(START, "posholder");

@@ -1,16 +1,21 @@
-var endingPo=[0,0,0];
+var endingPo = [0, 0, 0];
+
 function buildMaps(mapIdx) {
     var mapTemp = new THREE.Object3D();
     // var mapTemp = [];
     /***** 0 ******/
     if (mapIdx === 0) {
-        var box = new gameElement(START, "startingPoint");
-        // var box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
-        endingPo = [6,5,1];
-        mapTemp.add(box);
+
         console.log("building map");
 
+
+       // note the starting point and the ending point should come to the last
         box = new gameElement(new inGameCoordinate(6, 5, 1), "endingPoint");
+        mapTemp.add(box);
+
+        var box = new gameElement(START, "startingPoint");
+        // var box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
+        endingPo = [6, 5, 1];
         mapTemp.add(box);
     }
     /***** 1 ******/
@@ -27,11 +32,13 @@ function buildMaps(mapIdx) {
         }
 
         // box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
-        box = new gameElement(START, "startingPoint");
-        mapTemp.add(box);
+
 
         box = new gameElement(new inGameCoordinate(6, 6, 10), "endingPoint");
-        endingPo = [6,6,10];
+        endingPo = [6, 6, 10];
+        mapTemp.add(box);
+
+        box = new gameElement(START, "startingPoint");
         mapTemp.add(box);
 
     }
@@ -57,12 +64,14 @@ function buildMaps(mapIdx) {
         }
 
         // box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
-        box = new gameElement(START, "startingPoint");
-        mapTemp.add(box);
+
 
         box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
         mapTemp.add(box);
-       endingPo = [6,6,10];
+        endingPo = [6, 6, 10];
+
+        box = new gameElement(START, "startingPoint");
+        mapTemp.add(box);
 
     }
 
@@ -119,7 +128,7 @@ function buildMaps(mapIdx) {
 
         box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
 
-       endingPo = [6,6,10];
+        endingPo = [6, 6, 10];
 
         mapTemp.add(box);
 

@@ -232,6 +232,7 @@ var gameElement = function(ingamepos, category, type) {
         );
         this.position.set(abspos.x, abspos.y, abspos.z);
 
+
     } else if (category === "endingPoint") {
         Physijs.BoxMesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP),
