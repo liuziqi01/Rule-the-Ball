@@ -26,7 +26,7 @@ var grids = new THREE.Object3D;
 var camPosition_prev = new THREE.Vector3();
 
 /*interaction*/
-var keyboard = new KeyboardState();
+var keyboard;
 var raycaster = new THREE.Raycaster();
 var MOUSE = new THREE.Vector2();
 
@@ -42,6 +42,7 @@ var blockType = 0;
 
 /* Game Initialization */
 Stage.prototype.init = function(stage_num) {
+    keyboard = new KeyboardState()
     this.stop = false;
     stage_num_this=stage_num;
     /************** BASIC ELEMENTS **************/
@@ -55,7 +56,11 @@ Stage.prototype.init = function(stage_num) {
     splash.remove();
 
     /* CONTAINER setup */
-    CONTAINER = document.getElementById("game");
+    CONTAINER = document.createElement('div');
+    CONTAINER.id ="game";
+    //document.appendChild(CONTAINER);
+    //CONTAINER = document.getElementById("game");
+    document.body.appendChild(CONTAINER);
     LEFTSIDEBAR = document.getElementById("selectionTab");
 console.log("here");
     /* RENDERER setup */
@@ -87,6 +92,7 @@ console.log("here");
     backgroundMesh.material.depthWrite = false;
     BACKGROUND_SCENE = new THREE.Scene();
     BACKGROUND_CAMERA = new THREE.Camera();
+    
     BACKGROUND_SCENE.add(BACKGROUND_CAMERA);
     BACKGROUND_SCENE.add(backgroundMesh);
 
@@ -147,38 +153,6 @@ console.log("here");
     var jsonLoader = new THREE.JSONLoader();
 
     // caonima = new THREE.Geometry;
-            var tempge = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
-
-    function haomeng(){
-        caonima = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
-    }
-    haomeng;
-            caonima = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
-
-    // jsonLoader.load("model/woodtrail.js",
-    //     function(g) {
-    //     console.log("nice");
-    //     // NIMA = g;
-    //     // caonima = g.clone();
-    // });
-    // hehe(caonima);
-
-    function hehe(geometry){
-             var shabi = new   Physijs.ConcaveMesh(
-            // NIMA,
-            geometry,
-            // new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP),
-            Physijs.createMaterial(new THREE.MeshBasicMaterial({
-                map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
-                transparent: false
-            }), 0, 1),
-            0);
-        shabi.castShadow = true;
-        shabi.receiveShadow = true;
-        shabi.scale.set(15, 10, 14);
-        shabi.position.set(zero.x, zero.y - 5, zero.z);
-        SCENE.add(shabi);
-    }
 
     // var bench = new gameElement(new inGameCoordinate(6,11,11), "startingPoint");
     // SCENE.add(bench);
@@ -265,30 +239,48 @@ console.log("here");
 
     SCENE.add(placeholder);
     gameball = new gameElement(START, "gameBall");
-
+if(stage_num_this==1)
     SCENE.add(gameball);
     gameball.freeze();
-    //RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
-    //RENDERER.render(SCENE, CAMERA);
-    this.stop = false;
+    RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
+    RENDERER.render(SCENE, CAMERA);
+    stop = false;
+    console.log(SCENE);
+    i=0;
     animate();
+    
 }
 
 // var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
 //     collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
 // };
 // box.addEventListener('collision', handleCollision);
+var i=0;
+var j=0;
 function animate() {
-    //console.log("animating");
+    console.log("animating");
 
     /* looping */
     //setTimeout(function() {
     
-
+    
+    if(i==0)
+    {
+        console.log("----------------");
+        console.log(SCENE);
+        i++;
+    }
+    if(j==0 && stage_num_this==1)
+    {
+        console.log("----------------");
+        console.log(SCENE);
+        j++;
+    }
+    
 
 
     /* User Control */
-    CONTROLS.update();
+    
     var aa = new absCoordinate();
     aa.setbyInGame(endingPo[0],endingPo[1],endingPo[2]);
 
@@ -315,13 +307,13 @@ function animate() {
         CAMERA.lookAt(gameball.position);
         //console.log(checkEnd);
         
-        if(checkEnd)
+        if(stage_num_this==0)
         {
             console.log("splash");
             onSimulation= false;
-            this.stop = true;
-            SCENE = null;
-            RENDERER.clear();
+            stop = true;
+            CONTROLS.update();
+            CONTAINER.remove();
             makeSplash(stage_num_this+1);
         }
     }
