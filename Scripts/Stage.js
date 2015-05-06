@@ -221,21 +221,26 @@ Stage.prototype.init = function(stage_num) {
 
 
     document.getElementById("selectButtonBox").addEventListener("click", function() {
+                                                                document.getElementById("info").innerHTML = "Normal Box <br>Perfect for practice";
         blockType = 0;
     });
     document.getElementById("selectButtonDiamond").addEventListener("click", function() {
+         document.getElementById("info").innerHTML = "Diamond Cube <br>Zero Friction Surface";
         blockType = 1;
     });
     document.getElementById("selectButtonGold").addEventListener("click", function() {
+                                                                 document.getElementById("info").innerHTML = "Golden Cube <br> Accelerating!";
         blockType = 2;
     });
     document.getElementById("selectButtonTrail").addEventListener("click", function() {
+                                                                  document.getElementById("info").innerHTML = "Wooden Trail";
         blockType = 3;
     });
     document.getElementById("selectButtonTrail2").addEventListener("click", function() {
                                                             blockType = 4;
                                                             });
     document.getElementById("selectButtonSponge").addEventListener("click", function() {
+                                                                   document.getElementById("info").innerHTML = "Sponge <br> It doesn't like ball...";
         blockType = 5;
     });
 
@@ -277,11 +282,6 @@ Stage.prototype.init = function(stage_num) {
     animate();
 
 }
-
-// var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
-//     collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
-// };
-// box.addEventListener('collision', handleCollision);
 
 
 function animate() {
