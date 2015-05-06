@@ -125,7 +125,8 @@ Stage.prototype.init = function(event) {
         console.log(geometry);
         var android = new Physijs.ConcaveMesh(
             geometry,
-            Physijs.createMaterial(material, 0,1),
+            Physijs.createMaterial(new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture('Images/wood.jpg'),transparent:false}), 0,1),
              0);
         android.castShadow = true;
         android.receiveShadow = true;
