@@ -8,5 +8,6 @@ var SPACE_SIZE = 12; // the game field is a $SPACE_SIZE by $SPACE_SIZE by $SPACE
 var UNIT_STEP = 30; // the edge length of each unit box
 
 
+
 Physijs.scripts.worker = '/Script/physijs_worker.js';
 Physijs.scripts.ammo = '/Script/ammo.js';

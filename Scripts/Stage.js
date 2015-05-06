@@ -1,6 +1,6 @@
 var Stage = function() {}
 
-
+var START = new inGameCoordinate(6, 6, 11);
 /* environment */
 var LEFTSIDEBAR;
 var CONTAINER, CAMERA, SCENE, RENDERER;
@@ -205,10 +205,11 @@ Stage.prototype.init = function(event) {
 
     // SCENE.add(buildMaps(3));
 
-    placeholder = new gameElement(new inGameCoordinate(6,6,6), "posholder");
+    placeholder = new gameElement(START, "posholder");
 
     SCENE.add(placeholder);
-    gameball = new gameElement(new inGameCoordinate(6,6,6), "gameBall");
+    gameball = new gameElement(START, "gameBall");
+    gameball._dirtyPosition = true;
     SCENE.add(gameball);
     gameball.freeze();
 
