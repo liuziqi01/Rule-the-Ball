@@ -112,7 +112,47 @@ Stage.prototype.init = function(event) {
     SCENE.add(OBJECTS);
 
 
-
+    
+    
+    'use strict'
+    var loader = new THREE.JSONLoader();
+    console.log(loader);
+    /*
+    // load a resource
+    loader.load(
+                // resource URL
+                'model/bottom.json',
+                // Function when resource is loaded
+                function ( geometry, materials ) {
+                var material = new THREE.MeshFaceMaterial( materials );
+                var object = new THREE.Mesh( geometry, material );
+                object.position.set(0,0,0);
+                SCENE.add( object );
+                }
+                );
+*/
+    
+    
+    var jsonLoader = new THREE.JSONLoader();
+    jsonLoader.load( "model/trail.js", addModelToScene);
+    
+    
+    function addModelToScene( geometry,materials )
+    {
+        var material = new THREE.MeshFaceMaterial( materials )；
+        android = new Physijs.ConcaveMesh(
+            geometry, Physijs.createMaterial(new THREE.MeshBasicMaterial(), 0,1)，
+             0 //mass
+            );
+        android.scale.set(20,20,20);
+        android.position.set(0,0,0);
+        SCENE.add( android );
+    }
+    //loader.load('model/bottom.js',hello);
+ /*
+var hello = function()
+    {console.log("Hello");}
+  */
 
     // Ground
     ground = new Physijs.BoxMesh(
@@ -123,6 +163,7 @@ Stage.prototype.init = function(event) {
             transparent: true
         }), 0, 1),
         0 // mass
+                                 
     );
     ground.position.x = 0;
     ground.position.y = (0 - SPACE_SIZE / 2) * UNIT_STEP;
