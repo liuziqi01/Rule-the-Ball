@@ -135,7 +135,7 @@ var atomicElement = function(abspos, category, type, para1, para2, para3) {
                     new THREE.MeshLambertMaterial({
                         map: THREE.ImageUtils.loadTexture('Images/crate.jpg')
                     }),
-                    80, // friction coefficient
+                    1, // friction coefficient
                     .0 // e
                 );
                 break;
@@ -144,7 +144,7 @@ var atomicElement = function(abspos, category, type, para1, para2, para3) {
                     new THREE.MeshLambertMaterial({
                         map: THREE.ImageUtils.loadTexture('Images/diamondTexture.png')
                     }),
-                    0, // friction coefficient
+                    1, // friction coefficient
                     .0 // e
                 );
                 break;
@@ -153,7 +153,7 @@ var atomicElement = function(abspos, category, type, para1, para2, para3) {
                     new THREE.MeshLambertMaterial({
                         map: THREE.ImageUtils.loadTexture('Images/goldTexture.png')
                     }),
-                    0, // friction coefficient
+                    1, // friction coefficient
                     .0 // e
                 );
                 break;
@@ -171,7 +171,7 @@ var atomicElement = function(abspos, category, type, para1, para2, para3) {
             new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg')
             }),
-            80, // friction coefficient
+            1, // friction coefficient
             .0 // e
         );
         Physijs.SphereMesh.call(this,
@@ -187,7 +187,7 @@ var atomicElement = function(abspos, category, type, para1, para2, para3) {
             new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg')
             }),
-            80, // friction coefficient
+            1, // friction coefficient
             .0 // e
         );
 
@@ -247,9 +247,9 @@ var gameElement = function(ingamepos, category, type) {
             new THREE.SphereGeometry(UNIT_STEP * 1 / 3, 10, 10),
             Physijs.createMaterial(
                 new THREE.MeshLambertMaterial({
-                    map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg')
+                    map: THREE.ImageUtils.loadTexture('Images/basketball.jpg')
                 }),
-                80, // friction coefficient
+                1, // friction coefficient
                 1 // e
             ),
             10);
@@ -277,7 +277,7 @@ var gameElement = function(ingamepos, category, type) {
                 color: White,
                 opacity: 0.7,
                 transparent: true
-            }), 0, 1),
+            }), 1, 1),
             0);
         this.position.set(0, (0 - SPACE_SIZE / 2) * UNIT_STEP, 0);
         this.receiveShadow = true;

@@ -89,34 +89,39 @@ function onKeyDown(key) {
     }
 
 
-    if (key == "r" && !simulation) {
-        SCENE.remove(grids);
-        SCENE.remove(placeholder);
+    if (key == "r") {
 
-        gameball.activate();
-        gameball.setLinearVelocity(new THREE.Vector3(10, 0, 0));
+        // stop simulation
+        if (onSimulation) {
+            onSimulation = false;
+            SCENE.add(placeholder);
+            gameball.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+
+            gameball.freeze();
+
+            CAMERA.position.set(camPosition_prev.x, camPosition_prev.y, camPosition_prev.z);
+
+        } else { // start simulation
+            // SCENE.remove(lines);
+            SCENE.remove(placeholder);
+
+            gameball.activate();
+            gameball.setLinearVelocity(new THREE.Vector3(10, 0, 0));
+            onSimulation = true;
+            camPosition_prev.x = CAMERA.position.x;
+            camPosition_prev.y = CAMERA.position.y;
+            camPosition_prev.z = CAMERA.position.z;
+        }
 
 
     }
 
-    if (key == "q" && simulation) {
-        simulation = false;
-        sphere_simulation.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-        SCENE.remove(sphere_simulation);
-        SCENE.add(sphere);
-        /*
-            CAMERA.position.set(ole_camera.posi.x,ole_camera.y,ole_camera.z);
-            CAMERA.lookAt(CAMERA_FOCUS);
-        */
-        CAMERA.position.set(ole_camera.x, ole_camera.y, ole_camera.z);
-        CAMERA.lookAt(CAMERA_FOCUS);
-    }
 
-    if (key == "h"){
+    if (key == "h") {
         console.log("h pressed");
         gameball.freeze();
     }
-    if (key == "t"){
+    if (key == "t") {
         console.log("t pressed");
         gameball.activate();
     }
