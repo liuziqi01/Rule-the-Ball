@@ -26,7 +26,7 @@ var grids = new THREE.Object3D;
 var camPosition_prev = new THREE.Vector3();
 
 /*interaction*/
-var keyboard = new KeyboardState();
+var keyboard;
 var raycaster = new THREE.Raycaster();
 var MOUSE = new THREE.Vector2();
 
@@ -42,6 +42,7 @@ var blockType = 0;
 
 /* Game Initialization */
 Stage.prototype.init = function(stage_num) {
+    keyboard = new KeyboardState()
     this.stop = false;
     stage_num_this = stage_num;
     /************** BASIC ELEMENTS **************/
@@ -55,7 +56,11 @@ Stage.prototype.init = function(stage_num) {
     splash.remove();
 
     /* CONTAINER setup */
-    CONTAINER = document.getElementById("game");
+    CONTAINER = document.createElement('div');
+    CONTAINER.id = "game";
+    //document.appendChild(CONTAINER);
+    //CONTAINER = document.getElementById("game");
+    document.body.appendChild(CONTAINER);
     LEFTSIDEBAR = document.getElementById("selectionTab");
     console.log("here");
     /* RENDERER setup */
@@ -87,6 +92,7 @@ Stage.prototype.init = function(stage_num) {
     backgroundMesh.material.depthWrite = false;
     BACKGROUND_SCENE = new THREE.Scene();
     BACKGROUND_CAMERA = new THREE.Camera();
+
     BACKGROUND_SCENE.add(BACKGROUND_CAMERA);
     BACKGROUND_SCENE.add(backgroundMesh);
 
@@ -110,7 +116,7 @@ Stage.prototype.init = function(stage_num) {
     SCENE.add(new THREE.AmbientLight(White));
 
     /************** Objects **************/
-    //SCENE.add(OBJECTS);
+    SCENE.add(OBJECTS);
 
     // OBJECTS.add(new gameElement(new inGameCoordinate(), "ground"));
 
@@ -148,10 +154,13 @@ Stage.prototype.init = function(stage_num) {
     var jsonLoader = new THREE.JSONLoader();
 
 
-     // caonima = new THREE.Geometry;
+    // caonima = new THREE.Geometry;
+
+
+    // caonima = new THREE.Geometry;
     var tempge = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
 
-            // caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
+    // caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
 
     function haomeng() {
         caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
@@ -165,7 +174,9 @@ Stage.prototype.init = function(stage_num) {
     //     // NIMA = g;
     //     // caonima = g.clone();
     // });
+
     // hehe(caonima);
+
 
     function hehe(geometry) {
         var shabi = new Physijs.ConcaveMesh(
@@ -222,7 +233,7 @@ Stage.prototype.init = function(stage_num) {
         frame.position.y = (height / UNIT_STEP) * UNIT_STEP;
         grids.add(frame);
     }
-    //SCENE.add(grids);
+    SCENE.add(grids);
 
 
     document.getElementById("selectButtonBox").addEventListener("click", function() {
@@ -257,41 +268,41 @@ Stage.prototype.init = function(stage_num) {
     SCENE.add(map);
 
 
+
     placeholder = new gameElement(START, "posholder");
 
     SCENE.add(placeholder);
     gameball = new gameElement(START, "gameBall");
-
     SCENE.add(gameball);
+
     gameball.freeze();
-    //RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
-    //RENDERER.render(SCENE, CAMERA);
-    this.stop = false;
+    RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
+    RENDERER.render(SCENE, CAMERA);
+    stop = false;
+    console.log(SCENE);
+    i = 0;
     animate();
+
 }
 
 // var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
 //     collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
 // };
 // box.addEventListener('collision', handleCollision);
+var i = 0;
+var j = 0;
+
 function animate() {
-    //console.log("animating");
-
-    /* looping */
-    //setTimeout(function() {
-
-
-
-
 
     var aa = new absCoordinate();
     aa.setbyInGame(endingPo[0], endingPo[1], endingPo[2]);
 
     var checkEnd = Math.abs(gameball.position.x - aa.x) < 10 && Math.abs(gameball.position.y - aa.y) < 10 && Math.abs(gameball.position.z - aa.z) < 10;
-    if (!( gameball.position.x < UNIT_STEP * SPACE_SIZE / 2 && gameball.position.x > - UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y > - UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y < UNIT_STEP * SPACE_SIZE / 2 )){
+    if (!(gameball.position.x < UNIT_STEP * SPACE_SIZE / 2 && gameball.position.x > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y < UNIT_STEP * SPACE_SIZE / 2)) {
         alert("you loose");
         this.stop = true;
     }
+
 
     //console.log(checkEnd);
 
@@ -312,15 +323,16 @@ function animate() {
         // sphere._dirtyPosition = true;
         CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
         CAMERA.lookAt(gameball.position);
-        console.log("checkEnd");
+        //console.log(checkEnd);
 
         if (checkEnd) {
             console.log("splash");
             onSimulation = false;
-            this.stop = true;
-            SCENE = null;
-            RENDERER.clear();
+            stop = true;
+            CONTROLS.update();
+            CONTAINER.remove();
             makeSplash(stage_num_this + 1);
+
         }
     } else {
         /* User Control */
