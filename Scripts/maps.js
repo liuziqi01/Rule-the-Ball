@@ -4,7 +4,8 @@ function buildMaps(mapIdx) {
     // var mapTemp = [];
     /***** 0 ******/
     if (mapIdx === 0) {
-        var box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
+        var box = new gameElement(START, "startingPoint");
+        // var box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
         endingPo = [6,5,1];
         mapTemp.add(box);
         console.log("building map");
@@ -25,7 +26,8 @@ function buildMaps(mapIdx) {
             }
         }
 
-        box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
+        // box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
+        box = new gameElement(START, "startingPoint");
         mapTemp.add(box);
 
         box = new gameElement(new inGameCoordinate(6, 6, 10), "endingPoint");
@@ -54,7 +56,8 @@ function buildMaps(mapIdx) {
             }
         }
 
-        box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
+        // box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
+        box = new gameElement(START, "startingPoint");
         mapTemp.add(box);
 
         box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
@@ -109,7 +112,8 @@ function buildMaps(mapIdx) {
 
         mapTemp.add(box);
 
-        box = new gameElement(new inGameCoordinate(6, 6, 0), "startingPoint");
+        // box = new gameElement(new inGameCoordinate(6, 6, 0), "startingPoint");
+        box = new gameElement(START, "startingPoint");
 
         mapTemp.add(box);
 
