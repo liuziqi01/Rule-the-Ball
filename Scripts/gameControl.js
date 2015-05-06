@@ -1,7 +1,29 @@
-// var splash = document.createElement("div");
-// var t = document.createTextNode("Hello World");
-// splash.setAttribute("id", "splash");
-// splash.appendChild(t);
-// document.body.appendChild(splash);
-// var currentStage = new Stage();
-// document.getElementById("splash").addEventListener("click", currentStage.init, false);
+//makeSplash(1);
+var makeSplash = function(stage_num)
+{
+    console.log("Making a new");
+var splash = document.createElement("IMG");
+splash.id = "splash";
+    splash.setAttribute("style","position:fixed");
+    if(stage_num ==0){
+splash.src = "Images/start.jpg";
+    }
+    if(stage_num == 1)
+    {
+        splash.src = "Images/stage2.jpg";
+    }
+    if(stage_num == 2)
+    {
+        splash.src = "Images/stage3.jpg";
+    }
+//currentSpalsh.setAttribute("position","fixed");
+//splash.appendChild(t);
+    splash.addEventListener("click",function(event)
+                            {
+                            var currentStage = new Stage();
+                            currentStage.init(stage_num);
+                            }, false);
+document.body.appendChild(splash)
+
+}
+

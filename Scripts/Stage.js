@@ -3,12 +3,13 @@ var NIMA;
 var caonima;
 
 var START = new inGameCoordinate(6, 6, 11);
+
 /* environment */
 var LEFTSIDEBAR;
 var CONTAINER, CAMERA, SCENE, RENDERER;
 var CONTROLS;
 var BACKGROUND_SCENE, BACKGROUND_CAMERA;
-
+var stop = false;
 var gameball;
 
 
@@ -18,7 +19,7 @@ var lines;
 
 var placeholder;
 
-
+var stage_num_this;
 var OBJECTS = new THREE.Object3D;
 var grids = new THREE.Object3D;
 
@@ -39,23 +40,24 @@ var blockType = 0;
 
 
 
-
 /* Game Initialization */
-Stage.prototype.init = function(event) {
-
+Stage.prototype.init = function(stage_num) {
+    this.stop = false;
+    stage_num_this=stage_num;
     /************** BASIC ELEMENTS **************/
 
     /* check if SPACE_SIZE is a even number */
     if (SPACE_SIZE % 2) {
         SPACE_SIZE += 1;
     }
-
-
+    console.log("here");
+    //splash.setAttribute("style","position:fixed");
+    splash.remove();
 
     /* CONTAINER setup */
     CONTAINER = document.getElementById("game");
     LEFTSIDEBAR = document.getElementById("selectionTab");
-
+console.log("here");
     /* RENDERER setup */
     RENDERER = new THREE.WebGLRenderer();
     RENDERER.setPixelRatio(window.devicePixelRatio);
@@ -68,7 +70,7 @@ Stage.prototype.init = function(event) {
     SCENE.addEventListener(
         'update',
         function() {
-            SCENE.simulate(undefined, 1);
+            SCENE.simulate(undefined,1);
         }
     );
 
@@ -107,7 +109,7 @@ Stage.prototype.init = function(event) {
     SCENE.add(new THREE.AmbientLight(White));
 
     /************** Objects **************/
-    SCENE.add(OBJECTS);
+    //SCENE.add(OBJECTS);
 
     // OBJECTS.add(new gameElement(new inGameCoordinate(), "ground"));
 
@@ -224,8 +226,7 @@ Stage.prototype.init = function(event) {
         frame.position.y = (height / UNIT_STEP) * UNIT_STEP;
         grids.add(frame);
     }
-    SCENE.add(grids);
-
+    //SCENE.add(grids);
 
 
     document.getElementById("selectButtonBox").addEventListener("click", function() {
@@ -251,8 +252,8 @@ Stage.prototype.init = function(event) {
     // SCENE.add(axes);
 
 
-    // SCENE.add(buildMaps(3));
-    var map = buildMaps(3);
+
+    var map = buildMaps(stage_num_this);
     while ( map.children.length > 0 ){
         SCENE.add(map.children[0]);
     }
@@ -262,9 +263,12 @@ Stage.prototype.init = function(event) {
 
     SCENE.add(placeholder);
     gameball = new gameElement(START, "gameBall");
+
     SCENE.add(gameball);
     gameball.freeze();
-
+    //RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
+    //RENDERER.render(SCENE, CAMERA);
+    this.stop = false;
     animate();
 }
 
@@ -273,36 +277,55 @@ Stage.prototype.init = function(event) {
 // };
 // box.addEventListener('collision', handleCollision);
 function animate() {
+    //console.log("animating");
 
     /* looping */
     //setTimeout(function() {
-    requestAnimationFrame(animate);
+    
 
 
 
     /* User Control */
     CONTROLS.update();
-    SCENE.simulate();
+    var aa = new absCoordinate();
+    aa.setbyInGame(endingPo[0],endingPo[1],endingPo[2]);
 
-    if (onSimulation) {
-        // sphere._dirtyPosition = true;
-        CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
-        CAMERA.lookAt(gameball.position);
-    }
+  var checkEnd = Math.abs(gameball.position.x -aa.x)<10 && Math.abs(gameball.position.y - aa.y)<10 && Math.abs(gameball.position.z - aa.z)<10;
+
+    //console.log(checkEnd);
 
     if (!this.stop) {
         /* refresh frame */
+        requestAnimationFrame(animate);
         RENDERER.autoClear = false;
         RENDERER.clear();
         RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
         RENDERER.render(SCENE, CAMERA);
         // render_stats.update();
         keyboard.update();
-    } else delete keyboard;
-    //}, 1000 / FPS);    
+        SCENE.simulate();
+    }
+    //}, 1000 / FPS);
+    
+    if (onSimulation) {
+        // sphere._dirtyPosition = true;
+        CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
+        CAMERA.lookAt(gameball.position);
+        //console.log(checkEnd);
+        
+        if(checkEnd)
+        {
+            console.log("splash");
+            onSimulation= false;
+            this.stop = true;
+            SCENE = null;
+            RENDERER.clear();
+            makeSplash(stage_num_this+1);
+        }
+    }
 }
-
 
 Stage.prototype.stop = function() {
     this.stop = true;
 }
+
