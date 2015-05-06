@@ -229,6 +229,15 @@ Stage.prototype.init = function(stage_num) {
     document.getElementById("selectButtonGold").addEventListener("click", function() {
         blockType = 2;
     });
+    document.getElementById("selectButtonTrail").addEventListener("click", function() {
+        blockType = 3;
+    });
+    document.getElementById("selectButtonTrail2").addEventListener("click", function() {
+                                                            blockType = 4;
+                                                            });
+    document.getElementById("selectButtonSponge").addEventListener("click", function() {
+        blockType = 5;
+    });
 
     window.addEventListener('resize', onWindowResize, false);
 
