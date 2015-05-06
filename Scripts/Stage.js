@@ -165,7 +165,7 @@ Stage.prototype.init = function(stage_num) {
     //     // NIMA = g;
     //     // caonima = g.clone();
     // });
-    hehe(caonima);
+    // hehe(caonima);
 
     function hehe(geometry) {
         var shabi = new Physijs.ConcaveMesh(
@@ -249,12 +249,12 @@ Stage.prototype.init = function(stage_num) {
 
 
 
-    // var map = buildMaps(stage_num_this);
-    // while (map.children.length > 2) {
-    //     SCENE.add(map.children[0]);
-    // }
-    // // to add the starting point and the ending point
-    // SCENE.add(map);
+    var map = buildMaps(stage_num_this);
+    while (map.children.length > 2) {
+        SCENE.add(map.children[0]);
+    }
+    // to add the starting point and the ending point
+    SCENE.add(map);
 
 
     placeholder = new gameElement(START, "posholder");
