@@ -46,7 +46,8 @@ function onDocumentMouseClick(event) {
 
         box.castShadow = true;
 
-        OBJECTS.add(box);
+        // OBJECTS.add(box);
+        SCENE.add(box);
     }
 }
 
