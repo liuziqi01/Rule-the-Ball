@@ -21,7 +21,6 @@ splash.src = "Images/start.jpg";
     splash.addEventListener("click",function(event)
                             {
                             var currentStage = new Stage();
-                            console.log(currentStage);
                             currentStage.init(stage_num);
                             }, false);
     delete currentStage;

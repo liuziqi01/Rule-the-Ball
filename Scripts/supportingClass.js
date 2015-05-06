@@ -437,7 +437,7 @@ function addJson(ingamepos, type) {
             }
         }
 
-
+}
         function buildAxes() {
             var axes = new THREE.Object3D();
 
