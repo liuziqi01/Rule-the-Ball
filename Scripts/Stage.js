@@ -161,7 +161,6 @@ Stage.prototype.init = function(event) {
         frame.position.x = 0;
         frame.position.z = 0;
         frame.position.y = (height / UNIT_STEP) * UNIT_STEP;
-        // SCENE.add(frame);
         grids.add(frame);
     }
     SCENE.add(grids);
@@ -188,27 +187,11 @@ Stage.prototype.init = function(event) {
     document.getElementById("game").addEventListener('mousemove', function(){
             MOUSE_FLAG = 1;
            onDocumentMouseMove;}, false);
-    // document.getElementById("game").addEventListener('click', onDocumentMouseClick, false);
-
-    // document.getElementById("game").addEventListener("mousedown", function() {
-    //     MOUSE_FLAG = 0;
-    //     console.log("down stage");
-    // }, false);
- 
-    // document.getElementById("game").addEventListener("mouseup", function() {
-    //     console.log("up stage")
-    //     if (MOUSE_FLAG === 0) {
-    //         console.log("click");
-    //         onDocumentMouseClick;
-    //     } 
-    // }, false);
 
 
     axes = buildAxes();
     SCENE.add(axes);
 
-// var walltry = new gameElement(new inGameCoordinate( 5, 5, 5), "wall");
-// SCENE.add(walltry);
     var gamemap = buildMaps(3);
     SCENE.add(gamemap);
 
