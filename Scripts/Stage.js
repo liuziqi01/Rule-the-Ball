@@ -112,47 +112,37 @@ Stage.prototype.init = function(event) {
     SCENE.add(OBJECTS);
 
 
-    
-    
-    'use strict'
-    var loader = new THREE.JSONLoader();
-    console.log(loader);
-    /*
-    // load a resource
-    loader.load(
-                // resource URL
-                'model/bottom.json',
-                // Function when resource is loaded
-                function ( geometry, materials ) {
-                var material = new THREE.MeshFaceMaterial( materials );
-                var object = new THREE.Mesh( geometry, material );
-                object.position.set(0,0,0);
-                SCENE.add( object );
-                }
-                );
-*/
+
     
     
     var jsonLoader = new THREE.JSONLoader();
-    jsonLoader.load( "model/trail.js", addModelToScene);
+    jsonLoader.load( "model/woodtrail.js", addModelToScene);
     
+    function addModelToScene( geometry,materials ){
     
-    function addModelToScene( geometry,materials )
-    {
-        var material = new THREE.MeshFaceMaterial( materials )；
-        android = new Physijs.ConcaveMesh(
-            geometry, Physijs.createMaterial(new THREE.MeshBasicMaterial(), 0,1)，
-             0 //mass
-            );
+        var material = new THREE.MeshPhongMaterial({color:'#503722',specular: '#a9fcff'});
+        console.log(material);
+        console.log(geometry);
+        var android = new Physijs.ConcaveMesh(
+            geometry,
+            Physijs.createMaterial(material, 0,1),
+             0);
+        android.castShadow = true;
+        android.receiveShadow = true;
         android.scale.set(20,20,20);
         android.position.set(0,0,0);
+        console.log(android.material);
         SCENE.add( android );
     }
+    
+
+
+    
     //loader.load('model/bottom.js',hello);
- /*
+
 var hello = function()
     {console.log("Hello");}
-  */
+  
 
     // Ground
     ground = new Physijs.BoxMesh(
