@@ -240,7 +240,7 @@ var gameElement = function(ingamepos, category, type) {
                 opacity: 0.5,
                 transparent: true
             }),
-            10);
+            0);
         this.position.set(abspos.x, abspos.y, abspos.z);
     } else if (category === "gameBall") {
         Physijs.SphereMesh.call(this,
@@ -281,18 +281,43 @@ var gameElement = function(ingamepos, category, type) {
             0);
         this.position.set(0, (0 - SPACE_SIZE / 2) * UNIT_STEP, 0);
         this.receiveShadow = true;
+    } else if (category === "track") {
+        var jsonLoader = new THREE.JSONLoader();
+
+        jsonLoader.load("model/woodtrail.js", function(g) {
+            console.log("nice");
+            NIMA = g;
+        });
+        Physijs.ConcaveMesh.call(this,
+            NIMA,
+            // new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP),
+            Physijs.createMaterial(new THREE.MeshBasicMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
+                transparent: false
+            }), 0, 1),
+            0);
+        this.castShadow = true;
+        this.receiveShadow = true;
+        this.scale.set(15, 10, 14);
+        this.position.set(abspos.x, abspos.y - 5, abspos.z);
+        switch (type) {
+            case 1:
+                this.rotation.set(0, Math.PI / 2, 0);
+                break;
+        }
+
     }
 
 }
 
 gameElement.prototype = new Physijs.Mesh;
 gameElement.prototype.constructor = gameElement;
-gameElement.prototype.activate = function(){
+gameElement.prototype.activate = function() {
     this.setLinearFactor(new THREE.Vector3(1, 1, 1));
     this.setAngularFactor(new THREE.Vector3(1, 1, 1));
     SCENE.simulate();
 }
-gameElement.prototype.freeze = function(){
+gameElement.prototype.freeze = function() {
     this.setLinearFactor(new THREE.Vector3(0, 0, 0));
     this.setAngularFactor(new THREE.Vector3(0, 0, 0));
     SCENE.simulate();

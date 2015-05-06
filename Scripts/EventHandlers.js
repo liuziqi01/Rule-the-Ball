@@ -125,14 +125,4 @@ function onKeyDown(key) {
     }
 
 
-    if (key == "h") {
-        console.log("h pressed");
-        gameball.freeze();
-    }
-    if (key == "t") {
-        console.log("t pressed");
-        gameball.activate();
-    }
-
-
 }

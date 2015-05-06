@@ -1,4 +1,6 @@
 var Stage = function() {}
+var NIMA;
+var caonima;
 
 var START = new inGameCoordinate(6, 6, 11);
 /* environment */
@@ -27,7 +29,7 @@ var keyboard = new KeyboardState();
 var raycaster = new THREE.Raycaster();
 var MOUSE = new THREE.Vector2();
 
-var MOUSE_FLAG = 0;             // to tell the difference between drag and click
+var MOUSE_FLAG = 0; // to tell the difference between drag and click
 
 
 var onSimulation = false;
@@ -113,35 +115,80 @@ Stage.prototype.init = function(event) {
     SCENE.add(new gameElement(new inGameCoordinate(), "ground"));
 
 
-    
-    
+
+
     // var jsonLoader = new THREE.JSONLoader();
     // jsonLoader.load( "model/woodtrail.js", addModelToScene);
-    
-    // function addModelToScene( geometry,materials ){
-    
-    //     var material = new THREE.MeshPhongMaterial({color:'#503722',specular: '#a9fcff'});
+
+    // var zero = new absCoordinate(0, 0, 0);
+    // zero.setbyInGame(6,11,11);
+
+    // function addModelToScene( geometry){
     //     var android = new Physijs.ConcaveMesh(
     //         geometry,
     //         Physijs.createMaterial(new THREE.MeshBasicMaterial({
-    //         map: THREE.ImageUtils.loadTexture('Images/wood.jpg'),transparent:false}), 0,1),
+    //         map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),transparent:false}), 0,1),
     //          0);
     //     android.castShadow = true;
     //     android.receiveShadow = true;
-    //     android.scale.set(20,20,20);
-    //     android.position.set(0,0,0);
-    //     console.log(android.material);
+    //     android.scale.set(15,10,14);
+    //     android.position.set(zero.x,zero.y - 5,zero.z);
+    //     android.rotation.set(0,Math.PI / 2,0);
     //     SCENE.add( android );
     // }
-    
+    // var try2 = new gameElement(new inGameCoordinate(6, 11, 11), "track");
+    // SCENE.add(try2);
 
 
-    
+    var zero = new absCoordinate(0, 0, 0);
+    zero.setbyInGame(6,11,11);
+    var jsonLoader = new THREE.JSONLoader();
+
+    // caonima = new THREE.Geometry;
+            var tempge = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
+
+    function haomeng(){
+        caonima = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
+    }
+    haomeng;
+            caonima = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
+
+    // jsonLoader.load("model/woodtrail.js",
+    //     function(g) {
+    //     console.log("nice");
+    //     // NIMA = g;
+    //     // caonima = g.clone();
+    // });
+    // hehe(caonima);
+
+    function hehe(geometry){
+             var shabi = new   Physijs.ConcaveMesh(
+            // NIMA,
+            geometry,
+            // new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP),
+            Physijs.createMaterial(new THREE.MeshBasicMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
+                transparent: false
+            }), 0, 1),
+            0);
+        shabi.castShadow = true;
+        shabi.receiveShadow = true;
+        shabi.scale.set(15, 10, 14);
+        shabi.position.set(zero.x, zero.y - 5, zero.z);
+        SCENE.add(shabi);
+    }
+
+    // var bench = new gameElement(new inGameCoordinate(6,11,11), "startingPoint");
+    // SCENE.add(bench);
+
+
+
+
     //loader.load('model/bottom.js',hello);
 
-// var hello = function()
-//     {console.log("Hello");}
-  
+    // var hello = function()
+    //     {console.log("Hello");}
+
 
 
 
@@ -180,6 +227,7 @@ Stage.prototype.init = function(event) {
     SCENE.add(grids);
 
 
+
     document.getElementById("selectButtonBox").addEventListener("click", function() {
         blockType = 0;
     });
@@ -204,12 +252,16 @@ Stage.prototype.init = function(event) {
 
 
     // SCENE.add(buildMaps(3));
+    var map = buildMaps(3);
+    while ( map.children.length > 0 ){
+        SCENE.add(map.children[0]);
+    }
+
 
     placeholder = new gameElement(START, "posholder");
 
     SCENE.add(placeholder);
     gameball = new gameElement(START, "gameBall");
-    gameball._dirtyPosition = true;
     SCENE.add(gameball);
     gameball.freeze();
 
