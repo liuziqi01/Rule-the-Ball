@@ -40,16 +40,24 @@ function onDocumentMouseClick(event) {
     if (intersection) {
         intersections[0].object.material.color.set(0xff0000);
         var ingamepos = new inGameCoordinate(0, 0, 0);
-
         ingamepos.setbyAbs(intersection.x, intersection.y, intersection.z);
-        // var box = new gameElement(ingamepos, "box", blockType);
+        if (blockType < 3) {
+            var box = new gameElement(ingamepos, "box", blockType);
 
-        // box.castShadow = true;
+            box.castShadow = true;
 
-        // OBJECTS.add(box);
-        // SCENE.add(box);
+            // OBJECTS.add(box);
+            SCENE.add(box);
 
-        addJson(ingamepos, 1);
+        } else {
+            addJson(ingamepos, blockType - 3);
+
+        }
+
+
+
+
+
     }
 }
 
