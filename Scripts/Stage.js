@@ -12,11 +12,15 @@ var gameball;
 
 var axes;
 
+var lines;
+
 var placeholder;
 
 
 var OBJECTS = new THREE.Object3D;
 var grids = new THREE.Object3D;
+
+var camPosition_prev = new THREE.Vector3();
 
 /*interaction*/
 var keyboard = new KeyboardState();
@@ -111,52 +115,33 @@ Stage.prototype.init = function(event) {
 
     
     
-    var jsonLoader = new THREE.JSONLoader();
-    jsonLoader.load( "model/woodtrail.js", addModelToScene);
+    // var jsonLoader = new THREE.JSONLoader();
+    // jsonLoader.load( "model/woodtrail.js", addModelToScene);
     
-    function addModelToScene( geometry,materials ){
+    // function addModelToScene( geometry,materials ){
     
-        var material = new THREE.MeshPhongMaterial({color:'#503722',specular: '#a9fcff'});
-        console.log(material);
-        console.log(geometry);
-        var android = new Physijs.ConcaveMesh(
-            geometry,
-            Physijs.createMaterial(new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture('Images/wood.jpg'),transparent:false}), 0,1),
-             0);
-        android.castShadow = true;
-        android.receiveShadow = true;
-        android.scale.set(20,20,20);
-        android.position.set(0,0,0);
-        console.log(android.material);
-        SCENE.add( android );
-    }
+    //     var material = new THREE.MeshPhongMaterial({color:'#503722',specular: '#a9fcff'});
+    //     var android = new Physijs.ConcaveMesh(
+    //         geometry,
+    //         Physijs.createMaterial(new THREE.MeshBasicMaterial({
+    //         map: THREE.ImageUtils.loadTexture('Images/wood.jpg'),transparent:false}), 0,1),
+    //          0);
+    //     android.castShadow = true;
+    //     android.receiveShadow = true;
+    //     android.scale.set(20,20,20);
+    //     android.position.set(0,0,0);
+    //     console.log(android.material);
+    //     SCENE.add( android );
+    // }
     
 
 
     
     //loader.load('model/bottom.js',hello);
 
-var hello = function()
-    {console.log("Hello");}
+// var hello = function()
+//     {console.log("Hello");}
   
-
-    // Ground
-    ground = new Physijs.BoxMesh(
-        new THREE.BoxGeometry(SPACE_SIZE * UNIT_STEP, 3, SPACE_SIZE * UNIT_STEP),
-        Physijs.createMaterial(new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            opacity: 0.7,
-            transparent: true
-        }), 0, 1),
-        0 // mass
-                                 
-    );
-    ground.position.x = 0;
-    ground.position.y = (0 - SPACE_SIZE / 2) * UNIT_STEP;
-    ground.position.z = 0;
-    ground.receiveShadow = true;
-    SCENE.add(ground);
 
 
 
@@ -181,8 +166,8 @@ var hello = function()
                 color: 0xf8f8f8,
                 transparent: true
             });
-        var line = new THREE.Line(grid, material, THREE.LinePieces);
-        SCENE.add(line);
+        lines = new THREE.Line(grid, material, THREE.LinePieces);
+        SCENE.add(lines);
 
 
         var frame = new THREE.Mesh(new THREE.BoxGeometry(UNIT_STEP * SPACE_SIZE, 1, UNIT_STEP * SPACE_SIZE), new THREE.MeshBasicMaterial());
@@ -224,9 +209,7 @@ var hello = function()
 
     SCENE.add(placeholder);
     gameball = new gameElement(new inGameCoordinate(6,6,6), "gameBall");
-
     SCENE.add(gameball);
-    gameball.applyCentralForce(new THREE.Vector3(100,1,1));
     gameball.freeze();
 
     animate();
@@ -249,9 +232,8 @@ function animate() {
     SCENE.simulate();
 
     if (onSimulation) {
-        console.log(gameball.getLinearVelocity().x);
         // sphere._dirtyPosition = true;
-        CAMERA.position.set(gameball.position.x - 50, gameball.position.y + 50, gameball.position.z);
+        CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
         CAMERA.lookAt(gameball.position);
     }
 
