@@ -42,12 +42,14 @@ function onDocumentMouseClick(event) {
         var ingamepos = new inGameCoordinate(0, 0, 0);
 
         ingamepos.setbyAbs(intersection.x, intersection.y, intersection.z);
-        var box = new gameElement(ingamepos, "box", blockType);
+        // var box = new gameElement(ingamepos, "box", blockType);
 
-        box.castShadow = true;
+        // box.castShadow = true;
 
         // OBJECTS.add(box);
-        SCENE.add(box);
+        // SCENE.add(box);
+
+        addJson(ingamepos, 1);
     }
 }
 
@@ -115,7 +117,7 @@ function onKeyDown(key) {
             SCENE.remove(placeholder);
 
             gameball.activate();
-            gameball.setLinearVelocity(new THREE.Vector3(0, 0, -100));
+            gameball.setLinearVelocity(new THREE.Vector3(0, 0, -10));
 
             camPosition_prev.x = CAMERA.position.x;
             camPosition_prev.y = CAMERA.position.y;

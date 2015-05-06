@@ -1,4 +1,3 @@
-'use strict'
 /* OBJECT Constructors */
 // (0, 0, 0) is the intersection point of three edges, so it isn't within any of the cubes
 
@@ -251,7 +250,7 @@ var gameElement = function(ingamepos, category, type) {
                     map: THREE.ImageUtils.loadTexture('Images/basketball.jpg')
                 }),
                 1, // friction coefficient
-                1 // e
+                0.4 // e
             ),
             10);
         this.position.set(abspos.x, abspos.y, abspos.z);
@@ -367,43 +366,115 @@ gameElement.prototype.freeze = function() {
 
 // }
 
-function buildAxes() {
-    var axes = new THREE.Object3D();
+function addJson(ingamepos, type) {
+        if (type == 0) {
+            var jsonLoader = new THREE.JSONLoader();
+            jsonLoader.load("model/woodtrail.js", addModelToScene);
 
-    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(100, 0, 0), 0xFF0000, false)); // +X
-    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(-100, 0, 0), 0x800000, true)); // -X
-    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, 0), 0x00FF00, false)); // +Y
-    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -100, 0), 0x008000, true)); // -Y
-    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 100), 0x0000FF, false)); // +Z
-    axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -100), 0x000080, true)); // -Z
+            var abspos = new absCoordinate(0, 0, 0);
+            abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
-    return axes;
+            function addModelToScene(geometry) {
+                var android = new Physijs.ConcaveMesh(
+                    geometry,
+                    Physijs.createMaterial(new THREE.MeshBasicMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
+                        transparent: false
+                    }), 0, 0),
+                    0);
+                android.castShadow = true;
+                android.receiveShadow = true;
+                android.scale.set(15, 10, 14);
+                android.position.set(abspos.x, abspos.y - 5, abspos.z);
+                android.rotation.set(0, 0, 0);
+                SCENE.add(android);
+            }
+        } else if (type == 1) {
+            var jsonLoader = new THREE.JSONLoader();
+            jsonLoader.load("model/woodtrail.js", addModelToScene);
 
-}
+            var abspos = new absCoordinate(0, 0, 0);
+            abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
-function buildAxis(src, dst, colorHex, dashed) {
-    var geom = new THREE.Geometry(),
-        mat;
+            function addModelToScene(geometry) {
+                var android = new Physijs.ConcaveMesh(
+                    geometry,
+                    Physijs.createMaterial(new THREE.MeshBasicMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
+                        transparent: false
+                    }), 0, 1),
+                    0);
+                android.castShadow = true;
+                android.receiveShadow = true;
+                android.scale.set(15, 10, 14);
+                android.position.set(abspos.x, abspos.y - 5, abspos.z);
+                android.rotation.set(0, Math.PI / 2, 0);
+                SCENE.add(android);
+            }
 
-    if (dashed) {
-        mat = new THREE.LineDashedMaterial({
-            linewidth: 1,
-            color: colorHex,
-            dashSize: 5,
-            gapSize: 5
-        });
-    } else {
-        mat = new THREE.LineBasicMaterial({
-            linewidth: 1,
-            color: colorHex
-        });
-    }
+        } else if (type == 2) {
+            var jsonLoader = new THREE.JSONLoader();
+            jsonLoader.load("model/sponge.js", addModelToScene);
 
-    geom.vertices.push(src.clone());
-    geom.vertices.push(dst.clone());
+            var abspos = new absCoordinate(0, 0, 0);
+            abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
-    var axis = new THREE.Line(geom, mat);
+            function addModelToScene(geometry) {
+                var android = new Physijs.ConcaveMesh(
+                    geometry,
+                    Physijs.createMaterial(new THREE.MeshBasicMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
+                        transparent: false
+                    }), 0, 1),
+                    0);
+                android.castShadow = true;
+                android.receiveShadow = true;
+                android.scale.set(15, 10, 14);
+                android.position.set(abspos.x, abspos.y - 5, abspos.z);
+                android.rotation.set(0, Math.PI / 2, 0);
+                SCENE.add(android);
 
-    return axis;
+            }
+        }
 
-}
+
+        function buildAxes() {
+            var axes = new THREE.Object3D();
+
+            axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(100, 0, 0), 0xFF0000, false)); // +X
+            axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(-100, 0, 0), 0x800000, true)); // -X
+            axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, 0), 0x00FF00, false)); // +Y
+            axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -100, 0), 0x008000, true)); // -Y
+            axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 100), 0x0000FF, false)); // +Z
+            axes.add(buildAxis(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -100), 0x000080, true)); // -Z
+
+            return axes;
+
+        }
+
+        function buildAxis(src, dst, colorHex, dashed) {
+            var geom = new THREE.Geometry(),
+                mat;
+
+            if (dashed) {
+                mat = new THREE.LineDashedMaterial({
+                    linewidth: 1,
+                    color: colorHex,
+                    dashSize: 5,
+                    gapSize: 5
+                });
+            } else {
+                mat = new THREE.LineBasicMaterial({
+                    linewidth: 1,
+                    color: colorHex
+                });
+            }
+
+            geom.vertices.push(src.clone());
+            geom.vertices.push(dst.clone());
+
+            var axis = new THREE.Line(geom, mat);
+
+            return axis;
+
+        }

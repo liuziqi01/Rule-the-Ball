@@ -15,7 +15,7 @@ function buildMaps(mapIdx) {
 
         var box = new gameElement(START, "startingPoint");
         // var box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
-        endingPo = [6, 5, 1];
+        endingPo = [6, 5, 8];
         mapTemp.add(box);
     }
     /***** 1 ******/

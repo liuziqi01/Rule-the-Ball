@@ -1,5 +1,6 @@
 var Stage = function() {}
 var NIMA;
+var jsons = new THREE.Object3D;
 var caonima;
 
 var START = new inGameCoordinate(6, 6, 11);
@@ -35,8 +36,6 @@ var MOUSE_FLAG = 0; // to tell the difference between drag and click
 
 var onSimulation = false;
 var blockType = 0;
-
-
 
 
 
@@ -126,25 +125,10 @@ Stage.prototype.init = function(stage_num) {
 
 
 
-    // var jsonLoader = new THREE.JSONLoader();
-    // jsonLoader.load( "model/woodtrail.js", addModelToScene);
 
-    // var zero = new absCoordinate(0, 0, 0);
-    // zero.setbyInGame(6,11,11);
 
-    // function addModelToScene( geometry){
-    //     var android = new Physijs.ConcaveMesh(
-    //         geometry,
-    //         Physijs.createMaterial(new THREE.MeshBasicMaterial({
-    //         map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),transparent:false}), 0,1),
-    //          0);
-    //     android.castShadow = true;
-    //     android.receiveShadow = true;
-    //     android.scale.set(15,10,14);
-    //     android.position.set(zero.x,zero.y - 5,zero.z);
-    //     android.rotation.set(0,Math.PI / 2,0);
-    //     SCENE.add( android );
-    // }
+
+
     // var try2 = new gameElement(new inGameCoordinate(6, 11, 11), "track");
     // SCENE.add(try2);
 
@@ -297,6 +281,7 @@ function animate() {
     aa.setbyInGame(endingPo[0], endingPo[1], endingPo[2]);
 
     var checkEnd = Math.abs(gameball.position.x - aa.x) < 10 && Math.abs(gameball.position.y - aa.y) < 10 && Math.abs(gameball.position.z - aa.z) < 10;
+    
     if (!(gameball.position.x < UNIT_STEP * SPACE_SIZE / 2 && gameball.position.x > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y < UNIT_STEP * SPACE_SIZE / 2)) {
         alert("you loose");
         this.stop = true;
