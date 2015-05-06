@@ -368,17 +368,18 @@ gameElement.prototype.freeze = function() {
 
 function addJson(ingamepos, type) {
     if (type == 0) {
+
         var jsonLoader = new THREE.JSONLoader();
-        jsonLoader.load("model/woodtrail.js", addModelToScene);
+        jsonLoader.load("model/woodtrail.js", addModelToScene0);
 
         var abspos = new absCoordinate(0, 0, 0);
         abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
-        function addModelToScene(geometry) {
+        function addModelToScene0(geometry) {
             var android = new Physijs.ConcaveMesh(
                 geometry,
                 Physijs.createMaterial(new THREE.MeshBasicMaterial({
-                    map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
+                    map: THREE.ImageUtils.loadTexture('Images/wood.jpg'),
                     transparent: false
                 }), 0, 0),
                 0);
@@ -388,15 +389,17 @@ function addJson(ingamepos, type) {
             android.position.set(abspos.x, abspos.y - 5, abspos.z);
             android.rotation.set(0, 0, 0);
             SCENE.add(android);
+
         }
     } else if (type == 1) {
+
         var jsonLoader = new THREE.JSONLoader();
-        jsonLoader.load("model/woodtrail.js", addModelToScene);
+        jsonLoader.load("model/woodtrail.js", addModelToScene1);
 
         var abspos = new absCoordinate(0, 0, 0);
         abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
-        function addModelToScene(geometry) {
+        function addModelToScene1(geometry) {
             var android = new Physijs.ConcaveMesh(
                 geometry,
                 Physijs.createMaterial(new THREE.MeshBasicMaterial({
@@ -415,12 +418,12 @@ function addJson(ingamepos, type) {
 
     } else if (type == 2) {
         var jsonLoader = new THREE.JSONLoader();
-        jsonLoader.load("model/sponge.js", addModelToScene);
+        jsonLoader.load("model/sponge.js", addModelToScene2);
 
         var abspos = new absCoordinate(0, 0, 0);
         abspos.setbyInGame(ingamepos.x, ingamepos.y, ingamepos.z);
 
-        function addModelToScene(geometry) {
+        function addModelToScene2(geometry) {
             var android = new Physijs.ConcaveMesh(
                 geometry,
                 Physijs.createMaterial(new THREE.MeshNormalMaterial({
