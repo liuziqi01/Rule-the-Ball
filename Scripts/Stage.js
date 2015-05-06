@@ -289,8 +289,7 @@ Stage.prototype.init = function(stage_num) {
 //     collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
 // };
 // box.addEventListener('collision', handleCollision);
-var i = 0;
-var j = 0;
+
 
 function animate() {
 

@@ -114,7 +114,7 @@ function onKeyDown(key) {
             SCENE.remove(placeholder);
 
             gameball.activate();
-            gameball.setLinearVelocity(new THREE.Vector3(0, 0, -50));
+            gameball.setLinearVelocity(new THREE.Vector3(0, 0, -100));
 
             camPosition_prev.x = CAMERA.position.x;
             camPosition_prev.y = CAMERA.position.y;
