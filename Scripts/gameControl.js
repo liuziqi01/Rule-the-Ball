@@ -1,8 +1,10 @@
 //makeSplash(1);
-function makeSplash(stage_num)
+var makeSplash = function(stage_num)
 {
+    console.log("Making a new");
 var splash = document.createElement("IMG");
 splash.id = "splash";
+    splash.setAttribute("style","position:fixed");
     if(stage_num ==0){
 splash.src = "Images/start.jpg";
     }
@@ -16,9 +18,12 @@ splash.src = "Images/start.jpg";
     }
 //currentSpalsh.setAttribute("position","fixed");
 //splash.appendChild(t);
-document.body.appendChild(splash);
-var currentStage = new Stage()
-
-document.getElementById("splash").addEventListener("click",currentStage.init, false);
+    splash.addEventListener("click",function(event)
+                            {
+                            var currentStage = new Stage();
+                            currentStage.init(stage_num);
+                            }, false);
+document.body.appendChild(splash)
 
 }
+
