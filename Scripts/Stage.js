@@ -43,7 +43,7 @@ var blockType = 0;
 /* Game Initialization */
 Stage.prototype.init = function(stage_num) {
     this.stop = false;
-    stage_num_this=stage_num;
+    stage_num_this = stage_num;
     /************** BASIC ELEMENTS **************/
 
     /* check if SPACE_SIZE is a even number */
@@ -57,7 +57,7 @@ Stage.prototype.init = function(stage_num) {
     /* CONTAINER setup */
     CONTAINER = document.getElementById("game");
     LEFTSIDEBAR = document.getElementById("selectionTab");
-console.log("here");
+    console.log("here");
     /* RENDERER setup */
     RENDERER = new THREE.WebGLRenderer();
     RENDERER.setPixelRatio(window.devicePixelRatio);
@@ -70,7 +70,7 @@ console.log("here");
     SCENE.addEventListener(
         'update',
         function() {
-            SCENE.simulate(undefined,1);
+            SCENE.simulate(undefined, 1);
         }
     );
 
@@ -99,6 +99,7 @@ console.log("here");
 
 
     // Trackball Control setup 
+    // CONTROLS = new THREE.TrackballControls(CAMERA, RENDERER.domElement);
     CONTROLS = new THREE.TrackballControls(CAMERA, RENDERER.domElement);
     CONTROLS.zoomSpeed = 0.1;
     CONTROLS.rotateSpeed = 1;
@@ -143,17 +144,20 @@ console.log("here");
 
 
     var zero = new absCoordinate(0, 0, 0);
-    zero.setbyInGame(6,11,11);
+    zero.setbyInGame(6, 11, 11);
     var jsonLoader = new THREE.JSONLoader();
 
-    // caonima = new THREE.Geometry;
-            var tempge = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
 
-    function haomeng(){
-        caonima = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
+     // caonima = new THREE.Geometry;
+    var tempge = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
+
+            // caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
+
+    function haomeng() {
+        caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
     }
     haomeng;
-            caonima = new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP);
+    // caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
 
     // jsonLoader.load("model/woodtrail.js",
     //     function(g) {
@@ -161,10 +165,10 @@ console.log("here");
     //     // NIMA = g;
     //     // caonima = g.clone();
     // });
-    // hehe(caonima);
+    hehe(caonima);
 
-    function hehe(geometry){
-             var shabi = new   Physijs.ConcaveMesh(
+    function hehe(geometry) {
+        var shabi = new Physijs.ConcaveMesh(
             // NIMA,
             geometry,
             // new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP),
@@ -182,14 +186,6 @@ console.log("here");
 
     // var bench = new gameElement(new inGameCoordinate(6,11,11), "startingPoint");
     // SCENE.add(bench);
-
-
-
-
-    //loader.load('model/bottom.js',hello);
-
-    // var hello = function()
-    //     {console.log("Hello");}
 
 
 
@@ -253,12 +249,12 @@ console.log("here");
 
 
 
-    var map = buildMaps(stage_num_this);
-    while ( map.children.length > 2 ){
-        SCENE.add(map.children[0]);
-    }
-    // to add the starting point and the ending point
-    SCENE.add(map);
+    // var map = buildMaps(stage_num_this);
+    // while (map.children.length > 2) {
+    //     SCENE.add(map.children[0]);
+    // }
+    // // to add the starting point and the ending point
+    // SCENE.add(map);
 
 
     placeholder = new gameElement(START, "posholder");
@@ -283,16 +279,19 @@ function animate() {
 
     /* looping */
     //setTimeout(function() {
-    
 
 
 
-    /* User Control */
-    CONTROLS.update();
+
+
     var aa = new absCoordinate();
-    aa.setbyInGame(endingPo[0],endingPo[1],endingPo[2]);
+    aa.setbyInGame(endingPo[0], endingPo[1], endingPo[2]);
 
-  var checkEnd = Math.abs(gameball.position.x -aa.x)<10 && Math.abs(gameball.position.y - aa.y)<10 && Math.abs(gameball.position.z - aa.z)<10;
+    var checkEnd = Math.abs(gameball.position.x - aa.x) < 10 && Math.abs(gameball.position.y - aa.y) < 10 && Math.abs(gameball.position.z - aa.z) < 10;
+    if (!( gameball.position.x < UNIT_STEP * SPACE_SIZE / 2 && gameball.position.x > - UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y > - UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y < UNIT_STEP * SPACE_SIZE / 2 )){
+        alert("you loose");
+        this.stop = true;
+    }
 
     //console.log(checkEnd);
 
@@ -308,26 +307,28 @@ function animate() {
         SCENE.simulate();
     }
     //}, 1000 / FPS);
-    
+
     if (onSimulation) {
         // sphere._dirtyPosition = true;
         CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
         CAMERA.lookAt(gameball.position);
-        //console.log(checkEnd);
-        
-        if(checkEnd)
-        {
+        console.log("checkEnd");
+
+        if (checkEnd) {
             console.log("splash");
-            onSimulation= false;
+            onSimulation = false;
             this.stop = true;
             SCENE = null;
             RENDERER.clear();
-            makeSplash(stage_num_this+1);
+            makeSplash(stage_num_this + 1);
         }
+    } else {
+        /* User Control */
+        CONTROLS.update();
+
     }
 }
 
 Stage.prototype.stop = function() {
     this.stop = true;
 }
-
