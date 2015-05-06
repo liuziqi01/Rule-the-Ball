@@ -44,7 +44,7 @@ var blockType = 0;
 Stage.prototype.init = function(stage_num) {
     keyboard = new KeyboardState()
     this.stop = false;
-    stage_num_this=stage_num;
+    stage_num_this = stage_num;
     /************** BASIC ELEMENTS **************/
 
     /* check if SPACE_SIZE is a even number */
@@ -62,7 +62,7 @@ Stage.prototype.init = function(stage_num) {
     //CONTAINER = document.getElementById("game");
     document.body.appendChild(CONTAINER);
     LEFTSIDEBAR = document.getElementById("selectionTab");
-console.log("here");
+    console.log("here");
     /* RENDERER setup */
     RENDERER = new THREE.WebGLRenderer();
     RENDERER.setPixelRatio(window.devicePixelRatio);
@@ -75,7 +75,7 @@ console.log("here");
     SCENE.addEventListener(
         'update',
         function() {
-            SCENE.simulate(undefined,1);
+            SCENE.simulate(undefined, 1);
         }
     );
 
@@ -105,6 +105,7 @@ console.log("here");
 
 
     // Trackball Control setup 
+    // CONTROLS = new THREE.TrackballControls(CAMERA, RENDERER.domElement);
     CONTROLS = new THREE.TrackballControls(CAMERA, RENDERER.domElement);
     CONTROLS.zoomSpeed = 0.1;
     CONTROLS.rotateSpeed = 1;
@@ -115,7 +116,7 @@ console.log("here");
     SCENE.add(new THREE.AmbientLight(White));
 
     /************** Objects **************/
-    //SCENE.add(OBJECTS);
+    SCENE.add(OBJECTS);
 
     // OBJECTS.add(new gameElement(new inGameCoordinate(), "ground"));
 
@@ -149,21 +150,51 @@ console.log("here");
 
 
     var zero = new absCoordinate(0, 0, 0);
-    zero.setbyInGame(6,11,11);
+    zero.setbyInGame(6, 11, 11);
     var jsonLoader = new THREE.JSONLoader();
+
 
     // caonima = new THREE.Geometry;
 
+
+     // caonima = new THREE.Geometry;
+    var tempge = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
+
+            // caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
+
+    function haomeng() {
+        caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
+    }
+    haomeng;
+    // caonima = new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP);
+
+    // jsonLoader.load("model/woodtrail.js",
+    //     function(g) {
+    //     console.log("nice");
+    //     // NIMA = g;
+    //     // caonima = g.clone();
+    // });
+    //hehe(caonima);
+
+    function hehe(geometry) {
+        var shabi = new Physijs.ConcaveMesh(
+            // NIMA,
+            geometry,
+            // new THREE.BoxGeometry( UNIT_STEP, UNIT_STEP,  UNIT_STEP),
+            Physijs.createMaterial(new THREE.MeshBasicMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/RockSmooth.jpg'),
+                transparent: false
+            }), 0, 1),
+            0);
+        shabi.castShadow = true;
+        shabi.receiveShadow = true;
+        shabi.scale.set(15, 10, 14);
+        shabi.position.set(zero.x, zero.y - 5, zero.z);
+        SCENE.add(shabi);
+    }
+
     // var bench = new gameElement(new inGameCoordinate(6,11,11), "startingPoint");
     // SCENE.add(bench);
-
-
-
-
-    //loader.load('model/bottom.js',hello);
-
-    // var hello = function()
-    //     {console.log("Hello");}
 
 
 
@@ -200,7 +231,7 @@ console.log("here");
         frame.position.y = (height / UNIT_STEP) * UNIT_STEP;
         grids.add(frame);
     }
-    //SCENE.add(grids);
+    SCENE.add(grids);
 
 
     document.getElementById("selectButtonBox").addEventListener("click", function() {
@@ -227,12 +258,12 @@ console.log("here");
 
 
 
-    var map = buildMaps(stage_num_this);
-    while ( map.children.length > 2 ){
-        SCENE.add(map.children[0]);
-    }
-    // to add the starting point and the ending point
-    SCENE.add(map);
+     var map = buildMaps(stage_num_this);
+     while (map.children.length > 2) {
+         SCENE.add(map.children[0]);
+     }
+     // to add the starting point and the ending point
+     SCENE.add(map);
 
 
     placeholder = new gameElement(START, "posholder");
@@ -258,34 +289,17 @@ if(stage_num_this==1)
 var i=0;
 var j=0;
 function animate() {
-    console.log("animating");
-
-    /* looping */
-    //setTimeout(function() {
-    
-    
-    if(i==0)
-    {
-        console.log("----------------");
-        console.log(SCENE);
-        i++;
-    }
-    if(j==0 && stage_num_this==1)
-    {
-        console.log("----------------");
-        console.log(SCENE);
-        j++;
-    }
-    
-
-
-    /* User Control */
-    
+  
     var aa = new absCoordinate();
-    aa.setbyInGame(endingPo[0],endingPo[1],endingPo[2]);
+    aa.setbyInGame(endingPo[0], endingPo[1], endingPo[2]);
 
-  var checkEnd = Math.abs(gameball.position.x -aa.x)<10 && Math.abs(gameball.position.y - aa.y)<10 && Math.abs(gameball.position.z - aa.z)<10;
+    var checkEnd = Math.abs(gameball.position.x - aa.x) < 10 && Math.abs(gameball.position.y - aa.y) < 10 && Math.abs(gameball.position.z - aa.z) < 10;
+    if (!( gameball.position.x < UNIT_STEP * SPACE_SIZE / 2 && gameball.position.x > - UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y > - UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y < UNIT_STEP * SPACE_SIZE / 2 )){
+        alert("you loose");
+        this.stop = true;
+    }
 
+    
     //console.log(checkEnd);
 
     if (!this.stop) {
@@ -300,14 +314,14 @@ function animate() {
         SCENE.simulate();
     }
     //}, 1000 / FPS);
-    
+
     if (onSimulation) {
         // sphere._dirtyPosition = true;
         CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
         CAMERA.lookAt(gameball.position);
         //console.log(checkEnd);
         
-        if(stage_num_this==0)
+        if(checkEnd)
         {
             console.log("splash");
             onSimulation= false;
@@ -315,11 +329,15 @@ function animate() {
             CONTROLS.update();
             CONTAINER.remove();
             makeSplash(stage_num_this+1);
+
         }
+    } else {
+        /* User Control */
+        CONTROLS.update();
+
     }
 }
 
 Stage.prototype.stop = function() {
     this.stop = true;
 }
-

@@ -9,7 +9,7 @@ function buildMaps(mapIdx) {
         console.log("building map");
 
 
-       // note the starting point and the ending point should come to the last
+        // note the starting point and the ending point should come to the last
         box = new gameElement(new inGameCoordinate(6, 5, 1), "endingPoint");
         mapTemp.add(box);
 
@@ -122,13 +122,14 @@ function buildMaps(mapIdx) {
         mapTemp.add(box);
 
         // box = new gameElement(new inGameCoordinate(6, 6, 0), "startingPoint");
-        box = new gameElement(START, "startingPoint");
+
+
+        box = new gameElement(new inGameCoordinate(6, 5, 10), "endingPoint");
+
+        endingPo = [6, 5, 10];
 
         mapTemp.add(box);
-
-        box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
-
-        endingPo = [6, 6, 10];
+        box = new gameElement(START, "startingPoint");
 
         mapTemp.add(box);
 
