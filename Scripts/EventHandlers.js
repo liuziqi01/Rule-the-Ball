@@ -95,19 +95,27 @@ function onKeyDown(key) {
         if (onSimulation) {
             onSimulation = false;
             SCENE.add(placeholder);
-            gameball.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+            // gameball.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+            // gameball.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
+            // gameball.freeze();
+            // gameball.position.set(START.x, START.y, START.z);
+
+            SCENE.remove(gameball);
+            delete gameball;
+            gameball = new gameElement(START, "gameBall");
+            SCENE.add(gameball);
             gameball.freeze();
-
             CAMERA.position.set(camPosition_prev.x, camPosition_prev.y, camPosition_prev.z);
 
         } else { // start simulation
             // SCENE.remove(lines);
+            onSimulation = true;
             SCENE.remove(placeholder);
 
             gameball.activate();
-            gameball.setLinearVelocity(new THREE.Vector3(10, 0, 0));
-            onSimulation = true;
+            gameball.setLinearVelocity(new THREE.Vector3(0, 0, -50));
+
             camPosition_prev.x = CAMERA.position.x;
             camPosition_prev.y = CAMERA.position.y;
             camPosition_prev.z = CAMERA.position.z;

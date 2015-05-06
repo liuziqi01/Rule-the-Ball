@@ -1,5 +1,6 @@
-var Stage = function()
-{}
+var Stage = function() {}
+
+var START = new inGameCoordinate(6, 6, 11);
 
 /* environment */
 var LEFTSIDEBAR;
@@ -205,10 +206,12 @@ console.log("here");
 
     SCENE.add(buildMaps(stage_num_this));
 
-    placeholder = new gameElement(new inGameCoordinate(6,6,6), "posholder");
-  
+    placeholder = new gameElement(START, "posholder");
+
     SCENE.add(placeholder);
-    gameball = new gameElement(new inGameCoordinate(6,6,1), "gameBall");
+    gameball = new gameElement(START, "gameBall");
+    
+
     SCENE.add(gameball);
     gameball.freeze();
     //RENDERER.render(BACKGROUND_SCENE, BACKGROUND_CAMERA);
