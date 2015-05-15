@@ -156,6 +156,24 @@ var atomicElement = function(abspos, category, type, para1, para2, para3) {
                     .0 // e
                 );
                 break;
+            case 3:
+                var material = Physijs.createMaterial(
+                    new THREE.MeshLambertMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/rocks.jpg')
+                    }),
+                    1, // friction coefficient
+                    .0 // e
+                );
+                break;
+            case 4:
+                var material = Physijs.createMaterial(
+                    new THREE.MeshLambertMaterial({
+                        map: THREE.ImageUtils.loadTexture('Images/plywood.jpg')
+                    }),
+                    1, // friction coefficient
+                    .0 // e
+                );
+                break;
         }
         Physijs.BoxMesh.call(this,
             new THREE.BoxGeometry(para1, para2, para3),
@@ -163,8 +181,8 @@ var atomicElement = function(abspos, category, type, para1, para2, para3) {
             0 // mass
         );
     }
-    
-    
+
+
 
     if (category === "sphere") {
 
@@ -215,18 +233,24 @@ var gameElement = function(ingamepos, category, type) {
 
     if (category === "box") {
         atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
-        if(type==2)
+
+        if (type == 2)
             var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
                 collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
             };
         this.addEventListener('collision', handleCollision);
-    } else if (category === "sphere") {
-        atomicElement.call(this, abspos, category, type, 13);
-    } else if (category === "cylinder") {
-        atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
-    } else if (category === "stair") {
+    }
+    else if (category === "sphere") {
 
-    } else if (category === "startingPoint") {
+        atomicElement.call(this, abspos, category, type, 13);
+    }
+    else if (category === "cylinder") {
+        atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
+    }
+    else if (category === "stair") {
+
+    }
+    else if (category === "startingPoint") {
         Physijs.BoxMesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP),
             new THREE.MeshBasicMaterial({
@@ -239,7 +263,8 @@ var gameElement = function(ingamepos, category, type) {
         this.position.set(abspos.x, abspos.y, abspos.z);
 
 
-    } else if (category === "endingPoint") {
+    }
+    else if (category === "endingPoint") {
         Physijs.BoxMesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP),
             new THREE.MeshBasicMaterial({
@@ -249,7 +274,8 @@ var gameElement = function(ingamepos, category, type) {
             }),
             0);
         this.position.set(abspos.x, abspos.y, abspos.z);
-    } else if (category === "gameBall") {
+    }
+    else if (category === "gameBall") {
         Physijs.SphereMesh.call(this,
             new THREE.SphereGeometry(UNIT_STEP * 1 / 3, 10, 10),
             Physijs.createMaterial(
@@ -261,14 +287,16 @@ var gameElement = function(ingamepos, category, type) {
             ),
             10);
         this.position.set(abspos.x, abspos.y, abspos.z);
-    } else if (category === "wall") {
+    }
+    else if (category === "wall") {
         Physijs.Mesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP * 4, UNIT_STEP * 4, UNIT_STEP),
             new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture('Images/RocksArid.jpg')
             }));
         this.position.set(abspos.x + UNIT_STEP * 3 / 2, abspos.y + UNIT_STEP * 3 / 2, abspos.z);
-    } else if (category === "posholder") {
+    }
+    else if (category === "posholder") {
         Physijs.Mesh.call(this,
             new THREE.BoxGeometry(UNIT_STEP, UNIT_STEP, UNIT_STEP), new THREE.MeshBasicMaterial({
                 color: Red,
@@ -277,7 +305,8 @@ var gameElement = function(ingamepos, category, type) {
             })
         );
         this.position.set(abspos.x, abspos.y, abspos.z);
-    } else if (category === "ground") {
+    }
+    else if (category === "ground") {
         Physijs.BoxMesh.call(this,
             new THREE.BoxGeometry(SPACE_SIZE * UNIT_STEP, 3, SPACE_SIZE * UNIT_STEP),
             Physijs.createMaterial(new THREE.MeshBasicMaterial({
@@ -288,7 +317,8 @@ var gameElement = function(ingamepos, category, type) {
             0);
         this.position.set(0, (0 - SPACE_SIZE / 2) * UNIT_STEP, 0);
         this.receiveShadow = true;
-    } else if (category === "track") {
+    }
+    else if (category === "track") {
         var jsonLoader = new THREE.JSONLoader();
 
         jsonLoader.load("model/woodtrail.js", function(g) {
@@ -398,7 +428,8 @@ function addJson(ingamepos, type) {
             SCENE.add(android);
 
         }
-    } else if (type == 1) {
+    }
+    else if (type == 1) {
 
         var jsonLoader = new THREE.JSONLoader();
         jsonLoader.load("model/woodtrail.js", addModelToScene1);
@@ -423,7 +454,8 @@ function addJson(ingamepos, type) {
         }
 
 
-    } else if (type == 2) {
+    }
+    else if (type == 2) {
         var jsonLoader = new THREE.JSONLoader();
         jsonLoader.load("model/sponge.js", addModelToScene2);
 
@@ -441,9 +473,9 @@ function addJson(ingamepos, type) {
             android.receiveShadow = true;
             android.scale.set(25, 25, 25);
             android.position.set(abspos.x, abspos.y - 5, abspos.z);
-           
+
             var handleCollision2 = function(collided_with, linearVelocity, angularVelocity) {
-            collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(-1));
+                collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(-1));
             };
             android.addEventListener('collision', handleCollision2);
             SCENE.add(android);
@@ -479,7 +511,8 @@ function buildAxis(src, dst, colorHex, dashed) {
             dashSize: 5,
             gapSize: 5
         });
-    } else {
+    }
+    else {
         mat = new THREE.LineBasicMaterial({
             linewidth: 1,
             color: colorHex
