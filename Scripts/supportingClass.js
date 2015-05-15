@@ -215,11 +215,11 @@ var gameElement = function(ingamepos, category, type) {
 
     if (category === "box") {
         atomicElement.call(this, abspos, category, type, UNIT_STEP, UNIT_STEP, UNIT_STEP);
-        /*if(type==2)
+        if(type==2)
             var handleCollision = function(collided_with, linearVelocity, angularVelocity) {
                 collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(1.1));
-            };*/
-        //this.addEventListener('collision', handleCollision);
+            };
+        this.addEventListener('collision', handleCollision);
     } else if (category === "sphere") {
         atomicElement.call(this, abspos, category, type, 13);
     } else if (category === "cylinder") {
@@ -441,8 +441,11 @@ function addJson(ingamepos, type) {
             android.receiveShadow = true;
             android.scale.set(25, 25, 25);
             android.position.set(abspos.x, abspos.y - 5, abspos.z);
-           /*
-               
+           
+            var handleCollision2 = function(collided_with, linearVelocity, angularVelocity) {
+            collided_with.setLinearVelocity(collided_with.getLinearVelocity().multiplyScalar(-1));
+            };
+            android.addEventListener('collision', handleCollision2);
             SCENE.add(android);
 
         }

@@ -10,12 +10,12 @@ function buildMaps(mapIdx) {
 
 
         // note the starting point and the ending point should come to the last
-        box = new gameElement(new inGameCoordinate(6, 5, 1), "endingPoint");
+        box = new gameElement(new inGameCoordinate(6, 5, 6), "endingPoint");
         mapTemp.add(box);
 
         var box = new gameElement(START, "startingPoint");
         // var box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
-        endingPo = [6, 5, 8];
+        endingPo = [6, 5, 6];
         mapTemp.add(box);
     }
     /***** 1 ******/
@@ -66,9 +66,9 @@ function buildMaps(mapIdx) {
         // box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
 
 
-        box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
+        box = new gameElement(new inGameCoordinate(6, 3, 11), "endingPoint");
         mapTemp.add(box);
-        endingPo = [6, 6, 10];
+        endingPo = [6, 3, 11];
 
         box = new gameElement(START, "startingPoint");
         mapTemp.add(box);

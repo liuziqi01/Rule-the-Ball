@@ -289,7 +289,7 @@ function animate() {
     var aa = new absCoordinate();
     aa.setbyInGame(endingPo[0], endingPo[1], endingPo[2]);
 
-    var checkEnd = Math.abs(gameball.position.x - aa.x) < 10 && Math.abs(gameball.position.y - aa.y) < 10 && Math.abs(gameball.position.z - aa.z) < 10;
+    var checkEnd = Math.abs(gameball.position.x - aa.x) < 40 && Math.abs(gameball.position.y - aa.y) < 40 && Math.abs(gameball.position.z - aa.z) < 40;
     
     if (!(gameball.position.x < UNIT_STEP * SPACE_SIZE / 2 && gameball.position.x > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y < UNIT_STEP * SPACE_SIZE / 2)) {
         alert("you loose");
@@ -314,7 +314,8 @@ function animate() {
 
     if (onSimulation) {
         // sphere._dirtyPosition = true;
-        CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
+       // CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
+//CAMERA.rotation.set(0,0,MATH.PI);
         CAMERA.lookAt(gameball.position);
         //console.log(checkEnd);
 
