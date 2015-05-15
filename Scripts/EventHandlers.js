@@ -49,7 +49,8 @@ function onDocumentMouseClick(event) {
             // OBJECTS.add(box);
             SCENE.add(box);
 
-        } else {
+        }
+        else {
             addJson(ingamepos, blockType - 3);
 
         }
@@ -119,7 +120,8 @@ function onKeyDown(key) {
             gameball.freeze();
             CAMERA.position.set(camPosition_prev.x, camPosition_prev.y, camPosition_prev.z);
 
-        } else { // start simulation
+        }
+        else { // start simulation
             // SCENE.remove(lines);
             onSimulation = true;
             SCENE.remove(placeholder);

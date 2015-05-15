@@ -44,7 +44,7 @@ function buildMaps(mapIdx) {
     }
 
     /***** 2 ******/
-    else if (mapIdx === 2) {
+    else if (mapIdx === 9) {
         for (var iX = 0; iX < UNIT_STEP; ++iX) {
             if (iX != 8) {
                 for (var iY = 0; iY < UNIT_STEP; ++iY) {
@@ -80,7 +80,7 @@ function buildMaps(mapIdx) {
 
 
     /***** 3 ******/
-    else if (mapIdx === 3) {
+    else if (mapIdx === 2) {
         var abspos = new absCoordinate();
         abspos.setbyInGame(0, 0, 3);
         box = new Physijs.BoxMesh(
@@ -136,7 +136,7 @@ function buildMaps(mapIdx) {
         mapTemp.add(box);
 
     }
-    else if (mapIdx == 4) {
+    else if (mapIdx == 3) {
         var abspos = new absCoordinate();
         abspos.setbyInGame(0, 8, 6);
         box = new Physijs.BoxMesh(
@@ -169,7 +169,7 @@ function buildMaps(mapIdx) {
 
         mapTemp.add(box);
 
-        
+
         box = new gameElement(new inGameCoordinate(6, 5, 1), "endingPoint");
         endingPo = [6, 5, 1];
 
@@ -180,7 +180,7 @@ function buildMaps(mapIdx) {
 
     }
 
-        else if (mapIdx == 5) {
+    else if (mapIdx == 4) {
         var abspos = new absCoordinate();
         abspos.setbyInGame(0, 8, 6);
         box = new Physijs.BoxMesh(
@@ -213,7 +213,7 @@ function buildMaps(mapIdx) {
 
         mapTemp.add(box);
 
-        
+
         box = new gameElement(new inGameCoordinate(1, 3, 1), "endingPoint");
         endingPo = [1, 3, 1];
 

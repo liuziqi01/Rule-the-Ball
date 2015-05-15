@@ -221,26 +221,26 @@ Stage.prototype.init = function(stage_num) {
 
 
     document.getElementById("selectButtonBox").addEventListener("click", function() {
-                                                                document.getElementById("info").innerHTML = "Normal Box <br>Perfect for practice";
+        document.getElementById("info").innerHTML = "Normal Box <br>Perfect for practice";
         blockType = 0;
     });
     document.getElementById("selectButtonDiamond").addEventListener("click", function() {
-         document.getElementById("info").innerHTML = "Diamond Cube <br>Zero Friction Surface";
+        document.getElementById("info").innerHTML = "Diamond Cube <br>Zero Friction Surface";
         blockType = 1;
     });
     document.getElementById("selectButtonGold").addEventListener("click", function() {
-                                                                 document.getElementById("info").innerHTML = "Golden Cube <br> Accelerating!";
+        document.getElementById("info").innerHTML = "Golden Cube <br> Accelerating!";
         blockType = 2;
     });
     document.getElementById("selectButtonTrail").addEventListener("click", function() {
-                                                                  document.getElementById("info").innerHTML = "Wooden Trail";
+        document.getElementById("info").innerHTML = "Wooden Trail";
         blockType = 3;
     });
     document.getElementById("selectButtonTrail2").addEventListener("click", function() {
-                                                            blockType = 4;
-                                                            });
+        blockType = 4;
+    });
     document.getElementById("selectButtonSponge").addEventListener("click", function() {
-                                                                   document.getElementById("info").innerHTML = "Sponge <br> It doesn't like ball...";
+        document.getElementById("info").innerHTML = "Sponge <br> It doesn't like ball...";
         blockType = 5;
     });
 
@@ -290,7 +290,7 @@ function animate() {
     aa.setbyInGame(endingPo[0], endingPo[1], endingPo[2]);
 
     var checkEnd = Math.abs(gameball.position.x - aa.x) < 40 && Math.abs(gameball.position.y - aa.y) < 40 && Math.abs(gameball.position.z - aa.z) < 40;
-    
+
     if (!(gameball.position.x < UNIT_STEP * SPACE_SIZE / 2 && gameball.position.x > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y > -UNIT_STEP * SPACE_SIZE / 2 && gameball.position.y < UNIT_STEP * SPACE_SIZE / 2)) {
         alert("you loose");
         this.stop = true;
@@ -314,8 +314,8 @@ function animate() {
 
     if (onSimulation) {
         // sphere._dirtyPosition = true;
-       // CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
-//CAMERA.rotation.set(0,0,MATH.PI);
+        // CAMERA.position.set(gameball.position.x, gameball.position.y + 150, gameball.position.z + 150);
+        //CAMERA.rotation.set(0,0,MATH.PI);
         CAMERA.lookAt(gameball.position);
         //console.log(checkEnd);
 
@@ -328,7 +328,8 @@ function animate() {
             makeSplash(stage_num_this + 1);
 
         }
-    } else {
+    }
+    else {
         /* User Control */
         CONTROLS.update();
 

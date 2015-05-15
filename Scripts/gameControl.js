@@ -10,13 +10,13 @@ var makeSplash = function(stage_num) {
     if (stage_num == 1) {
         splash.src = "Images/stage2.jpg";
     }
-    if (stage_num == 3) {
+    if (stage_num == 2) {
         splash.src = "Images/stage3.jpg";
     }
-        if (stage_num == 4) {
+    if (stage_num == 3) {
         splash.src = "Images/stage4.png";
     }
-        if (stage_num == 5) {
+    if (stage_num == 4) {
         splash.src = "Images/stage5.png";
     }
     //currentSpalsh.setAttribute("position","fixed");
