@@ -24,7 +24,7 @@ function buildMaps(mapIdx) {
         for (var iX = 0; iX < UNIT_STEP; ++iX) {
             if (iX != 8) {
                 for (var iY = 0; iY < UNIT_STEP; ++iY) {
-                    box = new gameElement(new inGameCoordinate(iX, iY, 6), "box", 0);
+                    box = new gameElement(new inGameCoordinate(iX, iY, 6), "box", 2);
                     mapTemp.add(box);
                     mapTemp.add(box);
                 }
@@ -34,8 +34,8 @@ function buildMaps(mapIdx) {
         // box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
 
 
-        box = new gameElement(new inGameCoordinate(6, 6, 10), "endingPoint");
-        endingPo = [6, 6, 10];
+        box = new gameElement(new inGameCoordinate(6, 4, 1), "endingPoint");
+        endingPo = [6, 4, 1];
         mapTemp.add(box);
 
         box = new gameElement(START, "startingPoint");
@@ -48,27 +48,27 @@ function buildMaps(mapIdx) {
         for (var iX = 0; iX < UNIT_STEP; ++iX) {
             if (iX != 8) {
                 for (var iY = 0; iY < UNIT_STEP; ++iY) {
-                    box = new gameElement(new inGameCoordinate(iX, iY, 6), "box", 0);
+                    box = new gameElement(new inGameCoordinate(iX, iY, 6), "box", 2);
                     mapTemp.add(box);
                 }
             }
         }
 
-        for (var iX = 0; iX < UNIT_STEP; ++iX) {
-            if (iX != 4) {
-                for (var iY = 0; iY < UNIT_STEP; ++iY) {
-                    box = new gameElement(new inGameCoordinate(iX, iY, 9), "box", 0);
-                    mapTemp.add(box);
-                }
-            }
-        }
+        // for (var iX = 0; iX < UNIT_STEP; ++iX) {
+        //     if (iX != 4) {
+        //         for (var iY = 0; iY < UNIT_STEP; ++iY) {
+        //             box = new gameElement(new inGameCoordinate(iX, iY, 9), "box", 1);
+        //             mapTemp.add(box);
+        //         }
+        //     }
+        // }
 
         // box = new gameElement(new inGameCoordinate(6, 6, 1), "startingPoint");
 
 
-        box = new gameElement(new inGameCoordinate(6, 6, 11), "endingPoint");
+        box = new gameElement(new inGameCoordinate(6, 6, 1), "endingPoint");
         mapTemp.add(box);
-        endingPo = [6, 6, 10];
+        endingPo = [6, 6, 1];
 
         box = new gameElement(START, "startingPoint");
         mapTemp.add(box);
@@ -124,9 +124,9 @@ function buildMaps(mapIdx) {
         // box = new gameElement(new inGameCoordinate(6, 6, 0), "startingPoint");
 
 
-        box = new gameElement(new inGameCoordinate(6, 5, 10), "endingPoint");
+        box = new gameElement(new inGameCoordinate(6, 5, 1), "endingPoint");
 
-        endingPo = [6, 5, 10];
+        endingPo = [6, 5, 1];
 
         mapTemp.add(box);
         box = new gameElement(START, "startingPoint");
@@ -134,6 +134,95 @@ function buildMaps(mapIdx) {
         mapTemp.add(box);
 
     }
+    else if (mapIdx == 4) {
+        var abspos = new absCoordinate();
+        abspos.setbyInGame(0, 8, 6);
+        box = new Physijs.BoxMesh(
+            new THREE.BoxGeometry(UNIT_STEP * 12, UNIT_STEP * 4, UNIT_STEP),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/brick_diffuse.jpg')
+            }), 0);
+        box.position.set(abspos.x + UNIT_STEP * (6 - 1 / 2), abspos.y + UNIT_STEP * (2 - 1 / 2), abspos.z);
+
+        mapTemp.add(box);
+
+
+        abspos.setbyInGame(0, 0, 6);
+        box = new Physijs.BoxMesh(
+            new THREE.BoxGeometry(UNIT_STEP * 4, UNIT_STEP * 8, UNIT_STEP),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/brick_diffuse.jpg')
+            }), 0);
+        box.position.set(abspos.x + UNIT_STEP * (2 - 1 / 2), abspos.y + UNIT_STEP * (4 - 1 / 2), abspos.z);
+
+        mapTemp.add(box);
+
+        abspos.setbyInGame(5, 0, 6);
+        box = new Physijs.BoxMesh(
+            new THREE.BoxGeometry(UNIT_STEP * 7, UNIT_STEP * 8, UNIT_STEP),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/brick_diffuse.jpg')
+            }), 0);
+        box.position.set(abspos.x + UNIT_STEP * 3, abspos.y + UNIT_STEP * (4 - 1 / 2), abspos.z);
+
+        mapTemp.add(box);
+
+        
+        box = new gameElement(new inGameCoordinate(6, 5, 1), "endingPoint");
+        endingPo = [6, 5, 1];
+
+        mapTemp.add(box);
+        box = new gameElement(START, "startingPoint");
+
+        mapTemp.add(box);
+
+    }
+
+        else if (mapIdx == 5) {
+        var abspos = new absCoordinate();
+        abspos.setbyInGame(0, 8, 6);
+        box = new Physijs.BoxMesh(
+            new THREE.BoxGeometry(UNIT_STEP * 12, UNIT_STEP * 4, UNIT_STEP),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/plywood.jpg')
+            }), 0);
+        box.position.set(abspos.x + UNIT_STEP * (6 - 1 / 2), abspos.y + UNIT_STEP * (2 - 1 / 2), abspos.z);
+
+        mapTemp.add(box);
+
+
+        abspos.setbyInGame(0, 0, 6);
+        box = new Physijs.BoxMesh(
+            new THREE.BoxGeometry(UNIT_STEP * 5, UNIT_STEP * 8, UNIT_STEP),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/plywood.jpg')
+            }), 0);
+        box.position.set(abspos.x + UNIT_STEP * 2, abspos.y + UNIT_STEP * (4 - 1 / 2), abspos.z);
+
+        mapTemp.add(box);
+
+        abspos.setbyInGame(5, 0, 6);
+        box = new Physijs.BoxMesh(
+            new THREE.BoxGeometry(UNIT_STEP * 7, UNIT_STEP * 7, UNIT_STEP),
+            new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture('Images/plywood.jpg')
+            }), 0);
+        box.position.set(abspos.x + UNIT_STEP * 3, abspos.y + UNIT_STEP * 3, abspos.z);
+
+        mapTemp.add(box);
+
+        
+        box = new gameElement(new inGameCoordinate(1, 3, 1), "endingPoint");
+        endingPo = [1, 3, 1];
+
+        mapTemp.add(box);
+        box = new gameElement(START, "startingPoint");
+
+        mapTemp.add(box);
+
+    }
+
+
 
     /***** 4 ******/
 
